@@ -1,1 +1,1569 @@
-Hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetrAInsights — Agentic AI Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #a5b4fc;
+    --accent: #06b6d4;
+    --green: #10b981;
+    --orange: #f59e0b;
+    --pink: #ec4899;
+    --purple: #a855f7;
+    --bg: #ffffff;
+    --bg-alt: #f8fafc;
+    --bg-hero: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
+    --bg-card: #ffffff;
+    --bg-glass: rgba(255,255,255,0.8);
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --border-light: #f1f5f9;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+    --shadow-lg: 0 20px 40px -10px rgba(99,102,241,0.15), 0 8px 16px -6px rgba(0,0,0,0.08);
+    --shadow-glow: 0 0 30px rgba(99,102,241,0.12);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    overflow-x: hidden;
+}
+
+/* ============ SUBTLE BACKGROUND ============ */
+.bg-dots {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(99,102,241,0.07) 1px, transparent 1px);
+    background-size: 30px 30px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ============ NAVBAR ============ */
+.navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    transition: all 0.3s;
+}
+
+.navbar.scrolled {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.nav-logo {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+}
+
+.nav-brand-text {
+    font-size: 20px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-links {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary);
+    background: rgba(99,102,241,0.06);
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 1px;
+}
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text);
+    margin: 5px 0;
+    border-radius: 2px;
+}
+
+/* ============ HERO SLIDER ============ */
+.hero {
+    position: relative;
+    margin-top: 56px;
+    overflow: hidden;
+}
+
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    pointer-events: none;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.hero-slide-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 50px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.slide-left {
+    z-index: 2;
+}
+
+.slide-right {
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide-right .slide-visual {
+    font-size: 100px;
+    animation: floatVisual 3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 20px rgba(99,102,241,0.15));
+}
+
+@keyframes floatVisual {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+/* Slide backgrounds */
+.hero-slide:nth-child(1) { background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 60%, #e0e7ff 100%); }
+.hero-slide:nth-child(2) { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 60%, #bae6fd 100%); }
+.hero-slide:nth-child(3) { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 60%, #a7f3d0 100%); }
+.hero-slide:nth-child(4) { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 40%, #fcd34d 100%); }
+.hero-slide:nth-child(5) { background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 60%, #fbcfe8 100%); }
+
+.slide-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.2);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+.slide-badge .badge-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: dotBlink 1.5s ease-in-out infinite;
+}
+
+@keyframes dotBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.slide-left h2 {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    color: var(--text);
+}
+
+.slide-left h2 .gradient-text {
+    background: linear-gradient(135deg, #6366f1, #06b6d4, #10b981);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.slide-left p {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    line-height: 1.7;
+    max-width: 480px;
+}
+
+.slide-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover::before { left: 100%; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.4); }
+
+.btn-outline {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--border);
+}
+
+.btn-outline:hover {
+    border-color: var(--primary);
+    background: rgba(99,102,241,0.04);
+    box-shadow: var(--shadow);
+}
+
+/* Slider dots/indicators */
+.slider-dots {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.slider-dot.active {
+    background: var(--primary);
+    transform: scale(1.3);
+    box-shadow: 0 0 8px rgba(99,102,241,0.4);
+}
+
+.slider-dot:hover { background: var(--primary-light); }
+
+/* Slider arrows */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+    font-size: 18px;
+    color: var(--text);
+}
+
+.slider-arrow:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.slider-arrow.prev { left: 20px; }
+.slider-arrow.next { right: 20px; }
+
+/* Progress bar */
+.slider-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 0 2px 0 0;
+    transition: width 0.3s;
+    animation: sliderProgress 5s linear infinite;
+}
+
+@keyframes sliderProgress {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+/* ============ SECTION DIVIDER ============ */
+.section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* ============ SECTIONS ============ */
+section {
+    padding: 50px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.section-alt {
+    background: var(--bg-alt);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.section-header h2 {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.section-header .accent-line {
+    width: 50px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 2px;
+    margin: 14px auto;
+}
+
+.section-header p {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+/* ============ ABOUT ============ */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.about-content h3 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: var(--text);
+}
+
+.about-content p {
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    line-height: 1.8;
+}
+
+.about-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.value-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 14px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.3s;
+    color: var(--text);
+}
+
+.value-item:hover {
+    border-color: rgba(99,102,241,0.3);
+    box-shadow: var(--shadow);
+    transform: translateX(3px);
+}
+
+.value-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(99,102,241,0.08);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.about-visual {
+    background: linear-gradient(135deg, #eef2ff, #f0f9ff);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 50px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-visual::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.04) 0%, transparent 50%);
+    animation: rotateBg 25s linear infinite;
+}
+
+@keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.about-visual .robot-display {
+    font-size: 90px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+    animation: robotBounce 3s ease-in-out infinite;
+}
+
+@keyframes robotBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+.about-visual h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+    color: var(--text);
+}
+
+.about-visual p {
+    color: var(--text-muted);
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+}
+
+.circuit-lines {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+}
+
+.circuit-line {
+    position: absolute;
+    background: var(--primary);
+    opacity: 0.15;
+    border-radius: 1px;
+}
+
+.circuit-line:nth-child(1) { top: 20px; left: 20px; width: 40px; height: 2px; animation: circuitPulse 3s infinite; }
+.circuit-line:nth-child(2) { top: 20px; left: 20px; width: 2px; height: 40px; animation: circuitPulse 3s infinite 0.5s; }
+.circuit-line:nth-child(3) { bottom: 20px; right: 20px; width: 40px; height: 2px; animation: circuitPulse 3s infinite 1s; }
+.circuit-line:nth-child(4) { bottom: 20px; right: 20px; width: 2px; height: 40px; animation: circuitPulse 3s infinite 1.5s; }
+.circuit-line:nth-child(5) { top: 50%; right: 20px; width: 30px; height: 2px; animation: circuitPulse 3s infinite 2s; }
+.circuit-line:nth-child(6) { top: 20px; left: 50%; width: 2px; height: 30px; animation: circuitPulse 3s infinite 2.5s; }
+
+@keyframes circuitPulse { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.3; } }
+
+/* ============ SERVICES ============ */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.service-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.service-card:hover::before { opacity: 1; }
+
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(99,102,241,0.2);
+}
+
+.service-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(6,182,212,0.06));
+    border: 1px solid rgba(99,102,241,0.12);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 18px;
+    transition: all 0.3s;
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.1) rotate(3deg);
+    box-shadow: 0 4px 12px rgba(99,102,241,0.15);
+}
+
+.service-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+.service-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.service-features {
+    list-style: none;
+    margin-top: 14px;
+}
+
+.service-features li {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.service-features li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* ============ COURSE TIMELINE ============ */
+.course-timeline {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.course-timeline::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--primary), var(--accent), var(--green), var(--orange));
+    border-radius: 2px;
+}
+
+.week-card {
+    position: relative;
+    margin-bottom: 36px;
+    padding-left: 70px;
+}
+
+.week-dot {
+    position: absolute;
+    left: 16px;
+    top: 24px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px var(--primary);
+}
+
+.week-dot.w1 { background: var(--primary); box-shadow: 0 0 0 3px var(--primary), 0 4px 10px rgba(99,102,241,0.3); }
+.week-dot.w2 { background: var(--accent); box-shadow: 0 0 0 3px var(--accent), 0 4px 10px rgba(6,182,212,0.3); }
+.week-dot.w3 { background: var(--green); box-shadow: 0 0 0 3px var(--green), 0 4px 10px rgba(16,185,129,0.3); }
+.week-dot.w4 { background: var(--orange); box-shadow: 0 0 0 3px var(--orange), 0 4px 10px rgba(245,158,11,0.3); }
+
+.week-card-inner {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px;
+    transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
+}
+
+.week-card-inner:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(99,102,241,0.15);
+    transform: translateX(4px);
+}
+
+.week-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.week-badge.w1 { background: rgba(99,102,241,0.08); color: var(--primary); }
+.week-badge.w2 { background: rgba(6,182,212,0.08); color: var(--accent); }
+.week-badge.w3 { background: rgba(16,185,129,0.08); color: var(--green); }
+.week-badge.w4 { background: rgba(245,158,11,0.08); color: var(--orange); }
+
+.week-card-inner h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+.week-card-inner p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.week-topics {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
+.week-topics li {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.week-topics li::before {
+    content: '▸';
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.week-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.week-link:hover { gap: 10px; }
+
+/* ============ CONTACT ============ */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    align-items: start;
+}
+
+.contact-info h3 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: var(--text);
+}
+
+.contact-info > p {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding: 14px 16px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.contact-item:hover {
+    box-shadow: var(--shadow);
+    border-color: rgba(99,102,241,0.2);
+}
+
+.contact-icon {
+    width: 42px;
+    height: 42px;
+    background: rgba(99,102,241,0.08);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.contact-item .label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.contact-item .value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.contact-form {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: var(--shadow);
+}
+
+.form-group { margin-bottom: 18px; }
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s;
+    background: var(--bg-alt);
+    color: var(--text);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    background: white;
+}
+
+.form-group textarea { height: 110px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ============ FOOTER ============ */
+.footer {
+    background: #0f172a;
+    color: #94a3b8;
+    padding: 40px 0 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.footer-logo {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.footer-brand-text {
+    font-size: 18px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary-light), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.footer-desc { font-size: 14px; line-height: 1.7; color: #64748b; }
+
+.footer h4 {
+    color: #e2e8f0;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer ul { list-style: none; }
+.footer ul li { margin-bottom: 8px; }
+.footer ul a { color: #64748b; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+.footer ul a:hover { color: #e2e8f0; }
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #475569;
+}
+
+/* ============ SCROLL REVEAL ============ */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 968px) {
+    .nav-links { display: none; }
+    .nav-toggle { display: block; }
+    .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        background: rgba(255,255,255,0.98);
+        backdrop-filter: blur(20px);
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        gap: 4px;
+    }
+    .hero-slider { height: 400px; }
+    .hero-slide-inner { grid-template-columns: 1fr; gap: 20px; padding: 0 30px; }
+    .slide-left { text-align: center; }
+    .slide-left h2 { font-size: 30px; }
+    .slide-buttons { justify-content: center; }
+    .slide-right { display: none; }
+    .slider-arrow { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .week-topics { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+    .hero-slider { height: 380px; }
+    .slide-left h2 { font-size: 24px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .about-values { grid-template-columns: 1fr; }
+    .slide-buttons { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Subtle dot background -->
+<div class="bg-dots"></div>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <a href="#home" class="nav-brand">
+            <div class="nav-logo">AI</div>
+            <span class="nav-brand-text">NetrAInsights</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#course">Course</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+        </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- ========== HERO SLIDER ========== -->
+<section class="hero" id="home">
+    <div class="hero-slider" id="heroSlider">
+        <!-- Slide 1 -->
+        <div class="hero-slide active">
+            <div class="hero-slide-inner">
+                <div class="slide-left">
+                    <div class="slide-badge"><span class="badge-dot"></span> Now Enrolling</div>
+                    <h2>Master<br><span class="gradient-text">Agentic AI</span><br>From Zero to Production</h2>
+                    <p>A comprehensive 4-week course that takes you from AI fundamentals to building production-ready autonomous agents.</p>
+                    <div class="slide-buttons">
+                        <a href="#course" class="btn btn-primary">🚀 Explore the Course</a>
+                        <a href="#contact" class="btn btn-outline">💬 Get in Touch</a>
+                    </div>
+                </div>
+                <div class="slide-right">
+                    <div class="slide-visual">🤖</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="hero-slide">
+            <div class="hero-slide-inner">
+                <div class="slide-left">
+                    <div class="slide-badge"><span class="badge-dot"></span> Hands-On Labs</div>
+                    <h2>Build Real<br><span class="gradient-text">AI Agents</span><br>From Day One</h2>
+                    <p>45+ practical labs using LangChain, CrewAI, RAG pipelines, and multi-agent orchestration. Learn by building, not just watching.</p>
+                    <div class="slide-buttons">
+                        <a href="#course" class="btn btn-primary">📚 View Curriculum</a>
+                        <a href="#services" class="btn btn-outline">🛠️ Our Services</a>
+                    </div>
+                </div>
+                <div class="slide-right">
+                    <div class="slide-visual">⚡</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="hero-slide">
+            <div class="hero-slide-inner">
+                <div class="slide-left">
+                    <div class="slide-badge"><span class="badge-dot"></span> Industry Ready</div>
+                    <h2>Deploy Agents<br><span class="gradient-text">To Production</span><br>With Confidence</h2>
+                    <p>Docker, APIs, Cloud deployment, monitoring, guardrails & safety patterns. Graduate production-ready, not just prototype-ready.</p>
+                    <div class="slide-buttons">
+                        <a href="course/week4-integration-production.html" class="btn btn-primary">🏗️ Week 4 Details</a>
+                        <a href="#about" class="btn btn-outline">🎯 About Us</a>
+                    </div>
+                </div>
+                <div class="slide-right">
+                    <div class="slide-visual">🚀</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="hero-slide">
+            <div class="hero-slide-inner">
+                <div class="slide-left">
+                    <div class="slide-badge"><span class="badge-dot"></span> Multi-Agent Systems</div>
+                    <h2>Orchestrate<br><span class="gradient-text">Autonomous Teams</span><br>Of AI Agents</h2>
+                    <p>Learn CrewAI & AutoGen to build collaborative multi-agent systems that reason, plan, and solve complex tasks together.</p>
+                    <div class="slide-buttons">
+                        <a href="course/week3-building-real-agents.html" class="btn btn-primary">🔗 Week 3 Details</a>
+                        <a href="#contact" class="btn btn-outline">📞 Contact Us</a>
+                    </div>
+                </div>
+                <div class="slide-right">
+                    <div class="slide-visual">🧠</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="hero-slide">
+            <div class="hero-slide-inner">
+                <div class="slide-left">
+                    <div class="slide-badge"><span class="badge-dot"></span> Corporate Training</div>
+                    <h2>Upskill Your<br><span class="gradient-text">Enterprise Team</span><br>In Agentic AI</h2>
+                    <p>Custom workshops for organizations adopting AI agents — tailored to your tech stack, use cases, and business goals.</p>
+                    <div class="slide-buttons">
+                        <a href="#services" class="btn btn-primary">🎓 Our Workshops</a>
+                        <a href="#contact" class="btn btn-outline">💼 Get a Quote</a>
+                    </div>
+                </div>
+                <div class="slide-right">
+                    <div class="slide-visual">🏢</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation arrows -->
+        <button class="slider-arrow prev" onclick="changeSlide(-1)">‹</button>
+        <button class="slider-arrow next" onclick="changeSlide(1)">›</button>
+
+        <!-- Dots -->
+        <div class="slider-dots" id="sliderDots">
+            <span class="slider-dot active" onclick="goToSlide(0)"></span>
+            <span class="slider-dot" onclick="goToSlide(1)"></span>
+            <span class="slider-dot" onclick="goToSlide(2)"></span>
+            <span class="slider-dot" onclick="goToSlide(3)"></span>
+            <span class="slider-dot" onclick="goToSlide(4)"></span>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="slider-progress" id="sliderProgress"></div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ========== ABOUT ========== -->
+<section id="about" class="section-alt">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-content reveal">
+                <h3>About NetrAInsights</h3>
+                <p>We are a Hyderabad-based AI education and consulting firm dedicated to making Agentic AI accessible to professionals, students, and enterprises. Our mission is to bridge the gap between cutting-edge AI research and practical, production-ready implementations.</p>
+                <p>Our curriculum is designed by industry practitioners who have built and deployed AI agents in real enterprise environments — from customer support automation to intelligent research assistants.</p>
+                <div class="about-values">
+                    <div class="value-item">
+                        <div class="value-icon">🎯</div>
+                        <span>Hands-on Learning</span>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🏗️</div>
+                        <span>Production-Ready Skills</span>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🤝</div>
+                        <span>Industry Mentorship</span>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🚀</div>
+                        <span>Career Acceleration</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-visual reveal">
+                <div class="circuit-lines">
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                </div>
+                <div class="robot-display">🤖</div>
+                <h4>AI Agents That Think & Act</h4>
+                <p>We teach you to build agents that perceive, reason, plan, and execute — autonomously solving real-world problems.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ========== SERVICES ========== -->
+<section id="services">
+    <div class="container">
+        <div class="section-header reveal">
+            <h2>Our Services</h2>
+            <div class="accent-line"></div>
+            <p>Empowering individuals and organizations to harness the full potential of Agentic AI</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-icon">🎓</div>
+                <h3>AI Training Programs</h3>
+                <p>Structured courses covering foundations, agent architectures, tool integration, memory systems, and production deployment.</p>
+                <ul class="service-features">
+                    <li>4-week intensive cohorts</li>
+                    <li>Self-paced online modules</li>
+                    <li>Certificate on completion</li>
+                    <li>Lifetime access to materials</li>
+                </ul>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">🛠️</div>
+                <h3>Corporate Workshops</h3>
+                <p>Customized workshops for teams looking to integrate AI agents into their products and workflows. From 1-day bootcamps to multi-week engagements.</p>
+                <ul class="service-features">
+                    <li>Tailored to your tech stack</li>
+                    <li>On-site or virtual delivery</li>
+                    <li>Real project-based exercises</li>
+                    <li>Post-workshop support</li>
+                </ul>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon">💡</div>
+                <h3>AI Consulting</h3>
+                <p>Strategic guidance on adopting agentic AI — from proof-of-concept to production. We help you identify use cases, select frameworks, and build scalable agent systems.</p>
+                <ul class="service-features">
+                    <li>Use case identification</li>
+                    <li>Architecture design</li>
+                    <li>Framework selection</li>
+                    <li>Production readiness audit</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ========== COURSE ========== -->
+<section id="course" class="section-alt">
+    <div class="container">
+        <div class="section-header reveal">
+            <h2>Course Curriculum</h2>
+            <div class="accent-line"></div>
+            <p>A 4-week journey from AI fundamentals to production-ready autonomous agents</p>
+        </div>
+        <div class="course-timeline">
+            <div class="week-card reveal">
+                <div class="week-dot w1"></div>
+                <div class="week-card-inner">
+                    <span class="week-badge w1">Week 1 — Days 1–5</span>
+                    <h3>🧱 Foundations</h3>
+                    <p>Build a rock-solid understanding of LLMs, prompting, and the AI landscape before diving into agents.</p>
+                    <ul class="week-topics">
+                        <li>What is Generative AI & LLMs</li>
+                        <li>Tokens, Context Windows, Temperature</li>
+                        <li>Prompt Engineering Mastery</li>
+                        <li>APIs — OpenAI, Ollama, Local Models</li>
+                        <li>Chains & Output Parsing (LangChain)</li>
+                        <li>Weekend: Build a Smart Summarizer</li>
+                    </ul>
+                    <a href="course/week1-foundations.html" class="week-link">View Full Curriculum →</a>
+                </div>
+            </div>
+            <div class="week-card reveal">
+                <div class="week-dot w2"></div>
+                <div class="week-card-inner">
+                    <span class="week-badge w2">Week 2 — Days 6–10</span>
+                    <h3>🤖 Agent Fundamentals</h3>
+                    <p>Understand what agents truly are, how they think, and the core components that make them autonomous.</p>
+                    <ul class="week-topics">
+                        <li>Chatbot vs Agent — The Key Distinction</li>
+                        <li>Agent Components — 5 Building Blocks</li>
+                        <li>Tools — APIs, Search, Code Execution</li>
+                        <li>Memory — Short-term, Long-term, Vectors</li>
+                        <li>Planning & Reasoning — ReAct, CoT, ReWOO</li>
+                        <li>Weekend: Build Your First Agent</li>
+                    </ul>
+                    <a href="course/week2-agent-fundamentals.html" class="week-link">View Full Curriculum →</a>
+                </div>
+            </div>
+            <div class="week-card reveal">
+                <div class="week-dot w3"></div>
+                <div class="week-card-inner">
+                    <span class="week-badge w3">Week 3 — Days 11–15</span>
+                    <h3>🏗️ Building Real Agents</h3>
+                    <p>Go hands-on building production-grade agents with real tools, RAG pipelines, and multi-agent orchestration.</p>
+                    <ul class="week-topics">
+                        <li>RAG Agents — Vector Search + Generation</li>
+                        <li>Multi-Agent Systems & Orchestration</li>
+                        <li>CrewAI & AutoGen Frameworks</li>
+                        <li>Code Generation Agents</li>
+                        <li>Human-in-the-Loop Patterns</li>
+                        <li>Weekend: Build a Research Agent</li>
+                    </ul>
+                    <a href="course/week3-building-real-agents.html" class="week-link">View Full Curriculum →</a>
+                </div>
+            </div>
+            <div class="week-card reveal">
+                <div class="week-dot w4"></div>
+                <div class="week-card-inner">
+                    <span class="week-badge w4">Week 4 — Days 16–20</span>
+                    <h3>🚀 Integration & Production</h3>
+                    <p>Deploy agents to production with proper evaluation, guardrails, monitoring, and enterprise-grade patterns.</p>
+                    <ul class="week-topics">
+                        <li>Agent Evaluation & Testing</li>
+                        <li>Guardrails & Safety Patterns</li>
+                        <li>Deployment — Docker, APIs, Cloud</li>
+                        <li>Monitoring & Observability</li>
+                        <li>Enterprise Architecture Patterns</li>
+                        <li>Capstone: Full Production Agent</li>
+                    </ul>
+                    <a href="course/week4-integration-production.html" class="week-link">View Full Curriculum →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ========== CONTACT ========== -->
+<section id="contact">
+    <div class="container">
+        <div class="section-header reveal">
+            <h2>Contact Us</h2>
+            <div class="accent-line"></div>
+            <p>Ready to start your Agentic AI journey? Reach out and we'll get back to you within 24 hours.</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info reveal">
+                <h3>Let's Connect</h3>
+                <p>Whether you're an individual looking to upskill, a team wanting a workshop, or an enterprise exploring AI adoption — we're here to help.</p>
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div>
+                        <div class="label">Email</div>
+                        <div class="value">ai@netrainsights.com</div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <div class="label">Phone</div>
+                        <div class="value">+91-8121437353</div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <div class="label">Location</div>
+                        <div class="value">Hyderabad, India</div>
+                    </div>
+                </div>
+            </div>
+            <form class="contact-form reveal" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="Course inquiry, Workshop, Consulting...">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Tell us about your requirements..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">🚀 Send Message</button>
+                <p id="formStatus" style="text-align:center;margin-top:12px;font-size:14px;display:none;"></p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    <div class="footer-logo">AI</div>
+                    <span class="footer-brand-text">NetrAInsights</span>
+                </div>
+                <p class="footer-desc">Empowering the next generation of AI builders with hands-on, production-ready Agentic AI education.</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#course">Course</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Course</h4>
+                <ul>
+                    <li><a href="course/week1-foundations.html">Week 1: Foundations</a></li>
+                    <li><a href="course/week2-agent-fundamentals.html">Week 2: Agent Fundamentals</a></li>
+                    <li><a href="course/week3-building-real-agents.html">Week 3: Building Agents</a></li>
+                    <li><a href="course/week4-integration-production.html">Week 4: Production</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:ai@netrainsights.com">ai@netrainsights.com</a></li>
+                    <li><a href="tel:+918121437353">+91-8121437353</a></li>
+                    <li><a href="#contact">Hyderabad, India</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 NetrAInsights. All rights reserved. | Built with 🤖 & ❤️
+        </div>
+    </div>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+// Navbar scroll
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// Mobile nav
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// Active nav on scroll
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+        if (window.pageYOffset >= section.offsetTop - 100) {
+            current = section.getAttribute('id');
+        }
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+});
+
+// Scroll reveal
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ===== HERO SLIDER =====
+let currentSlide = 0;
+const slides = document.querySelectorAll('.hero-slide');
+const dots = document.querySelectorAll('.slider-dot');
+const progressBar = document.getElementById('sliderProgress');
+const totalSlides = slides.length;
+let sliderInterval;
+
+function goToSlide(index) {
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    currentSlide = (index + totalSlides) % totalSlides;
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+    resetProgress();
+}
+
+function changeSlide(direction) {
+    goToSlide(currentSlide + direction);
+}
+
+function resetProgress() {
+    progressBar.style.animation = 'none';
+    progressBar.offsetHeight; // reflow
+    progressBar.style.animation = 'sliderProgress 5s linear';
+}
+
+function startAutoSlide() {
+    sliderInterval = setInterval(() => {
+        goToSlide(currentSlide + 1);
+    }, 5000);
+}
+
+function stopAutoSlide() {
+    clearInterval(sliderInterval);
+}
+
+// Start slider
+startAutoSlide();
+resetProgress();
+
+// Pause on hover
+const heroSlider = document.getElementById('heroSlider');
+heroSlider.addEventListener('mouseenter', stopAutoSlide);
+heroSlider.addEventListener('mouseleave', () => { startAutoSlide(); resetProgress(); });
+
+// Contact form
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    const status = document.getElementById('formStatus');
+    btn.textContent = '⏳ Sending...';
+    btn.disabled = true;
+    try {
+        const response = await fetch(this.action, {
+            method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+            status.style.display = 'block';
+            status.style.color = '#10b981';
+            status.textContent = '✓ Message sent! We\'ll get back to you soon.';
+            btn.textContent = '✅ Sent!';
+            btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            this.reset();
+            setTimeout(() => { btn.textContent = '🚀 Send Message'; btn.style.background = ''; btn.disabled = false; status.style.display = 'none'; }, 5000);
+        } else { throw new Error(); }
+    } catch {
+        status.style.display = 'block';
+        status.style.color = '#ef4444';
+        status.textContent = '✗ Something went wrong. Email us at ai@netrainsights.com';
+        btn.textContent = '🚀 Send Message';
+        btn.disabled = false;
+    }
+});
+</script>
+
+</body>
+</html>
