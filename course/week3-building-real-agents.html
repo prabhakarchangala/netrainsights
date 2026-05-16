@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI Course — Week 3: Building Real Agents</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#6366f1;--primary-light:#818cf8;--accent:#06b6d4;--green:#10b981;--orange:#f59e0b;--pink:#ec4899;--red:#ef4444;--bg:#030712;--bg-card:rgba(30,41,59,0.6);--bg-code:#0f172a;--text:#e2e8f0;--text-muted:#94a3b8;--border:rgba(255,255,255,0.06)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+@media print{body{background:#fff;color:#1e293b;font-size:11pt;line-height:1.5}.no-print{display:none!important}.page-break{page-break-before:always}.session{border:1px solid #e2e8f0;box-shadow:none;break-inside:avoid-page}.code-block{background:#f1f5f9;color:#1e293b;border:1px solid #e2e8f0}.diagram-box{background:#f8fafc;border:1px solid #e2e8f0}.hero-section{background:#059669!important}a{color:#059669}.gradient-text{-webkit-text-fill-color:#059669}}
+.container{max-width:1100px;margin:0 auto;padding:0 30px}
+.hero-section{background:linear-gradient(135deg,#064e3b,#0f172a);border-bottom:1px solid rgba(16,185,129,0.25);padding:60px 0;text-align:center;position:relative;overflow:hidden}
+.hero-section::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(16,185,129,0.08) 0%,transparent 50%),radial-gradient(circle at 70% 50%,rgba(6,182,212,0.06) 0%,transparent 50%);pointer-events:none}
+.hero-badge{display:inline-block;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);padding:6px 18px;border-radius:50px;font-size:12px;font-weight:600;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.hero-title{font-size:42px;font-weight:900;margin-bottom:8px}
+.gradient-text{background:linear-gradient(135deg,#10b981,#06b6d4,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:18px;color:var(--text-muted);margin-bottom:25px}
+.hero-meta{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
+.meta-item{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+.meta-item strong{color:var(--text)}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:30px 35px;margin:40px 0}
+.toc-title{font-size:18px;font-weight:700;margin-bottom:15px;display:flex;align-items:center;gap:8px}
+.toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toc-list li a{color:var(--text-muted);text-decoration:none;font-size:14px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:10px;transition:all .2s}
+.toc-list li a:hover{background:rgba(16,185,129,0.1);color:var(--green)}
+.toc-day{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;background:rgba(16,185,129,0.15);padding:2px 8px;border-radius:4px;color:var(--green);min-width:52px;text-align:center}
+.session{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:40px;margin:50px 0;backdrop-filter:blur(10px)}
+.session-header{display:flex;align-items:center;gap:16px;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.session-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;background:linear-gradient(135deg,var(--green),var(--accent));padding:8px 16px;border-radius:10px;letter-spacing:1px;white-space:nowrap}
+.session-title{font-size:26px;font-weight:800}
+.session-meta{display:flex;gap:20px;margin-top:6px;font-size:12px;color:var(--text-muted)}
+.session-meta span{display:flex;align-items:center;gap:4px}
+h3{font-size:20px;font-weight:700;margin:30px 0 12px;color:var(--text);display:flex;align-items:center;gap:8px}
+h4{font-size:16px;font-weight:700;margin:22px 0 8px;color:var(--green)}
+p{margin-bottom:12px;color:var(--text-muted)}
+strong{color:var(--text)}
+ul,ol{margin:10px 0 16px 20px;color:var(--text-muted)}
+li{margin-bottom:6px}
+.code-block{background:var(--bg-code);border:1px solid rgba(16,185,129,0.15);border-radius:12px;padding:20px 24px;margin:16px 0;overflow-x:auto;position:relative}
+.code-block pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;color:#e2e8f0;white-space:pre;margin:0}
+.code-label{position:absolute;top:8px;right:12px;font-size:10px;font-weight:600;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
+code{font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(16,185,129,0.1);padding:2px 6px;border-radius:4px;color:var(--green)}
+.diagram-box{background:rgba(15,23,42,0.8);border:1px solid rgba(16,185,129,0.15);border-radius:16px;padding:30px;margin:20px 0;overflow-x:auto}
+.diagram-title{font-size:13px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;text-align:center}
+.flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.flow-node{background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.15));border:1px solid rgba(16,185,129,0.3);padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;text-align:center;min-width:100px}
+.flow-node.highlight{background:linear-gradient(135deg,var(--green),var(--accent));border-color:transparent;color:#fff}
+.flow-node.purple{background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.3);color:var(--primary-light)}
+.flow-node.green{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);color:var(--green)}
+.flow-node.orange{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:var(--orange)}
+.flow-node.pink{background:rgba(236,72,153,0.15);border-color:rgba(236,72,153,0.3);color:var(--pink)}
+.flow-node.red{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3);color:var(--red)}
+.flow-arrow{color:var(--text-muted);font-size:18px;flex-shrink:0}
+.flow-vertical{display:flex;flex-direction:column;align-items:center;gap:4px}
+.flow-arrow-down{color:var(--text-muted);font-size:18px}
+.diagram-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:15px 0}
+.diagram-card{background:rgba(30,41,59,0.5);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.diagram-card .icon{font-size:28px;margin-bottom:8px}
+.diagram-card .label{font-weight:700;font-size:14px;margin-bottom:4px}
+.diagram-card .desc{font-size:12px;color:var(--text-muted)}
+.info-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.info-table th{background:rgba(16,185,129,0.1);padding:10px 14px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--green);border-bottom:1px solid var(--border)}
+.info-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-muted)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table td:first-child{color:var(--text);font-weight:500}
+.callout{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+.callout-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.callout-info{background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2)}
+.callout-tip{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2)}
+.callout-warn{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2)}
+.usecase-box{background:linear-gradient(135deg,rgba(16,185,129,0.06),rgba(236,72,153,0.04));border:1px solid rgba(236,72,153,0.2);border-radius:16px;padding:25px;margin:20px 0}
+.usecase-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(236,72,153,0.15);color:var(--pink);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.takeaways{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px 24px;margin:25px 0}
+.takeaways h4{color:var(--green);margin-top:0}
+.takeaways ul{list-style:none;margin-left:0}
+.takeaways li{padding:4px 0;display:flex;align-items:flex-start;gap:8px}
+.takeaways li::before{content:'✓';color:var(--green);font-weight:700}
+.hands-on{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:20px 24px;margin:25px 0}
+.hands-on h4{color:var(--orange);margin-top:0}
+.quiz-box{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px 24px;margin:20px 0}
+.quiz-box h4{color:var(--green);margin-top:0}
+.quiz-box ol{margin-left:20px}
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.compare-col{background:rgba(30,41,59,0.4);border:1px solid var(--border);border-radius:12px;padding:20px}
+.compare-col h4{margin-top:0}
+.week-end{text-align:center;padding:40px 0;margin:40px 0;border-top:1px solid var(--border)}
+.week-end-badge{display:inline-block;background:linear-gradient(135deg,var(--green),var(--accent));padding:10px 28px;border-radius:50px;font-weight:700;font-size:14px}
+.doc-footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px;margin-top:60px}
+.doc-footer .brand{font-weight:800;font-size:16px;background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px}
+.file-tree{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;color:var(--text-muted);padding:10px 0}
+.file-tree .dir{color:var(--orange);font-weight:600}
+.file-tree .file{color:var(--text)}
+.file-tree .comment{color:var(--text-muted);opacity:.6;font-size:12px}
+@media(max-width:768px){.container{padding:0 16px}.session{padding:24px}.hero-title{font-size:28px}.toc-list{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr}.flow{flex-direction:column}.diagram-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<section class="hero-section">
+<div class="container">
+    <div class="hero-badge">Week 3 of 4</div>
+    <h1 class="hero-title">🏗️ <span class="gradient-text">Building Real Agents</span></h1>
+    <p class="hero-subtitle">RAG, Frameworks, Workflows & Multi-Agent Systems</p>
+    <div class="hero-meta">
+        <div class="meta-item">📅 <strong>Day 11 – Day 15</strong></div>
+        <div class="meta-item">⏱️ <strong>~45 min</strong> per session</div>
+        <div class="meta-item">🎯 Use Case: <strong>Customer Support Agent</strong></div>
+        <div class="meta-item">🛠️ <strong>LangChain + LangGraph + Ollama</strong></div>
+    </div>
+</div>
+</section>
+
+<div class="container">
+
+<!-- ========== TOC ========== -->
+<nav class="toc">
+<div class="toc-title">📑 Table of Contents</div>
+<ul class="toc-list">
+    <li><a href="#day11"><span class="toc-day">Day 11</span> Frameworks — LangChain, Semantic Kernel, CrewAI</a></li>
+    <li><a href="#day12"><span class="toc-day">Day 12</span> Environment Setup — Ollama, Python, .NET</a></li>
+    <li><a href="#day13"><span class="toc-day">Day 13</span> First Agent — RAG-Powered Q&A</a></li>
+    <li><a href="#day14"><span class="toc-day">Day 14</span> LangGraph — Stateful Agent Workflows</a></li>
+    <li><a href="#day15"><span class="toc-day">Day 15</span> Multi-Agent Systems — CrewAI & Collaboration</a></li>
+    <li><a href="#weekend3"><span class="toc-day">W/E</span> Weekend: RAG Support Agent v2</a></li>
+</ul>
+</nav>
+
+
+<!-- ============================================================ -->
+<!--   DAY 11: FRAMEWORKS — LANGCHAIN, SEMANTIC KERNEL, CREWAI     -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day11">
+<div class="session-header">
+    <div><span class="session-num">DAY 11</span></div>
+    <div>
+        <div class="session-title">Frameworks — LangChain, Semantic Kernel, CrewAI</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>📖 Comparison + Code</span>
+            <span>🎯 Choose the right framework</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Understand the major agent frameworks and when to use each</li>
+    <li>See the same "Hello World" agent built in LangChain, Semantic Kernel, and CrewAI</li>
+    <li>Know the ecosystem: LangChain vs LangGraph vs LangSmith</li>
+    <li>Make an informed framework choice for your stack</li>
+</ul>
+
+<h3>🗺️ The Framework Landscape</h3>
+<div class="diagram-box">
+<div class="diagram-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+    <div class="diagram-card" style="border-color:rgba(16,185,129,0.4);">
+        <div class="icon">🦜</div>
+        <div class="label" style="color:var(--green);">LangChain</div>
+        <div class="desc">Python / JS<br>Most popular, huge ecosystem<br>Chains, agents, RAG</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(6,182,212,0.4);">
+        <div class="icon">🔀</div>
+        <div class="label" style="color:var(--accent);">LangGraph</div>
+        <div class="desc">Python / JS<br>Stateful graph workflows<br>Complex multi-step agents</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(99,102,241,0.4);">
+        <div class="icon">🧠</div>
+        <div class="label" style="color:var(--primary-light);">Semantic Kernel</div>
+        <div class="desc">C# / Python<br>Microsoft, .NET native<br>Enterprise integration</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(236,72,153,0.4);">
+        <div class="icon">👥</div>
+        <div class="label" style="color:var(--pink);">CrewAI</div>
+        <div class="desc">Python<br>Multi-agent collaboration<br>Roles, tasks, crews</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(245,158,11,0.4);">
+        <div class="icon">💬</div>
+        <div class="label" style="color:var(--orange);">AutoGen</div>
+        <div class="desc">Python<br>Microsoft, agent conversations<br>Multi-agent chat</div>
+    </div>
+</div>
+</div>
+
+<h4>Feature Comparison</h4>
+<table class="info-table">
+<thead><tr><th>Feature</th><th>LangChain</th><th>LangGraph</th><th>Semantic Kernel</th><th>CrewAI</th></tr></thead>
+<tbody>
+<tr><td>Language</td><td>Python, JS</td><td>Python, JS</td><td>C#, Python, Java</td><td>Python</td></tr>
+<tr><td>Agent Type</td><td>Single agent</td><td>Graph workflows</td><td>Single / plugins</td><td>Multi-agent crews</td></tr>
+<tr><td>RAG Support</td><td>✅ Built-in</td><td>✅ Via LangChain</td><td>✅ Memory plugins</td><td>✅ Via tools</td></tr>
+<tr><td>Tool Calling</td><td>✅ @tool decorator</td><td>✅ Node functions</td><td>✅ KernelFunction</td><td>✅ @tool decorator</td></tr>
+<tr><td>Memory</td><td>✅ Multiple types</td><td>✅ State graph</td><td>✅ Persistent</td><td>✅ Short/long term</td></tr>
+<tr><td>Local LLM (Ollama)</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+<tr><td>Enterprise .NET</td><td>⚠️ Python only</td><td>⚠️ Python only</td><td>✅ C# native</td><td>⚠️ Python only</td></tr>
+<tr><td>Multi-Agent</td><td>⚠️ Manual</td><td>✅ Graph nodes</td><td>⚠️ Manual</td><td>✅ Built-in</td></tr>
+<tr><td>Learning Curve</td><td>🟡 Medium</td><td>🔴 Steep</td><td>🟡 Medium</td><td>🟢 Easy</td></tr>
+</tbody>
+</table>
+
+<h3>🦜 LangChain — Hello World Agent</h3>
+<div class="code-block">
+<span class="code-label">Python — LangChain</span>
+<pre>from langchain_ollama import ChatOllama
+from langchain.agents import AgentExecutor, create_tool_calling_agent
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.tools import tool
+
+# Tool
+@tool
+def lookup_order(order_id: str) -> str:
+    """Look up order by ID. Returns status and ETA."""
+    return f'{{"order_id": "{order_id}", "status": "shipped", "eta": "2026-04-30"}}'
+
+# LLM + Prompt
+llm = ChatOllama(model="qwen2.5:3b", temperature=0.2)
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a customer support agent. Use tools to help customers."),
+    MessagesPlaceholder("chat_history", optional=True),
+    ("human", "{input}"),
+    MessagesPlaceholder("agent_scratchpad"),
+])
+
+# Wire up
+agent = create_tool_calling_agent(llm, [lookup_order], prompt)
+executor = AgentExecutor(agent=agent, tools=[lookup_order], verbose=True)
+
+# Run
+result = executor.invoke({"input": "Where is my order #7845?"})
+print(result["output"])</pre>
+</div>
+
+<h3>🧠 Semantic Kernel — Hello World Agent</h3>
+<div class="code-block">
+<span class="code-label">C# — Semantic Kernel</span>
+<pre>using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
+using System.ComponentModel;
+
+// Define a plugin (tool)
+public class OrderPlugin
+{
+    [KernelFunction, Description("Look up order by ID. Returns status and ETA.")]
+    public string LookupOrder([Description("The order ID")] string orderId)
+    {
+        return $"{{\"order_id\": \"{orderId}\", \"status\": \"shipped\", \"eta\": \"2026-04-30\"}}";
+    }
+}
+
+// Setup kernel
+var builder = Kernel.CreateBuilder();
+builder.AddOllamaChatCompletion("qwen2.5:3b", new Uri("http://localhost:11434"));
+builder.Plugins.AddFromType&lt;OrderPlugin&gt;();
+var kernel = builder.Build();
+
+// Chat with auto function calling
+var settings = new PromptExecutionSettings {
+    FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
+};
+
+var chatService = kernel.GetRequiredService&lt;IChatCompletionService&gt;();
+var history = new ChatHistory("You are a customer support agent.");
+history.AddUserMessage("Where is my order #7845?");
+
+var response = await chatService.GetChatMessageContentAsync(history, settings, kernel);
+Console.WriteLine(response.Content);</pre>
+</div>
+
+<h3>👥 CrewAI — Hello World Agent</h3>
+<div class="code-block">
+<span class="code-label">Python — CrewAI</span>
+<pre>from crewai import Agent, Task, Crew
+from crewai_tools import tool
+from langchain_ollama import ChatOllama
+
+@tool("Order Lookup")
+def lookup_order(order_id: str) -> str:
+    """Look up order by ID. Returns status and ETA."""
+    return f'{{"order_id": "{order_id}", "status": "shipped", "eta": "2026-04-30"}}'
+
+# Define agent with role
+support_agent = Agent(
+    role="Customer Support Specialist",
+    goal="Resolve customer issues quickly and empathetically",
+    backstory="You are an experienced support agent for ShopEasy e-commerce.",
+    tools=[lookup_order],
+    llm=ChatOllama(model="qwen2.5:3b", temperature=0.2),
+    verbose=True
+)
+
+# Define task
+resolve_task = Task(
+    description="Customer asks: 'Where is my order #7845?' Resolve this.",
+    expected_output="A helpful response with order status",
+    agent=support_agent
+)
+
+# Create crew and run
+crew = Crew(agents=[support_agent], tasks=[resolve_task], verbose=True)
+result = crew.kickoff()
+print(result)</pre>
+</div>
+
+<div class="callout callout-tip">
+    <span class="callout-icon">🎯</span>
+    <div><strong>Our course path:</strong> We use <strong>LangChain</strong> (Days 11-13) for single agents + RAG, <strong>LangGraph</strong> (Day 14) for complex workflows, <strong>CrewAI</strong> (Day 15) for multi-agent, and <strong>Semantic Kernel</strong> (Week 4) for .NET integration.</div>
+</div>
+
+<h3>🦜 The LangChain Ecosystem</h3>
+<div class="diagram-box">
+<div class="diagram-title">LangChain Family</div>
+<div class="diagram-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+    <div class="diagram-card" style="border-color:rgba(16,185,129,0.3);">
+        <div class="icon">🦜</div>
+        <div class="label">LangChain Core</div>
+        <div class="desc">Chains, prompts, agents, tools<br>The foundation library</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(6,182,212,0.3);">
+        <div class="icon">🔀</div>
+        <div class="label">LangGraph</div>
+        <div class="desc">Stateful graph workflows<br>Complex agent orchestration</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(245,158,11,0.3);">
+        <div class="icon">🔍</div>
+        <div class="label">LangSmith</div>
+        <div class="desc">Tracing, debugging, evaluation<br>Production monitoring</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(236,72,153,0.3);">
+        <div class="icon">🚀</div>
+        <div class="label">LangServe</div>
+        <div class="desc">Deploy chains as REST APIs<br>Production serving</div>
+    </div>
+</div>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>LangChain = most popular, best ecosystem, ideal for Python agents + RAG</li>
+    <li>LangGraph = for complex stateful workflows (branching, loops, human-in-the-loop)</li>
+    <li>Semantic Kernel = best for .NET/C# enterprise integration</li>
+    <li>CrewAI = simplest way to build multi-agent systems</li>
+    <li>All frameworks support Ollama (local LLMs) — no vendor lock-in</li>
+</ul>
+</div>
+
+<div class="quiz-box">
+<h4>❓ Quick Check</h4>
+<ol>
+    <li>Which framework would you choose for a C# / .NET backend?</li>
+    <li>What's the difference between LangChain and LangGraph?</li>
+    <li>Which framework makes multi-agent collaboration easiest?</li>
+    <li>What does LangSmith provide?</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--       DAY 12: ENVIRONMENT SETUP — OLLAMA, PYTHON, .NET        -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day12">
+<div class="session-header">
+    <div><span class="session-num">DAY 12</span></div>
+    <div>
+        <div class="session-title">Environment Setup — Ollama, Python, .NET</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>💻 100% Hands-On</span>
+            <span>🎯 Dev environment ready</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Set up a complete local development environment</li>
+    <li>Install and verify Ollama, Python dependencies, and .NET SDK</li>
+    <li>Configure VS Code for agent development</li>
+    <li>Verify end-to-end: Python → Ollama → Response</li>
+</ul>
+
+<h3>📋 Prerequisites Checklist</h3>
+<table class="info-table">
+<thead><tr><th>Component</th><th>Version</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td><strong>Python</strong></td><td>3.11+</td><td>Agent development, LangChain, CrewAI</td></tr>
+<tr><td><strong>Ollama</strong></td><td>Latest</td><td>Local LLM runtime</td></tr>
+<tr><td><strong>.NET SDK</strong></td><td>8.0+</td><td>Semantic Kernel (Week 4)</td></tr>
+<tr><td><strong>VS Code</strong></td><td>Latest</td><td>IDE with Copilot</td></tr>
+<tr><td><strong>Git</strong></td><td>Latest</td><td>Version control</td></tr>
+</tbody>
+</table>
+
+<h3>🛠️ Step 1: Ollama Setup</h3>
+<div class="code-block">
+<span class="code-label">Terminal</span>
+<pre># Install Ollama (Windows)
+winget install Ollama.Ollama
+
+# Start Ollama service
+ollama serve
+
+# Pull models
+ollama pull qwen2.5:3b          # Main LLM (1.9 GB)
+ollama pull nomic-embed-text    # Embedding model (274 MB)
+ollama pull llama3.1:8b         # Alternative LLM — optional (4.7 GB)
+
+# Verify
+ollama list
+ollama run qwen2.5:3b "Hello, are you working?"</pre>
+</div>
+
+<h3>🐍 Step 2: Python Environment</h3>
+<div class="code-block">
+<span class="code-label">Terminal</span>
+<pre># Create project directory
+mkdir customer-support-agent
+cd customer-support-agent
+
+# Create virtual environment
+python -m venv venv
+.\venv\Scripts\Activate.ps1     # Windows PowerShell
+# source venv/bin/activate      # Mac/Linux
+
+# Install core dependencies
+pip install langchain langchain-ollama langchain-core langchain-community
+pip install langchain-chroma     # Vector store for RAG
+pip install langgraph            # Graph workflows
+pip install crewai crewai-tools  # Multi-agent
+pip install chromadb             # Vector database
+pip install streamlit            # Web UI
+pip install python-dotenv        # Environment variables
+pip install tiktoken             # Tokenizer utilities
+
+# Verify installation
+python -c "from langchain_ollama import ChatOllama; print('LangChain + Ollama ready!')"</pre>
+</div>
+
+<h4>Project Structure</h4>
+<div class="code-block">
+<span class="code-label">Project Layout</span>
+<pre>customer-support-agent/
+├── venv/                      # Virtual environment
+├── .env                       # Environment variables
+├── requirements.txt           # Python dependencies
+│
+├── config/
+│   └── settings.py            # Model, temperature, prompts
+│
+├── tools/
+│   ├── __init__.py
+│   ├── order_tools.py         # lookup_order, cancel_order
+│   ├── policy_tools.py        # get_refund_policy, get_faq
+│   └── communication_tools.py # send_email, escalate
+│
+├── knowledge/
+│   ├── policies.txt           # Company policies
+│   ├── faqs.txt               # FAQ documents
+│   └── products.txt           # Product information
+│
+├── agents/
+│   ├── __init__.py
+│   ├── support_agent.py       # Main ReAct agent
+│   ├── rag_agent.py           # RAG-powered agent
+│   └── crew_agent.py          # Multi-agent crew
+│
+├── memory/
+│   └── chroma_db/             # Persistent vector store
+│
+├── app_cli.py                 # CLI interface
+├── app_streamlit.py           # Streamlit web UI
+└── tests/
+    └── test_agent.py          # Agent tests</pre>
+</div>
+
+<h3>⚙️ Step 3: Configuration</h3>
+<div class="code-block">
+<span class="code-label">config/settings.py</span>
+<pre># Agent Configuration
+OLLAMA_BASE_URL = "http://localhost:11434"
+LLM_MODEL = "qwen2.5:3b"
+EMBEDDING_MODEL = "nomic-embed-text"
+TEMPERATURE = 0.2
+MAX_TOKENS = 1024
+MAX_AGENT_ITERATIONS = 5
+
+# System Prompt
+SYSTEM_PROMPT = """You are a customer support agent for ShopEasy, India's trusted e-commerce platform.
+
+You have access to tools to look up orders, check policies, and search the knowledge base.
+
+Rules:
+1. ALWAYS use tools to verify information — never guess
+2. Be empathetic, professional, and concise
+3. Reference specific order IDs and amounts
+4. If you cannot resolve, escalate: "Let me connect you to a specialist"
+5. Never fabricate policies, discounts, or order information
+6. Keep responses under 150 words
+"""</pre>
+</div>
+
+<h3>✅ Step 4: Verify Everything Works</h3>
+<div class="code-block">
+<span class="code-label">verify_setup.py</span>
+<pre>"""Run this to verify your entire setup works."""
+import sys
+
+def check_ollama():
+    import requests
+    try:
+        r = requests.get("http://localhost:11434/api/tags", timeout=5)
+        models = [m["name"] for m in r.json().get("models", [])]
+        assert any("qwen" in m for m in models), "qwen2.5:3b not found!"
+        print(f"✅ Ollama running. Models: {models}")
+    except Exception as e:
+        print(f"❌ Ollama not running: {e}")
+        sys.exit(1)
+
+def check_langchain():
+    from langchain_ollama import ChatOllama
+    llm = ChatOllama(model="qwen2.5:3b", temperature=0)
+    response = llm.invoke("Say 'Hello Agent' and nothing else.")
+    print(f"✅ LangChain + Ollama: {response.content[:50]}...")
+
+def check_embeddings():
+    from langchain_ollama import OllamaEmbeddings
+    emb = OllamaEmbeddings(model="nomic-embed-text")
+    vector = emb.embed_query("test embedding")
+    print(f"✅ Embeddings working. Dimension: {len(vector)}")
+
+def check_chromadb():
+    import chromadb
+    client = chromadb.Client()
+    col = client.create_collection("test")
+    col.add(documents=["test doc"], ids=["1"])
+    results = col.query(query_texts=["test"], n_results=1)
+    print(f"✅ ChromaDB working. Query result: {results['documents']}")
+
+if __name__ == "__main__":
+    print("🔍 Verifying setup...\n")
+    check_ollama()
+    check_langchain()
+    check_embeddings()
+    check_chromadb()
+    print("\n🎉 All checks passed! You're ready to build agents.")</pre>
+</div>
+
+<h3>🔧 Step 5: .NET Setup (for Week 4)</h3>
+<div class="code-block">
+<span class="code-label">Terminal — .NET</span>
+<pre># Verify .NET SDK
+dotnet --version    # Should be 8.0+
+
+# Create project
+dotnet new console -n ShopEasyAgent
+cd ShopEasyAgent
+
+# Add Semantic Kernel
+dotnet add package Microsoft.SemanticKernel
+dotnet add package Microsoft.SemanticKernel.Connectors.Ollama --prerelease
+
+# Verify
+dotnet build</pre>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>Ollama + qwen2.5:3b + nomic-embed-text = complete local AI stack</li>
+    <li>LangChain ecosystem: langchain, langchain-ollama, langchain-chroma, langgraph</li>
+    <li>Project structure separates: tools, agents, knowledge, config, memory</li>
+    <li>Always verify setup with a test script before building</li>
+    <li>.NET + Semantic Kernel ready for Week 4 integration</li>
+</ul>
+</div>
+
+<div class="hands-on">
+<h4>🔨 Hands-On Tasks</h4>
+<ol>
+    <li>Set up the complete project structure as shown above</li>
+    <li>Run <code>verify_setup.py</code> and ensure all checks pass</li>
+    <li>Send a test message to Ollama via Python and print the response</li>
+    <li>Generate an embedding for "I want a refund" and print its dimension</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--           DAY 13: FIRST AGENT — RAG-POWERED Q&A               -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day13">
+<div class="session-header">
+    <div><span class="session-num">DAY 13</span></div>
+    <div>
+        <div class="session-title">First Agent — RAG-Powered Q&A</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>💻 Full Build</span>
+            <span>🎯 Working RAG agent</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Understand Retrieval-Augmented Generation (RAG) end-to-end</li>
+    <li>Build a knowledge base with ChromaDB</li>
+    <li>Create a RAG pipeline: embed → store → retrieve → generate</li>
+    <li>Build a working Customer Support Agent with RAG</li>
+</ul>
+
+<h3>📖 What is RAG?</h3>
+<p><strong>RAG (Retrieval-Augmented Generation)</strong> gives the LLM access to <strong>external knowledge</strong> at query time. Instead of relying only on training data, the LLM retrieves relevant documents and uses them to generate accurate, grounded answers.</p>
+
+<div class="diagram-box">
+<div class="diagram-title">RAG Pipeline — End to End</div>
+<div class="flow" style="gap:10px;">
+    <div class="flow-node pink" style="min-width:110px;">📨 Customer<br>Question</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="min-width:110px;">📐 Embed<br>Question</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green" style="min-width:110px;">🔍 Search<br>Vector Store</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node orange" style="min-width:110px;">📄 Top-K<br>Documents</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight" style="min-width:110px;">🧠 LLM +<br>Context</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node purple" style="min-width:110px;">💬 Grounded<br>Answer</div>
+</div>
+</div>
+
+<h4>Why RAG? — LLM Alone vs RAG</h4>
+<div class="compare-row">
+<div class="compare-col">
+    <h4 style="color:var(--red);">❌ LLM Without RAG</h4>
+    <div class="code-block" style="margin:8px 0;"><pre>Q: "What's ShopEasy's refund policy?"
+A: "Most e-commerce companies offer 
+    30-day refund windows..."
+    ← HALLUCINATED — made up generic answer!</pre></div>
+</div>
+<div class="compare-col">
+    <h4 style="color:var(--green);">✅ LLM With RAG</h4>
+    <div class="code-block" style="margin:8px 0;"><pre>Q: "What's ShopEasy's refund policy?"
+[Retrieved: policies.txt → "7-day full refund, 
+ after 7 days store credit only"]
+A: "ShopEasy offers full refund within 7 days.
+    After 7 days, you get store credit."
+    ← ACCURATE — grounded in real data!</pre></div>
+</div>
+</div>
+
+<h3>🏗️ Step 1: Prepare Knowledge Base Documents</h3>
+<div class="code-block">
+<span class="code-label">knowledge/policies.txt</span>
+<pre>## Refund Policy
+- Full refund within 7 days of delivery for all products
+- After 7 days: store credit only (valid for 6 months)
+- Refund processed within 3-5 business days to original payment method
+- Electronics: 15-day return window
+- Fashion: 30-day return window
+- Damaged items: full refund + ₹500 inconvenience credit (photo required)
+
+## Shipping Policy
+- Standard delivery: 5-7 business days (free on orders above ₹999)
+- Express delivery: 1-2 business days (₹149 flat fee)
+- Same-day delivery: available in metro cities (₹299)
+- Shipping delay >2 days: ₹200 store credit automatically applied
+- Shipping delay >7 days: full refund option available
+
+## Cancellation Policy
+- Orders can be cancelled before shipping at no charge
+- After shipping: must wait for delivery and initiate return
+- Digital products: non-cancellable after activation
+
+## Payment Methods
+- UPI (Google Pay, PhonePe, Paytm)
+- Credit Cards (Visa, Mastercard, RuPay)
+- Debit Cards
+- Net Banking
+- EMI available on orders above ₹3,000
+- Cash on Delivery (₹49 handling fee)
+
+## Warranty
+- All electronics: 1-year manufacturer warranty
+- Extended warranty available for ₹999/year
+- Warranty does not cover physical damage
+- Warranty claims: upload proof of purchase + photos of issue</pre>
+</div>
+
+<h3>🏗️ Step 2: Build the Vector Store</h3>
+<div class="code-block">
+<span class="code-label">Python — Ingest documents into ChromaDB</span>
+<pre>from langchain_community.document_loaders import TextLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_ollama import OllamaEmbeddings
+from langchain_chroma import Chroma
+
+# 1. Load documents
+loader = TextLoader("knowledge/policies.txt", encoding="utf-8")
+documents = loader.load()
+
+# 2. Split into chunks
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=300,         # Each chunk ~300 chars
+    chunk_overlap=50,       # 50 char overlap between chunks
+    separators=["\n\n", "\n", ". ", " "]
+)
+chunks = splitter.split_documents(documents)
+print(f"Split into {len(chunks)} chunks")
+
+# 3. Create embeddings and store in ChromaDB
+embeddings = OllamaEmbeddings(model="nomic-embed-text")
+vectorstore = Chroma.from_documents(
+    documents=chunks,
+    embedding=embeddings,
+    persist_directory="./memory/chroma_db",
+    collection_name="support_kb"
+)
+print(f"✅ Vector store created with {vectorstore._collection.count()} documents")
+
+# 4. Test retrieval
+results = vectorstore.similarity_search("What is the refund policy?", k=3)
+for i, doc in enumerate(results):
+    print(f"\n--- Result {i+1} ---")
+    print(doc.page_content)</pre>
+</div>
+
+<h3>🏗️ Step 3: Build the RAG Chain</h3>
+<div class="code-block">
+<span class="code-label">Python — RAG Agent</span>
+<pre>from langchain_ollama import ChatOllama, OllamaEmbeddings
+from langchain_chroma import Chroma
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+
+# Load existing vector store
+embeddings = OllamaEmbeddings(model="nomic-embed-text")
+vectorstore = Chroma(
+    persist_directory="./memory/chroma_db",
+    collection_name="support_kb",
+    embedding_function=embeddings
+)
+retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+
+# LLM
+llm = ChatOllama(model="qwen2.5:3b", temperature=0.2)
+
+# RAG Prompt
+rag_prompt = ChatPromptTemplate.from_template("""
+You are a customer support agent for ShopEasy.
+Answer the customer's question using ONLY the context below.
+If the answer is not in the context, say: "I don't have that information. Let me connect you to a specialist."
+
+Context:
+{context}
+
+Customer Question: {question}
+
+Instructions:
+- Be specific — quote policies with exact numbers/days
+- Be empathetic and professional
+- Keep response under 100 words
+
+Your Response:""")
+
+# Helper: format retrieved docs
+def format_docs(docs):
+    return "\n\n".join(doc.page_content for doc in docs)
+
+# RAG Chain
+rag_chain = (
+    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+    | rag_prompt
+    | llm
+    | StrOutputParser()
+)
+
+# Test it!
+questions = [
+    "What's your refund policy for electronics?",
+    "Do you offer same-day delivery?",
+    "Can I pay with UPI?",
+    "I received a damaged item, what do I do?",
+    "What's the warranty on laptops?",
+]
+
+for q in questions:
+    print(f"\n❓ {q}")
+    answer = rag_chain.invoke(q)
+    print(f"💬 {answer}")</pre>
+</div>
+
+<h3>🏗️ Step 4: RAG Agent with Tools + Memory</h3>
+<div class="code-block">
+<span class="code-label">Python — Full RAG Support Agent</span>
+<pre>from langchain_ollama import ChatOllama, OllamaEmbeddings
+from langchain_chroma import Chroma
+from langchain.agents import AgentExecutor, create_tool_calling_agent
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.memory import ConversationBufferWindowMemory
+from langchain.tools import tool
+import json
+
+# --- Tools ---
+@tool
+def search_knowledge_base(query: str) -> str:
+    """Search ShopEasy's knowledge base for policies, FAQs, and product info.
+    Use this when customer asks about policies, procedures, or general info."""
+    embeddings = OllamaEmbeddings(model="nomic-embed-text")
+    vs = Chroma(persist_directory="./memory/chroma_db",
+                collection_name="support_kb", embedding_function=embeddings)
+    docs = vs.similarity_search(query, k=3)
+    return "\n\n".join(f"[Source {i+1}]: {d.page_content}" for i, d in enumerate(docs))
+
+@tool
+def lookup_order(order_id: str) -> str:
+    """Look up order by ID. Returns status, items, total, and delivery info."""
+    orders = {
+        "7845": {"order_id": "7845", "status": "shipped", "eta": "2026-04-30",
+                 "items": ["MacBook Air M3"], "total": 89999, "customer": "Rajesh Kumar"},
+        "7846": {"order_id": "7846", "status": "delivered", "delivered_on": "2026-04-25",
+                 "items": ["iPhone 16"], "total": 79999, "customer": "Priya Singh"},
+    }
+    order = orders.get(order_id.strip())
+    return json.dumps(order) if order else f"Order #{order_id} not found."
+
+@tool
+def escalate_to_human(reason: str) -> str:
+    """Escalate the conversation to a human agent. Use when you cannot resolve the issue."""
+    return f"Ticket created. Reason: {reason}. A specialist will respond within 2 hours."
+
+# --- Agent Setup ---
+llm = ChatOllama(model="qwen2.5:3b", temperature=0.2)
+tools = [search_knowledge_base, lookup_order, escalate_to_human]
+memory = ConversationBufferWindowMemory(memory_key="chat_history", return_messages=True, k=5)
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", """You are a customer support agent for ShopEasy, India's trusted e-commerce platform.
+
+Tools available:
+- search_knowledge_base: Search policies, FAQs, product info
+- lookup_order: Check order status by order ID
+- escalate_to_human: Escalate to human agent
+
+Rules:
+1. ALWAYS search the knowledge base before answering policy questions
+2. ALWAYS look up orders before making claims about order status
+3. Be empathetic, specific, and concise (under 100 words)
+4. If unsure, escalate — never guess or hallucinate
+5. Reference exact policy details (days, amounts) from search results
+"""),
+    MessagesPlaceholder("chat_history"),
+    ("human", "{input}"),
+    MessagesPlaceholder("agent_scratchpad"),
+])
+
+agent = create_tool_calling_agent(llm, tools, prompt)
+executor = AgentExecutor(
+    agent=agent, tools=tools, memory=memory,
+    verbose=True, max_iterations=5, handle_parsing_errors=True
+)
+
+# --- Interactive Loop ---
+print("🎧 ShopEasy Support Agent (type 'quit' to exit)\n")
+while True:
+    user_input = input("You: ").strip()
+    if user_input.lower() in ("quit", "exit", "q"):
+        break
+    result = executor.invoke({"input": user_input})
+    print(f"\n🤖 Agent: {result['output']}\n")</pre>
+</div>
+
+<div class="usecase-box">
+<div class="usecase-badge">🎧 Use Case Connection</div>
+<h4>Customer Support Agent — RAG Architecture</h4>
+<div class="diagram-box" style="margin-bottom:0;">
+    <div class="diagram-title">Complete RAG Agent Flow</div>
+    <div class="flow-vertical" style="gap:6px;">
+        <div class="flow-node pink" style="min-width:480px;">📨 Customer: "I got a damaged phone. What's the refund process?"</div>
+        <div class="flow-arrow-down">↓ Agent reasons</div>
+        <div class="flow-node" style="min-width:480px;">🧠 "I need the damage refund policy. Let me search the knowledge base."</div>
+        <div class="flow-arrow-down">↓ Tool call</div>
+        <div class="flow-node green" style="min-width:480px;">🔍 <code>search_knowledge_base("damaged item refund policy")</code></div>
+        <div class="flow-arrow-down">↓ Retrieved</div>
+        <div class="flow-node orange" style="min-width:480px;">📄 "Damaged items: full refund + ₹500 inconvenience credit (photo required)"</div>
+        <div class="flow-arrow-down">↓ Generate response using context</div>
+        <div class="flow-node highlight" style="min-width:480px;">💬 "I'm sorry about the damaged phone! For damaged items, you'll receive a full refund plus a ₹500 inconvenience credit. Please upload a photo of the damage and we'll process it within 3-5 business days."</div>
+    </div>
+</div>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>RAG = Retrieve relevant docs + Augment the prompt + Generate grounded answer</li>
+    <li>ChromaDB stores document embeddings for fast semantic search</li>
+    <li>Text splitting (chunking) is critical — too big = noise, too small = lost context</li>
+    <li>RAG eliminates hallucination by grounding answers in real documents</li>
+    <li>Combine RAG (knowledge search) with tools (order lookup) for a complete agent</li>
+</ul>
+</div>
+
+<div class="hands-on">
+<h4>🔨 Hands-On Tasks</h4>
+<ol>
+    <li>Create <code>policies.txt</code> with at least 5 policy sections</li>
+    <li>Ingest into ChromaDB and verify with 5 test queries</li>
+    <li>Build the RAG chain and test with policy questions</li>
+    <li>Build the full agent (RAG + order lookup + escalation) and test interactively</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--        DAY 14: LANGGRAPH — STATEFUL AGENT WORKFLOWS           -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day14">
+<div class="session-header">
+    <div><span class="session-num">DAY 14</span></div>
+    <div>
+        <div class="session-title">LangGraph — Stateful Agent Workflows</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>💻 Build + Theory</span>
+            <span>🎯 Graph-based agents</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Understand why LangGraph exists — limitations of simple agents</li>
+    <li>Model agent workflows as directed graphs (nodes + edges)</li>
+    <li>Implement conditional routing, human-in-the-loop, and parallel execution</li>
+    <li>Build a Customer Support workflow with LangGraph</li>
+</ul>
+
+<h3>🤔 Why LangGraph?</h3>
+<p>Simple agents (AgentExecutor) work for straightforward tasks. But real support scenarios need <strong>complex workflows</strong>:</p>
+
+<table class="info-table">
+<thead><tr><th>Limitation of AgentExecutor</th><th>LangGraph Solution</th></tr></thead>
+<tbody>
+<tr><td>No branching: can't route to different handlers</td><td>Conditional edges — route by intent</td></tr>
+<tr><td>No human approval: auto-executes everything</td><td>Interrupt nodes — pause for human</td></tr>
+<tr><td>No parallel paths: sequential only</td><td>Parallel nodes — execute simultaneously</td></tr>
+<tr><td>Hard to retry specific steps</td><td>Checkpointing — save & replay state</td></tr>
+<tr><td>One agent does everything</td><td>Multi-node — different LLMs per step</td></tr>
+</tbody>
+</table>
+
+<h3>📐 LangGraph Concepts</h3>
+<div class="diagram-box">
+<div class="diagram-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="diagram-card" style="border-color:rgba(16,185,129,0.3);">
+        <div class="icon">⭕</div>
+        <div class="label">Nodes</div>
+        <div class="desc">Python functions that do work<br>(classify, retrieve, generate, etc.)</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(6,182,212,0.3);">
+        <div class="icon">➡️</div>
+        <div class="label">Edges</div>
+        <div class="desc">Connections between nodes<br>Normal or conditional</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(236,72,153,0.3);">
+        <div class="icon">📦</div>
+        <div class="label">State</div>
+        <div class="desc">Shared data dictionary<br>Passed through the graph</div>
+    </div>
+</div>
+</div>
+
+<h3>🏗️ Customer Support Workflow Graph</h3>
+
+<div class="diagram-box">
+<div class="diagram-title">Support Agent — LangGraph Workflow</div>
+<div class="flow-vertical" style="gap:6px;">
+    <div class="flow-node pink" style="min-width:300px;">📨 <strong>START</strong><br>Customer message arrives</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node" style="min-width:300px;">🏷️ <strong>classify_intent</strong><br>Billing? Shipping? Product? Account?</div>
+    <div class="flow-arrow-down">↓ conditional edge</div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <div class="flow-node green" style="min-width:140px;">💰 <strong>billing</strong><br>handle_billing</div>
+        <div class="flow-node orange" style="min-width:140px;">📦 <strong>shipping</strong><br>handle_shipping</div>
+        <div class="flow-node purple" style="min-width:140px;">🔧 <strong>product</strong><br>handle_product</div>
+        <div class="flow-node red" style="min-width:140px;">🚨 <strong>escalate</strong><br>human_review</div>
+    </div>
+    <div class="flow-arrow-down">↓ all paths converge</div>
+    <div class="flow-node" style="min-width:300px;">📝 <strong>generate_response</strong><br>Draft reply using gathered context</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node" style="min-width:300px;">✅ <strong>quality_check</strong><br>Verify response meets guidelines</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node highlight" style="min-width:300px;">💬 <strong>END</strong><br>Send response to customer</div>
+</div>
+</div>
+
+<h4>Full Implementation</h4>
+<div class="code-block">
+<span class="code-label">Python — LangGraph Support Workflow</span>
+<pre>from typing import TypedDict, Literal
+from langgraph.graph import StateGraph, START, END
+from langchain_ollama import ChatOllama
+
+llm = ChatOllama(model="qwen2.5:3b", temperature=0.2)
+
+# --- State Definition ---
+class SupportState(TypedDict):
+    customer_message: str
+    intent: str
+    context: str        # Retrieved info from tools
+    sentiment: str
+    draft_response: str
+    final_response: str
+
+# --- Node Functions ---
+def classify_intent(state: SupportState) -> SupportState:
+    """Classify the customer's intent."""
+    msg = state["customer_message"]
+    response = llm.invoke(
+        f"Classify this customer message into exactly one category: "
+        f"billing, shipping, product, account, escalate.\n"
+        f"Message: '{msg}'\nCategory:"
+    )
+    intent = response.content.strip().lower()
+    # Normalize
+    for valid in ["billing", "shipping", "product", "account"]:
+        if valid in intent:
+            return {**state, "intent": valid}
+    return {**state, "intent": "escalate"}
+
+def handle_billing(state: SupportState) -> SupportState:
+    """Handle billing-related queries."""
+    # In production: call billing tools, check payment status
+    context = "Billing context: Full refund within 7 days. EMI available above ₹3,000."
+    return {**state, "context": context}
+
+def handle_shipping(state: SupportState) -> SupportState:
+    """Handle shipping-related queries."""
+    context = "Shipping context: Standard 5-7 days. Express 1-2 days. Delay >2 days = ₹200 credit."
+    return {**state, "context": context}
+
+def handle_product(state: SupportState) -> SupportState:
+    """Handle product-related queries."""
+    context = "Product context: 1-year warranty on electronics. Damaged = full refund + ₹500 credit."
+    return {**state, "context": context}
+
+def handle_escalation(state: SupportState) -> SupportState:
+    """Escalate to human agent."""
+    return {**state, "context": "ESCALATED: Ticket created for human review.",
+            "final_response": "I understand this needs special attention. "
+                             "I've escalated your case to a specialist who will "
+                             "respond within 2 hours. Ticket ID: ESC-2026-0428."}
+
+def generate_response(state: SupportState) -> SupportState:
+    """Generate the customer-facing response."""
+    if state.get("final_response"):
+        return state  # Already set by escalation
+    
+    response = llm.invoke(
+        f"You are a ShopEasy support agent. Generate a helpful reply.\n\n"
+        f"Customer: {state['customer_message']}\n"
+        f"Category: {state['intent']}\n"
+        f"Policy Info: {state['context']}\n\n"
+        f"Reply (empathetic, specific, under 100 words):"
+    )
+    return {**state, "final_response": response.content}
+
+# --- Router Function ---
+def route_by_intent(state: SupportState) -> Literal["billing", "shipping", "product", "escalate"]:
+    """Route to the appropriate handler based on intent."""
+    intent = state.get("intent", "escalate")
+    if intent in ("billing", "shipping", "product"):
+        return intent
+    return "escalate"
+
+# --- Build Graph ---
+workflow = StateGraph(SupportState)
+
+# Add nodes
+workflow.add_node("classify", classify_intent)
+workflow.add_node("billing", handle_billing)
+workflow.add_node("shipping", handle_shipping)
+workflow.add_node("product", handle_product)
+workflow.add_node("escalate", handle_escalation)
+workflow.add_node("respond", generate_response)
+
+# Add edges
+workflow.add_edge(START, "classify")
+workflow.add_conditional_edges("classify", route_by_intent, {
+    "billing": "billing",
+    "shipping": "shipping",
+    "product": "product",
+    "escalate": "escalate",
+})
+workflow.add_edge("billing", "respond")
+workflow.add_edge("shipping", "respond")
+workflow.add_edge("product", "respond")
+workflow.add_edge("escalate", "respond")
+workflow.add_edge("respond", END)
+
+# Compile
+app = workflow.compile()
+
+# --- Run ---
+result = app.invoke({
+    "customer_message": "My laptop screen is cracked after just 2 weeks!",
+    "intent": "", "context": "", "sentiment": "",
+    "draft_response": "", "final_response": ""
+})
+print(f"Intent: {result['intent']}")
+print(f"Response: {result['final_response']}")</pre>
+</div>
+
+<h3>🔀 Human-in-the-Loop</h3>
+<p>For sensitive actions (refunds &gt; ₹5,000, account deletion), pause the graph and wait for human approval.</p>
+
+<div class="code-block">
+<span class="code-label">Python — Interrupt for Human Approval</span>
+<pre>from langgraph.checkpoint.memory import MemorySaver
+
+# Add a checkpoint saver
+checkpointer = MemorySaver()
+
+# Compile with interrupt_before
+app = workflow.compile(
+    checkpointer=checkpointer,
+    interrupt_before=["escalate"]  # Pause before escalation
+)
+
+# Run — will pause at "escalate" node
+config = {"configurable": {"thread_id": "ticket-001"}}
+result = app.invoke({
+    "customer_message": "I want to sue your company!",
+    "intent": "", "context": "", "sentiment": "",
+    "draft_response": "", "final_response": ""
+}, config)
+
+# At this point, graph is PAUSED
+# Human reviews and approves...
+print("⏸️ Paused for human review")
+
+# Resume after approval
+result = app.invoke(None, config)  # Continue from checkpoint
+print(f"Response: {result['final_response']}")</pre>
+</div>
+
+<div class="usecase-box">
+<div class="usecase-badge">🎧 Use Case Connection</div>
+<h4>Customer Support — When to Use LangGraph</h4>
+<table class="info-table">
+<thead><tr><th>Scenario</th><th>Why LangGraph?</th></tr></thead>
+<tbody>
+<tr><td>Different handlers per intent</td><td>Conditional routing — billing team vs shipping team</td></tr>
+<tr><td>Refund &gt; ₹5,000</td><td>Human-in-the-loop — manager approval required</td></tr>
+<tr><td>Complex multi-issue ticket</td><td>Parallel nodes — handle billing + shipping simultaneously</td></tr>
+<tr><td>Quality assurance</td><td>Post-processing node — check response before sending</td></tr>
+<tr><td>Retry on failure</td><td>Checkpointing — save state and retry from last good point</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>LangGraph models agent workflows as directed graphs (nodes + edges + state)</li>
+    <li>Conditional edges enable routing based on classification or business rules</li>
+    <li>Human-in-the-loop with interrupt_before/after for sensitive actions</li>
+    <li>Checkpointing enables save/resume and retry</li>
+    <li>Use LangGraph when AgentExecutor is too simple for your workflow</li>
+</ul>
+</div>
+
+<div class="hands-on">
+<h4>🔨 Hands-On Tasks</h4>
+<ol>
+    <li>Build the support workflow graph with 4 intent handlers</li>
+    <li>Test with 5 different messages and verify correct routing</li>
+    <li>Add a human-in-the-loop interrupt for high-value refunds</li>
+    <li>Add a "quality_check" node that rejects responses containing forbidden words</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--     DAY 15: MULTI-AGENT SYSTEMS — CREWAI & COLLABORATION     -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day15">
+<div class="session-header">
+    <div><span class="session-num">DAY 15</span></div>
+    <div>
+        <div class="session-title">Multi-Agent Systems — CrewAI & Collaboration</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>💻 Build + Theory</span>
+            <span>🎯 Agents working together</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Understand when single agents fail and multi-agent systems help</li>
+    <li>Learn CrewAI concepts: Agents, Tasks, Crews, Processes</li>
+    <li>Build a 3-agent Customer Support crew</li>
+    <li>Know the orchestration patterns: sequential, hierarchical, consensus</li>
+</ul>
+
+<h3>🤔 Why Multiple Agents?</h3>
+<p>A single agent trying to do everything is like one employee handling triage, investigation, response drafting, AND quality review. <strong>Specialization beats generalization</strong> for complex workflows.</p>
+
+<div class="compare-row">
+<div class="compare-col">
+    <h4 style="color:var(--red);">❌ Single Agent (Does Everything)</h4>
+    <ul>
+        <li>One massive system prompt — confusing</li>
+        <li>Too many tools — LLM picks wrong one</li>
+        <li>No separation of concerns</li>
+        <li>Hard to debug — "why did it do that?"</li>
+        <li>Can't specialize per task</li>
+    </ul>
+</div>
+<div class="compare-col">
+    <h4 style="color:var(--green);">✅ Multi-Agent (Specialized Roles)</h4>
+    <ul>
+        <li>Each agent has focused prompt</li>
+        <li>Each agent has only its own tools</li>
+        <li>Clear responsibility per agent</li>
+        <li>Easy to trace which agent failed</li>
+        <li>Different LLMs per agent if needed</li>
+    </ul>
+</div>
+</div>
+
+<h3>👥 CrewAI — Core Concepts</h3>
+<div class="diagram-box">
+<div class="diagram-grid" style="grid-template-columns:repeat(4,1fr);">
+    <div class="diagram-card" style="border-color:rgba(99,102,241,0.3);">
+        <div class="icon">🤖</div>
+        <div class="label">Agent</div>
+        <div class="desc">A specialized role<br>with tools, goal, backstory</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(16,185,129,0.3);">
+        <div class="icon">📋</div>
+        <div class="label">Task</div>
+        <div class="desc">A specific job<br>assigned to an agent</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(236,72,153,0.3);">
+        <div class="icon">👥</div>
+        <div class="label">Crew</div>
+        <div class="desc">A team of agents<br>working together</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(245,158,11,0.3);">
+        <div class="icon">🔄</div>
+        <div class="label">Process</div>
+        <div class="desc">How the crew operates<br>(sequential/hierarchical)</div>
+    </div>
+</div>
+</div>
+
+<h3>🏗️ Customer Support Crew</h3>
+
+<div class="diagram-box">
+<div class="diagram-title">3-Agent Support Crew</div>
+<div class="flow" style="gap:14px;">
+    <div class="flow-node pink" style="min-width:160px;">
+        🏷️ <strong>Triage Agent</strong><br>
+        <small style="font-weight:400;">Classifies intent<br>Extracts entities<br>Assesses urgency</small>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green" style="min-width:160px;">
+        🔍 <strong>Research Agent</strong><br>
+        <small style="font-weight:400;">Looks up orders<br>Searches knowledge base<br>Gathers all facts</small>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight" style="min-width:160px;">
+        💬 <strong>Response Agent</strong><br>
+        <small style="font-weight:400;">Drafts reply<br>Applies guardrails<br>Ensures quality</small>
+    </div>
+</div>
+</div>
+
+<div class="code-block">
+<span class="code-label">Python — CrewAI Support Crew</span>
+<pre>from crewai import Agent, Task, Crew, Process
+from crewai_tools import tool
+from langchain_ollama import ChatOllama
+import json
+
+llm = ChatOllama(model="qwen2.5:3b", temperature=0.2)
+
+# --- Tools ---
+@tool("Order Lookup")
+def lookup_order(order_id: str) -> str:
+    """Look up order details by order ID."""
+    orders = {
+        "7845": {"order_id": "7845", "status": "shipped", "eta": "2026-04-30",
+                 "items": ["MacBook Air M3"], "total": 89999},
+        "7846": {"order_id": "7846", "status": "delivered",
+                 "items": ["iPhone 16"], "total": 79999},
+    }
+    return json.dumps(orders.get(order_id.strip(), {"error": "Order not found"}))
+
+@tool("Knowledge Base Search")
+def search_kb(query: str) -> str:
+    """Search ShopEasy knowledge base for policies and FAQs."""
+    policies = {
+        "refund": "Full refund within 7 days. After 7 days: store credit. Electronics: 15 days.",
+        "shipping": "Standard 5-7 days. Express 1-2 days. Delay >2 days = ₹200 credit.",
+        "damaged": "Damaged: full refund + ₹500 credit. Photo required.",
+        "warranty": "Electronics: 1-year warranty. Extended warranty ₹999/year."
+    }
+    results = [v for k, v in policies.items() if any(w in query.lower() for w in k.split())]
+    return "\n".join(results) if results else "No relevant policy found."
+
+# --- Agent 1: Triage ---
+triage_agent = Agent(
+    role="Customer Triage Specialist",
+    goal="Quickly classify customer issues, extract key entities, and assess urgency",
+    backstory="""You are the first line of support at ShopEasy. You read customer 
+    messages and immediately identify: the intent (billing/shipping/product/account), 
+    any order IDs or product names, the customer's sentiment, and urgency level.""",
+    llm=llm,
+    verbose=True
+)
+
+# --- Agent 2: Research ---
+research_agent = Agent(
+    role="Support Research Analyst",
+    goal="Gather all relevant information needed to resolve the customer's issue",
+    backstory="""You are a thorough researcher. Given a triaged ticket, you look up 
+    order details, search the knowledge base for relevant policies, and compile 
+    all facts needed for a resolution.""",
+    tools=[lookup_order, search_kb],
+    llm=llm,
+    verbose=True
+)
+
+# --- Agent 3: Response ---
+response_agent = Agent(
+    role="Customer Response Writer",
+    goal="Write empathetic, accurate, professional responses that resolve customer issues",
+    backstory="""You are an expert at writing customer-facing messages. You take 
+    research findings and craft the perfect response — empathetic, specific (with 
+    order numbers and amounts), and actionable. You never make up information.""",
+    llm=llm,
+    verbose=True
+)
+
+# --- Tasks ---
+def create_support_tasks(customer_message: str):
+    triage_task = Task(
+        description=f"""Analyze this customer message:
+        "{customer_message}"
+        
+        Provide: intent, entities (order IDs, products), sentiment, urgency (low/med/high/critical)""",
+        expected_output="JSON with intent, entities, sentiment, urgency",
+        agent=triage_agent
+    )
+
+    research_task = Task(
+        description="""Based on the triage analysis, gather all information needed:
+        - Look up any order IDs mentioned
+        - Search knowledge base for relevant policies
+        - Compile complete context for response""",
+        expected_output="Complete research findings with order details and applicable policies",
+        agent=research_agent,
+        context=[triage_task]  # Depends on triage output
+    )
+
+    response_task = Task(
+        description="""Write the customer response using the research findings.
+        Rules: empathetic, specific (include order numbers/amounts), under 100 words,
+        actionable next steps. Never fabricate information.""",
+        expected_output="A professional customer-facing response",
+        agent=response_agent,
+        context=[triage_task, research_task]  # Has all context
+    )
+    
+    return [triage_task, research_task, response_task]
+
+# --- Create Crew ---
+tasks = create_support_tasks("I ordered a MacBook (order #7845) and it still hasn't arrived. Very frustrated!")
+
+crew = Crew(
+    agents=[triage_agent, research_agent, response_agent],
+    tasks=tasks,
+    process=Process.sequential,  # One after another
+    verbose=True
+)
+
+# --- Run ---
+result = crew.kickoff()
+print(f"\n{'='*60}")
+print(f"Final Response:\n{result}")</pre>
+</div>
+
+<h3>🔄 Orchestration Patterns</h3>
+<table class="info-table">
+<thead><tr><th>Pattern</th><th>How It Works</th><th>Best For</th></tr></thead>
+<tbody>
+<tr><td><strong>Sequential</strong></td><td>Agent A → Agent B → Agent C (pipeline)</td><td>Triage → Research → Respond</td></tr>
+<tr><td><strong>Hierarchical</strong></td><td>Manager agent delegates to specialists</td><td>Manager routes to billing/shipping/product team</td></tr>
+<tr><td><strong>Parallel</strong></td><td>Multiple agents work simultaneously</td><td>Search KB + lookup order at the same time</td></tr>
+<tr><td><strong>Consensus</strong></td><td>Multiple agents vote on the best answer</td><td>QA: 3 agents draft response, pick the best</td></tr>
+</tbody>
+</table>
+
+<div class="code-block">
+<span class="code-label">Python — Hierarchical Process</span>
+<pre># Manager agent decides which specialist to use
+crew = Crew(
+    agents=[triage_agent, research_agent, response_agent],
+    tasks=tasks,
+    process=Process.hierarchical,  # Manager delegates
+    manager_llm=ChatOllama(model="qwen2.5:3b"),
+    verbose=True
+)</pre>
+</div>
+
+<h3>🏢 Scaling: Department-Based Multi-Crew</h3>
+<div class="diagram-box">
+<div class="diagram-title">Enterprise Support — Multi-Crew Architecture</div>
+<div class="flow-vertical" style="gap:6px;">
+    <div class="flow-node pink" style="min-width:350px;">📨 Incoming Ticket</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node" style="min-width:350px;">🏷️ <strong>Triage Crew</strong> (classify + route)</div>
+    <div class="flow-arrow-down">↓ route by department</div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <div class="flow-node green" style="min-width:150px;">💰 <strong>Billing Crew</strong><br><small style="font-weight:400;">Payment Agent<br>Refund Agent<br>Invoice Agent</small></div>
+        <div class="flow-node orange" style="min-width:150px;">📦 <strong>Shipping Crew</strong><br><small style="font-weight:400;">Tracking Agent<br>Delivery Agent<br>Return Agent</small></div>
+        <div class="flow-node purple" style="min-width:150px;">🔧 <strong>Product Crew</strong><br><small style="font-weight:400;">Warranty Agent<br>Tech Support Agent<br>Replacement Agent</small></div>
+    </div>
+    <div class="flow-arrow-down">↓ all converge</div>
+    <div class="flow-node highlight" style="min-width:350px;">✅ <strong>QA Crew</strong> — Review response before sending</div>
+</div>
+</div>
+
+<div class="usecase-box">
+<div class="usecase-badge">🎧 Use Case Connection</div>
+<h4>Customer Support — When to Go Multi-Agent</h4>
+<table class="info-table">
+<thead><tr><th>Single Agent ✅</th><th>Multi-Agent ✅</th></tr></thead>
+<tbody>
+<tr><td>Simple order status check</td><td>Complex complaint (multiple issues)</td></tr>
+<tr><td>FAQ / policy questions</td><td>Tickets needing research + response + QA</td></tr>
+<tr><td>Low-volume support</td><td>High-volume: route to specialized teams</td></tr>
+<tr><td>Prototype / MVP</td><td>Production system with quality gates</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>Multi-agent = specialization — each agent has a focused role and tools</li>
+    <li>CrewAI makes it easy: define Agents → Tasks → Crew → Process</li>
+    <li>Sequential process: pipeline (A → B → C). Hierarchical: manager delegates</li>
+    <li>Task context chains let later agents use earlier agents' output</li>
+    <li>Scale by creating department-based crews for enterprise support</li>
+</ul>
+</div>
+
+<div class="hands-on">
+<h4>🔨 Hands-On Tasks</h4>
+<ol>
+    <li>Build the 3-agent support crew (Triage → Research → Response)</li>
+    <li>Test with 5 different customer scenarios and trace each agent's work</li>
+    <li>Switch from sequential to hierarchical process — observe the difference</li>
+    <li>Add a 4th "QA Agent" that reviews the response before it's sent</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--                  WEEKEND ASSIGNMENT 3                          -->
+<!-- ============================================================ -->
+<section class="session page-break" id="weekend3">
+<div class="session-header">
+    <div><span class="session-num" style="background:linear-gradient(135deg,var(--green),var(--accent));">WEEKEND</span></div>
+    <div>
+        <div class="session-title">Weekend: RAG Support Agent v2</div>
+        <div class="session-meta">
+            <span>⏱️ 3-4 hours</span>
+            <span>💻 Full Project</span>
+            <span>🎯 Production-ready prototype</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Assignment: Build Customer Support Agent v2</h3>
+<p>Upgrade your Week 2 agent with RAG, LangGraph workflows, and a Streamlit UI.</p>
+
+<h4>Architecture</h4>
+<div class="diagram-box">
+<div class="diagram-title">Agent v2 — Target Architecture</div>
+<div class="flow-vertical" style="gap:6px;">
+    <div class="flow-node pink" style="min-width:450px;">🖥️ <strong>Streamlit UI</strong> — Chat interface with conversation history</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node" style="min-width:450px;">🔀 <strong>LangGraph Workflow</strong> — classify → route → handle → respond</div>
+    <div class="flow-arrow-down">↓</div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <div class="flow-node green" style="min-width:130px;">🔍 RAG<br><small style="font-weight:400;">ChromaDB<br>Policy search</small></div>
+        <div class="flow-node orange" style="min-width:130px;">🔧 Tools<br><small style="font-weight:400;">Order lookup<br>Email send</small></div>
+        <div class="flow-node purple" style="min-width:130px;">💾 Memory<br><small style="font-weight:400;">Window + Vector<br>Conversation</small></div>
+    </div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node highlight" style="min-width:450px;">🧠 <strong>Qwen 2.5:3B via Ollama</strong> — Local, free, private</div>
+</div>
+</div>
+
+<h4>Requirements</h4>
+<table class="info-table">
+<thead><tr><th>#</th><th>Feature</th><th>Details</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>RAG Knowledge Base</strong></td><td>Ingest policies.txt + faqs.txt into ChromaDB. At least 20 chunks.</td></tr>
+<tr><td>2</td><td><strong>LangGraph Workflow</strong></td><td>classify → route (billing/shipping/product/escalate) → handle → respond</td></tr>
+<tr><td>3</td><td><strong>Tools (min 4)</strong></td><td>search_kb, lookup_order, get_refund_policy, escalate_to_human</td></tr>
+<tr><td>4</td><td><strong>Memory</strong></td><td>ConversationBufferWindowMemory (k=5) for multi-turn</td></tr>
+<tr><td>5</td><td><strong>Streamlit UI</strong></td><td>Chat interface with message history display</td></tr>
+<tr><td>6</td><td><strong>Verbose Logging</strong></td><td>Print agent reasoning to terminal for debugging</td></tr>
+</tbody>
+</table>
+
+<h4>Test Scenarios</h4>
+<div class="code-block">
+<span class="code-label">Required test cases</span>
+<pre># 1. Policy Query (RAG)
+"What's your return policy for electronics?"
+→ Should search KB and cite: "15-day return window for electronics"
+
+# 2. Order + Policy Combo
+"My order #7845 arrived damaged. What can I do?"
+→ lookup_order + search_kb("damaged") → Offer refund + ₹500 credit
+
+# 3. Multi-Turn Memory
+Turn 1: "I'm Rajesh, order #7845"
+Turn 2: "Is it eligible for a refund?"
+Turn 3: "Ok, process it"
+→ Agent remembers Rajesh and order across turns
+
+# 4. Correct Routing
+"I was charged twice" → billing handler
+"Package not delivered" → shipping handler
+"Phone screen cracked" → product handler
+
+# 5. Escalation
+"I want to speak to a manager"
+→ Should escalate, not try to handle</pre>
+</div>
+
+<h4>Bonus Challenges</h4>
+<ol>
+    <li>Add a multi-agent crew (Triage → Research → Response) as an alternative to single agent</li>
+    <li>Add Streamlit sidebar showing: detected intent, sentiment, tools called</li>
+    <li>Implement basic analytics: count of tickets by category, avg response time</li>
+    <li>Load real FAQ data from a CSV/JSON file instead of hardcoded</li>
+</ol>
+
+<div class="callout callout-tip">
+    <span class="callout-icon">🏆</span>
+    <div><strong>Success criteria:</strong> All 5 test scenarios pass. RAG returns accurate policy info. LangGraph routes correctly by intent. Memory persists across turns. Streamlit UI shows clean chat history.</div>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--                       WEEK END                                -->
+<!-- ============================================================ -->
+<div class="week-end">
+    <div class="week-end-badge">✅ Week 3 Complete — You Can Build Real Agents!</div>
+    <p style="color:var(--text-muted);margin-top:15px;font-size:14px;">
+        Final week: <strong>Week 4 — Integration & Production</strong> → Semantic Kernel (.NET), Angular + .NET + Agent, Testing, Deployment
+    </p>
+</div>
+
+<!-- ============================================================ -->
+<!--                       FOOTER                                  -->
+<!-- ============================================================ -->
+<div class="doc-footer">
+    <div class="brand">Agentic AI — 4 Week Course</div>
+    <p>Week 3: Building Real Agents &nbsp;•&nbsp; Day 11–15</p>
+    <p style="margin-top:8px;">
+        <span style="color:var(--text-muted);">Organized by</span>
+        <span style="font-weight:700;letter-spacing:1px;background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">PRABHAKARA CHANGALA</span>
+    </p>
+    <p style="margin-top:10px;font-size:12px;opacity:0.4;">✨ Learn → Build → Integrate → Deliver ✨</p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic AI Course — Week 2: Agent Fundamentals</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#6366f1;--primary-light:#818cf8;--accent:#06b6d4;--green:#10b981;--orange:#f59e0b;--pink:#ec4899;--red:#ef4444;--bg:#030712;--bg-card:rgba(30,41,59,0.6);--bg-code:#0f172a;--text:#e2e8f0;--text-muted:#94a3b8;--border:rgba(255,255,255,0.06)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+@media print{body{background:#fff;color:#1e293b;font-size:11pt;line-height:1.5}.no-print{display:none!important}.page-break{page-break-before:always}.session{border:1px solid #e2e8f0;box-shadow:none;break-inside:avoid-page}.code-block{background:#f1f5f9;color:#1e293b;border:1px solid #e2e8f0}.diagram-box{background:#f8fafc;border:1px solid #e2e8f0}.hero-section{background:#4f46e5!important}a{color:#4f46e5}.gradient-text{-webkit-text-fill-color:#4f46e5}}
+.container{max-width:1100px;margin:0 auto;padding:0 30px}
+
+/* HERO */
+.hero-section{background:linear-gradient(135deg,#1e1b4b,#0f172a);border-bottom:1px solid rgba(6,182,212,0.25);padding:60px 0;text-align:center;position:relative;overflow:hidden}
+.hero-section::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(6,182,212,0.08) 0%,transparent 50%),radial-gradient(circle at 70% 50%,rgba(99,102,241,0.06) 0%,transparent 50%);pointer-events:none}
+.hero-badge{display:inline-block;background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.3);padding:6px 18px;border-radius:50px;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.hero-title{font-size:42px;font-weight:900;margin-bottom:8px}
+.gradient-text{background:linear-gradient(135deg,#06b6d4,#6366f1,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:18px;color:var(--text-muted);margin-bottom:25px}
+.hero-meta{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
+.meta-item{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+.meta-item strong{color:var(--text)}
+
+/* TOC */
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:30px 35px;margin:40px 0}
+.toc-title{font-size:18px;font-weight:700;margin-bottom:15px;display:flex;align-items:center;gap:8px}
+.toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toc-list li a{color:var(--text-muted);text-decoration:none;font-size:14px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:10px;transition:all .2s}
+.toc-list li a:hover{background:rgba(6,182,212,0.1);color:var(--accent)}
+.toc-day{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;background:rgba(6,182,212,0.15);padding:2px 8px;border-radius:4px;color:var(--accent);min-width:48px;text-align:center}
+
+/* SESSION */
+.session{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:40px;margin:50px 0;backdrop-filter:blur(10px)}
+.session-header{display:flex;align-items:center;gap:16px;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.session-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--primary));padding:8px 16px;border-radius:10px;letter-spacing:1px;white-space:nowrap}
+.session-title{font-size:26px;font-weight:800}
+.session-meta{display:flex;gap:20px;margin-top:6px;font-size:12px;color:var(--text-muted)}
+.session-meta span{display:flex;align-items:center;gap:4px}
+
+/* CONTENT */
+h3{font-size:20px;font-weight:700;margin:30px 0 12px;color:var(--text);display:flex;align-items:center;gap:8px}
+h4{font-size:16px;font-weight:700;margin:22px 0 8px;color:var(--primary-light)}
+p{margin-bottom:12px;color:var(--text-muted)}
+strong{color:var(--text)}
+ul,ol{margin:10px 0 16px 20px;color:var(--text-muted)}
+li{margin-bottom:6px}
+
+/* CODE */
+.code-block{background:var(--bg-code);border:1px solid rgba(6,182,212,0.15);border-radius:12px;padding:20px 24px;margin:16px 0;overflow-x:auto;position:relative}
+.code-block pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;color:#e2e8f0;white-space:pre;margin:0}
+.code-label{position:absolute;top:8px;right:12px;font-size:10px;font-weight:600;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
+code{font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(6,182,212,0.1);padding:2px 6px;border-radius:4px;color:var(--accent)}
+
+/* DIAGRAMS */
+.diagram-box{background:rgba(15,23,42,0.8);border:1px solid rgba(6,182,212,0.15);border-radius:16px;padding:30px;margin:20px 0;overflow-x:auto}
+.diagram-title{font-size:13px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;text-align:center}
+.flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.flow-node{background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(99,102,241,0.15));border:1px solid rgba(6,182,212,0.3);padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;text-align:center;min-width:100px}
+.flow-node.highlight{background:linear-gradient(135deg,var(--primary),var(--accent));border-color:transparent;color:#fff}
+.flow-node.green{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);color:var(--green)}
+.flow-node.orange{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:var(--orange)}
+.flow-node.pink{background:rgba(236,72,153,0.15);border-color:rgba(236,72,153,0.3);color:var(--pink)}
+.flow-node.red{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3);color:var(--red)}
+.flow-arrow{color:var(--text-muted);font-size:18px;flex-shrink:0}
+.flow-vertical{display:flex;flex-direction:column;align-items:center;gap:4px}
+.flow-arrow-down{color:var(--text-muted);font-size:18px}
+.diagram-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:15px 0}
+.diagram-card{background:rgba(30,41,59,0.5);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.diagram-card .icon{font-size:28px;margin-bottom:8px}
+.diagram-card .label{font-weight:700;font-size:14px;margin-bottom:4px}
+.diagram-card .desc{font-size:12px;color:var(--text-muted)}
+
+/* TABLES */
+.info-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.info-table th{background:rgba(6,182,212,0.1);padding:10px 14px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);border-bottom:1px solid var(--border)}
+.info-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-muted)}
+.info-table tr:last-child td{border-bottom:none}
+.info-table td:first-child{color:var(--text);font-weight:500}
+
+/* CALLOUTS */
+.callout{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+.callout-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.callout-info{background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2)}
+.callout-tip{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2)}
+.callout-warn{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2)}
+.callout-usecase{background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.2)}
+
+/* USE CASE */
+.usecase-box{background:linear-gradient(135deg,rgba(6,182,212,0.06),rgba(236,72,153,0.04));border:1px solid rgba(236,72,153,0.2);border-radius:16px;padding:25px;margin:20px 0}
+.usecase-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(236,72,153,0.15);color:var(--pink);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+
+/* TAKEAWAYS */
+.takeaways{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px 24px;margin:25px 0}
+.takeaways h4{color:var(--green);margin-top:0}
+.takeaways ul{list-style:none;margin-left:0}
+.takeaways li{padding:4px 0;display:flex;align-items:flex-start;gap:8px}
+.takeaways li::before{content:'✓';color:var(--green);font-weight:700}
+
+/* HANDS-ON */
+.hands-on{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:20px 24px;margin:25px 0}
+.hands-on h4{color:var(--orange);margin-top:0}
+
+/* QUIZ */
+.quiz-box{background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.2);border-radius:12px;padding:20px 24px;margin:20px 0}
+.quiz-box h4{color:var(--accent);margin-top:0}
+.quiz-box ol{margin-left:20px}
+
+/* COMPARE */
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.compare-col{background:rgba(30,41,59,0.4);border:1px solid var(--border);border-radius:12px;padding:20px}
+.compare-col h4{margin-top:0}
+
+/* LOOP DIAGRAM */
+.loop-diagram{position:relative;display:flex;flex-direction:column;align-items:center;gap:0;margin:20px 0}
+.loop-step{display:flex;align-items:center;gap:14px;width:100%;max-width:540px}
+.loop-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0}
+.loop-step-box{flex:1;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;border:1px solid var(--border)}
+.loop-connector{width:2px;height:14px;background:var(--text-muted);opacity:0.3;margin-left:14px}
+
+/* WEEK END */
+.week-end{text-align:center;padding:40px 0;margin:40px 0;border-top:1px solid var(--border)}
+.week-end-badge{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--primary));padding:10px 28px;border-radius:50px;font-weight:700;font-size:14px}
+
+/* FOOTER */
+.doc-footer{text-align:center;padding:40px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px;margin-top:60px}
+.doc-footer .brand{font-weight:800;font-size:16px;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px}
+
+/* RESPONSIVE */
+@media(max-width:768px){.container{padding:0 16px}.session{padding:24px}.hero-title{font-size:28px}.toc-list{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr}.flow{flex-direction:column}.diagram-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<section class="hero-section">
+<div class="container">
+    <div class="hero-badge">Week 2 of 4</div>
+    <h1 class="hero-title">🤖 <span class="gradient-text">Agent Fundamentals</span></h1>
+    <p class="hero-subtitle">What Agents Are, How They Think, and What They Can Do</p>
+    <div class="hero-meta">
+        <div class="meta-item">📅 <strong>Day 6 – Day 10</strong></div>
+        <div class="meta-item">⏱️ <strong>~45 min</strong> per session</div>
+        <div class="meta-item">🎯 Use Case: <strong>Customer Support Agent</strong></div>
+        <div class="meta-item">🛠️ Stack: <strong>Python + LangChain + Ollama</strong></div>
+    </div>
+</div>
+</section>
+
+<div class="container">
+
+<!-- ========== TOC ========== -->
+<nav class="toc">
+<div class="toc-title">📑 Table of Contents</div>
+<ul class="toc-list">
+    <li><a href="#day6"><span class="toc-day">Day 6</span> What is an Agent — Chatbot vs Agent</a></li>
+    <li><a href="#day7"><span class="toc-day">Day 7</span> Agent Components — The 5 Building Blocks</a></li>
+    <li><a href="#day8"><span class="toc-day">Day 8</span> Tools — APIs, Search, Code Execution</a></li>
+    <li><a href="#day9"><span class="toc-day">Day 9</span> Memory — Short-term, Long-term, Vector Stores</a></li>
+    <li><a href="#day10"><span class="toc-day">Day 10</span> Planning & Reasoning — ReAct, CoT, ReWOO</a></li>
+    <li><a href="#weekend2"><span class="toc-day">W/E</span> Weekend: Build Your First Agent</a></li>
+</ul>
+</nav>
+
+
+<!-- ============================================================ -->
+<!--           DAY 6: WHAT IS AN AGENT — CHATBOT VS AGENT          -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day6">
+<div class="session-header">
+    <div><span class="session-num">DAY 6</span></div>
+    <div>
+        <div class="session-title">What is an Agent — Chatbot vs Agent</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>📖 Theory + Demos</span>
+            <span>🎯 Core agent concept</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Define what an AI Agent is — precisely</li>
+    <li>Understand the critical difference between a chatbot and an agent</li>
+    <li>Learn the Agent Loop: Perceive → Reason → Act → Observe</li>
+    <li>See real-world agent examples and why they matter for enterprises</li>
+</ul>
+
+<h3>💬 Chatbot vs Agent — The Key Distinction</h3>
+<p>Most developers confuse chatbots with agents. They are <strong>fundamentally different</strong>:</p>
+
+<div class="compare-row">
+<div class="compare-col">
+    <h4>💬 Chatbot (Traditional)</h4>
+    <ul>
+        <li>Takes input → returns text output</li>
+        <li>Single turn or multi-turn conversation</li>
+        <li><strong>No actions</strong> — only talks</li>
+        <li>No tool access — can't check databases, call APIs</li>
+        <li>No autonomy — only responds to what's asked</li>
+        <li>Stateless (unless manually managed)</li>
+    </ul>
+    <div class="code-block" style="margin:8px 0"><pre># Chatbot: text in → text out
+user:  "What's my order status?"
+bot:   "I'd be happy to help! Could you 
+        provide your order number?"
+# ⚠️ Cannot actually look up the order</pre></div>
+</div>
+<div class="compare-col">
+    <h4>🤖 Agent (Agentic AI)</h4>
+    <ul>
+        <li>Takes input → <strong>reasons</strong> → <strong>takes actions</strong> → returns result</li>
+        <li>Multi-step, autonomous execution</li>
+        <li><strong>Uses tools</strong> — calls APIs, queries databases, sends emails</li>
+        <li>Has access to external systems</li>
+        <li>Plans and decides what to do next</li>
+        <li>Maintains memory across interactions</li>
+    </ul>
+    <div class="code-block" style="margin:8px 0"><pre># Agent: think → act → observe → respond
+user:  "What's my order status?"
+agent: [THINK] Need order ID → check DB
+       [ACT]  query_orders(user_id=42)
+       [OBS]  Order #7845: Shipped, ETA Apr 29
+       [REPLY] "Your order #7845 shipped and 
+                arrives by April 29th!"</pre></div>
+</div>
+</div>
+
+<div class="callout callout-info">
+    <span class="callout-icon">🎯</span>
+    <div><strong>One-line definition:</strong> An AI Agent is an LLM that can <strong>reason about</strong> a task, <strong>decide</strong> what tools to use, <strong>execute actions</strong> autonomously, and <strong>iterate</strong> until the goal is achieved.</div>
+</div>
+
+<h3>🔄 The Agent Loop</h3>
+<p>Every agent — whether it's a customer support bot, a coding assistant, or an autonomous researcher — follows the same fundamental loop:</p>
+
+<div class="diagram-box">
+<div class="diagram-title">The Agentic Loop — Perceive → Reason → Act → Observe</div>
+<div style="display:flex;justify-content:center;">
+<div style="position:relative;width:460px;height:340px;">
+    <!-- Top: Perceive -->
+    <div class="flow-node" style="position:absolute;top:0;left:50%;transform:translateX(-50%);min-width:160px;">
+        👁️ <strong>PERCEIVE</strong><br><small style="font-weight:400;opacity:.7;">Read user input,<br>tool outputs, context</small>
+    </div>
+    <!-- Right: Reason -->
+    <div class="flow-node highlight" style="position:absolute;top:120px;right:0;min-width:160px;">
+        🧠 <strong>REASON</strong><br><small style="font-weight:400;opacity:.7;">Think about what<br>to do next (LLM)</small>
+    </div>
+    <!-- Bottom: Act -->
+    <div class="flow-node green" style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);min-width:160px;">
+        ⚡ <strong>ACT</strong><br><small style="font-weight:400;opacity:.7;">Call a tool, API,<br>or generate response</small>
+    </div>
+    <!-- Left: Observe -->
+    <div class="flow-node orange" style="position:absolute;top:120px;left:0;min-width:160px;">
+        👀 <strong>OBSERVE</strong><br><small style="font-weight:400;opacity:.7;">Check tool result,<br>decide if done</small>
+    </div>
+    <!-- Arrows (text-based) -->
+    <div style="position:absolute;top:60px;right:65px;color:var(--text-muted);font-size:22px;">→</div>
+    <div style="position:absolute;bottom:60px;right:65px;color:var(--text-muted);font-size:22px;">↓</div>
+    <div style="position:absolute;bottom:60px;left:75px;color:var(--text-muted);font-size:22px;">←</div>
+    <div style="position:absolute;top:60px;left:75px;color:var(--text-muted);font-size:22px;">↑</div>
+    <!-- Center -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;color:var(--text-muted);text-align:center;font-weight:600;">
+        🔄<br>Repeat until<br>goal is met
+    </div>
+</div>
+</div>
+</div>
+
+<h4>Agent Loop — Step by Step</h4>
+<table class="info-table">
+<thead><tr><th>Step</th><th>What Happens</th><th>Customer Support Example</th></tr></thead>
+<tbody>
+<tr><td><strong>1. Perceive</strong></td><td>Agent receives input (user message, system event)</td><td>Customer says: "Where is my order #7845?"</td></tr>
+<tr><td><strong>2. Reason</strong></td><td>LLM thinks: what do I need to do? Which tool?</td><td>"I need to look up order #7845 in the database"</td></tr>
+<tr><td><strong>3. Act</strong></td><td>Agent calls a tool or takes an action</td><td>Calls <code>lookup_order(order_id="7845")</code></td></tr>
+<tr><td><strong>4. Observe</strong></td><td>Agent reads the result; decides: done or continue?</td><td>Result: {status: "shipped", eta: "Apr 29"} → Done!</td></tr>
+<tr><td><strong>5. Respond</strong></td><td>Agent formulates final answer for user</td><td>"Your order #7845 has shipped and arrives April 29th!"</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-warn">
+    <span class="callout-icon">🔄</span>
+    <div><strong>Multi-step agents</strong> can loop multiple times. Example: Agent looks up order → finds it's delayed → checks shipping partner API → finds new ETA → checks refund policy → offers compensation → all in one conversation turn.</div>
+</div>
+
+<h3>🌍 Real-World Agent Examples</h3>
+<div class="diagram-box">
+<div class="diagram-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+    <div class="diagram-card">
+        <div class="icon">🎧</div>
+        <div class="label">Customer Support</div>
+        <div class="desc">Resolves tickets by querying databases, checking policies, drafting replies, escalating when needed</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">💻</div>
+        <div class="label">Coding Assistant</div>
+        <div class="desc">GitHub Copilot Agent: reads code, runs tests, fixes bugs, creates PRs autonomously</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">🔬</div>
+        <div class="label">Research Agent</div>
+        <div class="desc">Searches papers, summarizes findings, compares results, writes reports</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">📊</div>
+        <div class="label">Data Analyst</div>
+        <div class="desc">Writes SQL queries, generates charts, interprets results, creates dashboards</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">🛒</div>
+        <div class="label">Shopping Agent</div>
+        <div class="desc">Compares prices, checks reviews, applies coupons, places orders</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">🏥</div>
+        <div class="label">Healthcare Triage</div>
+        <div class="desc">Collects symptoms, checks protocols, prioritizes urgency, schedules appointments</div>
+    </div>
+</div>
+</div>
+
+<h3>📊 Levels of Autonomy</h3>
+<p>Not all agents are fully autonomous. There's a spectrum:</p>
+<table class="info-table">
+<thead><tr><th>Level</th><th>Name</th><th>Description</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>L0</td><td><strong>No AI</strong></td><td>Pure rule-based, hardcoded</td><td>IVR phone menus</td></tr>
+<tr><td>L1</td><td><strong>Chatbot</strong></td><td>LLM generates text, no tools</td><td>FAQ bot with fixed answers</td></tr>
+<tr><td>L2</td><td><strong>Copilot</strong></td><td>LLM suggests, human decides & acts</td><td>Copilot suggests code, you accept</td></tr>
+<tr><td>L3</td><td><strong>Agent</strong></td><td>LLM reasons, acts, uses tools — human approves</td><td>Agent drafts reply, human sends</td></tr>
+<tr><td>L4</td><td><strong>Autonomous Agent</strong></td><td>Full autonomy, acts without human in loop</td><td>Agent auto-resolves & closes ticket</td></tr>
+<tr><td>L5</td><td><strong>Multi-Agent System</strong></td><td>Multiple agents collaborating</td><td>Triage agent → specialist agent → QA agent</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-tip">
+    <span class="callout-icon">🎯</span>
+    <div>Our course builds from <strong>L1 → L4</strong>. By Week 4, we'll have an autonomous Customer Support Agent that classifies tickets, retrieves knowledge, generates replies, and takes actions — with human oversight for escalations.</div>
+</div>
+
+<div class="usecase-box">
+<div class="usecase-badge">🎧 Use Case Connection</div>
+<h4>Customer Support — Agent vs Chatbot</h4>
+<div class="diagram-box" style="margin-bottom:0;">
+    <div class="diagram-title">What Our Agent Will Do (that a chatbot can't)</div>
+    <div class="flow-vertical" style="gap:6px;">
+        <div class="flow-node pink" style="min-width:450px;">📨 Customer: "My order #7845 is late, I want a refund"</div>
+        <div class="flow-arrow-down">↓ Agent Thinks</div>
+        <div class="flow-node" style="min-width:450px;">🧠 Intent: refund request + order complaint → Need order data + refund policy</div>
+        <div class="flow-arrow-down">↓ Agent Acts (Step 1)</div>
+        <div class="flow-node green" style="min-width:450px;">🔧 Tool Call: <code>lookup_order("7845")</code> → Shipped Apr 22, ETA Apr 28</div>
+        <div class="flow-arrow-down">↓ Agent Acts (Step 2)</div>
+        <div class="flow-node green" style="min-width:450px;">🔧 Tool Call: <code>get_refund_policy("shipping_delay")</code> → ₹200 credit if &gt;2 days late</div>
+        <div class="flow-arrow-down">↓ Agent Acts (Step 3)</div>
+        <div class="flow-node orange" style="min-width:450px;">🧠 Reason: Order is 2+ days late → eligible for ₹200 credit. Not eligible for full refund yet.</div>
+        <div class="flow-arrow-down">↓ Agent Responds</div>
+        <div class="flow-node highlight" style="min-width:450px;">💬 "Hi! I checked order #7845 — it shipped Apr 22 and is expected Apr 28.<br>Since it's delayed, I've applied a ₹200 credit to your account. <br>If it doesn't arrive by Apr 29, we'll process a full refund."</div>
+    </div>
+</div>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>Chatbot = text in, text out. Agent = perceive, reason, act, observe, respond</li>
+    <li>Agents use <strong>tools</strong> to interact with the real world (APIs, databases, emails)</li>
+    <li>The Agent Loop repeats until the goal is achieved</li>
+    <li>Autonomy is a spectrum: L0 (rules) → L5 (multi-agent systems)</li>
+    <li>Enterprise value: agents reduce manual work, handle complexity, scale infinitely</li>
+</ul>
+</div>
+
+<div class="quiz-box">
+<h4>❓ Quick Check</h4>
+<ol>
+    <li>What's the fundamental difference between a chatbot and an agent?</li>
+    <li>Name the 4 steps of the Agent Loop.</li>
+    <li>At what autonomy level does the agent start using tools?</li>
+    <li>Why can't a chatbot resolve "Where is my order #7845?"</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--           DAY 7: AGENT COMPONENTS — 5 BUILDING BLOCKS         -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day7">
+<div class="session-header">
+    <div><span class="session-num">DAY 7</span></div>
+    <div>
+        <div class="session-title">Agent Components — The 5 Building Blocks</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>📖 Architecture Deep Dive</span>
+            <span>🎯 Agent anatomy</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Name and understand the 5 core components of every AI agent</li>
+    <li>See how each component maps to our Customer Support Agent</li>
+    <li>Understand the role of LLM as the "brain" vs tools as "hands"</li>
+    <li>Preview agent frameworks (LangChain, Semantic Kernel, CrewAI)</li>
+</ul>
+
+<h3>🧩 The 5 Building Blocks</h3>
+
+<div class="diagram-box">
+<div class="diagram-title">Agent Architecture — The 5 Pillars</div>
+<div class="diagram-grid" style="grid-template-columns:repeat(5,1fr);">
+    <div class="diagram-card" style="border-color:rgba(99,102,241,0.3);">
+        <div class="icon">🧠</div>
+        <div class="label" style="color:var(--primary-light);">1. LLM (Brain)</div>
+        <div class="desc">Reasoning engine that thinks, plans, and generates</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(6,182,212,0.3);">
+        <div class="icon">🔧</div>
+        <div class="label" style="color:var(--accent);">2. Tools</div>
+        <div class="desc">Functions the agent can call to take actions</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(16,185,129,0.3);">
+        <div class="icon">💾</div>
+        <div class="label" style="color:var(--green);">3. Memory</div>
+        <div class="desc">Short-term and long-term information storage</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(245,158,11,0.3);">
+        <div class="icon">📋</div>
+        <div class="label" style="color:var(--orange);">4. Planning</div>
+        <div class="desc">Strategy to break tasks into steps</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(236,72,153,0.3);">
+        <div class="icon">📝</div>
+        <div class="label" style="color:var(--pink);">5. Prompt / Instructions</div>
+        <div class="desc">System prompt defining persona and rules</div>
+    </div>
+</div>
+</div>
+
+<!-- Component 1: LLM -->
+<h3>🧠 1. The LLM (Brain)</h3>
+<p>The LLM is the <strong>central reasoning engine</strong>. It receives all inputs (user message, tool results, memory) and decides what to do next. Think of it as the brain — everything else (tools, memory) are its arms and notebooks.</p>
+
+<table class="info-table">
+<thead><tr><th>Responsibility</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>Understanding</td><td>Parse user intent from natural language</td></tr>
+<tr><td>Reasoning</td><td>Decide which tool to use and what arguments to pass</td></tr>
+<tr><td>Generation</td><td>Create the final human-readable response</td></tr>
+<tr><td>Orchestration</td><td>Manage multi-step workflows (call tool A → use result in tool B)</td></tr>
+</tbody>
+</table>
+
+<div class="code-block">
+<span class="code-label">Python — LLM as agent brain</span>
+<pre>from langchain_ollama import ChatOllama
+
+# The "brain" of our agent
+llm = ChatOllama(
+    model="qwen2.5:3b",
+    temperature=0.2,        # Low for consistent support replies
+    base_url="http://localhost:11434"
+)
+
+# The LLM decides what to do
+response = llm.invoke("Customer says: 'My order is late.' What tool should I use?")
+# Output: "I should use the lookup_order tool to check the order status."</pre>
+</div>
+
+<!-- Component 2: Tools -->
+<h3>🔧 2. Tools (Hands)</h3>
+<p>Tools are <strong>functions</strong> the agent can call to interact with the outside world. Without tools, the LLM is just a text generator. With tools, it becomes an agent that can <strong>take action</strong>.</p>
+
+<div class="diagram-box">
+<div class="diagram-title">Tool Categories</div>
+<div class="diagram-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+    <div class="diagram-card">
+        <div class="icon">🗄️</div>
+        <div class="label">Database</div>
+        <div class="desc">Query orders, customers, products via SQL</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">🌐</div>
+        <div class="label">API Calls</div>
+        <div class="desc">Shipping tracker, payment gateway, CRM</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">🔍</div>
+        <div class="label">Search</div>
+        <div class="desc">Knowledge base, FAQs, policy documents</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">📧</div>
+        <div class="label">Communication</div>
+        <div class="desc">Send emails, Slack messages, SMS</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">💻</div>
+        <div class="label">Code Execution</div>
+        <div class="desc">Run calculations, generate reports</div>
+    </div>
+    <div class="diagram-card">
+        <div class="icon">📁</div>
+        <div class="label">File System</div>
+        <div class="desc">Read/write files, create tickets, log actions</div>
+    </div>
+</div>
+</div>
+
+<div class="code-block">
+<span class="code-label">Python — Defining a Tool</span>
+<pre>from langchain.tools import tool
+
+@tool
+def lookup_order(order_id: str) -> dict:
+    """Look up an order by its ID and return status, items, and ETA."""
+    # In production: query SQL Server database
+    # For demo: hardcoded data
+    orders = {
+        "7845": {"status": "shipped", "eta": "2026-04-29", "items": ["MacBook Air M3"], "total": 89999},
+        "7846": {"status": "delivered", "eta": "2026-04-25", "items": ["iPhone 16"], "total": 79999},
+    }
+    return orders.get(order_id, {"error": f"Order {order_id} not found"})
+
+@tool
+def get_refund_policy(issue_type: str) -> str:
+    """Retrieve the refund policy for a given issue type."""
+    policies = {
+        "shipping_delay": "Shipping delay &gt;2 days: ₹200 credit. &gt;7 days: full refund.",
+        "wrong_item": "Wrong item: free return pickup + full refund within 48 hours.",
+        "damaged": "Damaged product: photo required. Full refund + ₹500 inconvenience credit.",
+    }
+    return policies.get(issue_type, "Policy not found. Please escalate to supervisor.")
+
+@tool
+def send_email(to: str, subject: str, body: str) -> str:
+    """Send an email to the customer."""
+    # In production: use SMTP/SendGrid
+    print(f"📧 Sending to {to}: {subject}")
+    return f"Email sent successfully to {to}"
+
+# The agent has access to these tools:
+tools = [lookup_order, get_refund_policy, send_email]</pre>
+</div>
+
+<!-- Component 3: Memory -->
+<h3>💾 3. Memory (Notebook)</h3>
+<p>Memory lets the agent <strong>remember</strong> information across conversation turns and even across sessions.</p>
+
+<table class="info-table">
+<thead><tr><th>Memory Type</th><th>Scope</th><th>Use Case</th></tr></thead>
+<tbody>
+<tr><td><strong>Short-term (Buffer)</strong></td><td>Current conversation</td><td>Remember customer said their name is Rajesh 3 messages ago</td></tr>
+<tr><td><strong>Long-term (Persistent)</strong></td><td>Across sessions</td><td>Remember this customer had a bad experience last month</td></tr>
+<tr><td><strong>Episodic</strong></td><td>Past interactions</td><td>Recall how a similar ticket was resolved before</td></tr>
+<tr><td><strong>Semantic (Vector)</strong></td><td>Knowledge base</td><td>Search FAQs and policies by meaning, not keywords</td></tr>
+</tbody>
+</table>
+
+<!-- Component 4: Planning -->
+<h3>📋 4. Planning (Strategy)</h3>
+<p>Planning is how the agent <strong>breaks a complex task into steps</strong>. Without planning, the agent might try to do everything at once and fail.</p>
+
+<div class="diagram-box">
+<div class="diagram-title">Planning Example — Customer Refund Request</div>
+<div class="flow-vertical" style="gap:4px;">
+    <div class="flow-node pink" style="min-width:420px;">📨 "I received a broken laptop. Order #7845. I want my money back."</div>
+    <div class="flow-arrow-down">↓ Agent plans</div>
+    <div class="flow-node" style="min-width:420px;text-align:left;padding:14px 20px;">
+        📋 <strong>Plan:</strong><br>
+        &nbsp;&nbsp;Step 1: Look up order #7845 to verify<br>
+        &nbsp;&nbsp;Step 2: Check refund policy for "damaged" items<br>
+        &nbsp;&nbsp;Step 3: Initiate refund if eligible<br>
+        &nbsp;&nbsp;Step 4: Send confirmation email<br>
+        &nbsp;&nbsp;Step 5: Reply to customer with summary
+    </div>
+    <div class="flow-arrow-down">↓ Execute steps</div>
+    <div class="flow-node highlight" style="min-width:420px;">✅ All steps completed → Customer gets refund + confirmation</div>
+</div>
+</div>
+
+<!-- Component 5: Prompt -->
+<h3>📝 5. Prompt / Instructions (Personality)</h3>
+<p>The system prompt defines the agent's <strong>persona, rules, and boundaries</strong>. This is what you built in Day 5.</p>
+
+<div class="code-block">
+<span class="code-label">System Prompt</span>
+<pre>SYSTEM_PROMPT = """
+You are a customer support agent for ShopEasy, an Indian e-commerce platform.
+
+You have access to these tools:
+- lookup_order: Check order status by order ID
+- get_refund_policy: Get refund/return policy for issue types
+- send_email: Send email to customer
+
+Rules:
+1. Always look up the order before making any claims about it
+2. Always check the refund policy before offering refunds
+3. Be empathetic, professional, and concise
+4. If you cannot resolve, say: "Let me connect you to a specialist"
+5. Never make up information — only use tool results
+6. Reference specific order numbers and amounts in your reply
+"""</pre>
+</div>
+
+<h3>🏗️ How It All Fits Together</h3>
+<div class="diagram-box">
+<div class="diagram-title">Agent Architecture — Complete Picture</div>
+<div class="flow-vertical" style="gap:6px;">
+    <div class="flow-node" style="min-width:500px;">👤 <strong>User Input</strong>: "My order #7845 is broken, I want a refund"</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node" style="min-width:500px;background:rgba(236,72,153,0.1);border-color:rgba(236,72,153,0.3);">📝 <strong>System Prompt</strong> (persona + rules) prepended to message</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node highlight" style="min-width:500px;">🧠 <strong>LLM (Brain)</strong> — Reads message + prompt + memory → Decides: "Call lookup_order"</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node green" style="min-width:500px;">🔧 <strong>Tool: lookup_order("7845")</strong> → {status: "delivered", items: ["MacBook Air"]}</div>
+    <div class="flow-arrow-down">↓ result fed back to LLM</div>
+    <div class="flow-node highlight" style="min-width:500px;">🧠 <strong>LLM</strong> — Now decides: "Call get_refund_policy('damaged')"</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node green" style="min-width:500px;">🔧 <strong>Tool: get_refund_policy("damaged")</strong> → "Photo required. Full refund + ₹500 credit"</div>
+    <div class="flow-arrow-down">↓ result fed back to LLM</div>
+    <div class="flow-node highlight" style="min-width:500px;">🧠 <strong>LLM</strong> — Has all info → Generates final response</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node" style="min-width:500px;border-color:rgba(16,185,129,0.3);">💾 <strong>Memory</strong> — Stores this conversation for future reference</div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node orange" style="min-width:500px;">💬 <strong>Response</strong>: "I've verified order #7845 (MacBook Air). For damaged items, please share a photo and we'll process a full refund + ₹500 credit within 48 hours."</div>
+</div>
+</div>
+
+<h3>⚡ Agent Frameworks Preview</h3>
+<p>You don't build agents from scratch. Frameworks wire the 5 components together:</p>
+
+<table class="info-table">
+<thead><tr><th>Framework</th><th>Language</th><th>Best For</th><th>We'll Use</th></tr></thead>
+<tbody>
+<tr><td><strong>LangChain</strong></td><td>Python</td><td>General-purpose agents, RAG, chains</td><td>✅ Week 2-3</td></tr>
+<tr><td><strong>LangGraph</strong></td><td>Python</td><td>Complex multi-step workflows as graphs</td><td>✅ Week 3</td></tr>
+<tr><td><strong>Semantic Kernel</strong></td><td>C# / Python</td><td>Enterprise .NET integration</td><td>✅ Week 4</td></tr>
+<tr><td><strong>CrewAI</strong></td><td>Python</td><td>Multi-agent collaboration</td><td>✅ Week 4</td></tr>
+<tr><td><strong>AutoGen</strong></td><td>Python</td><td>Microsoft's multi-agent conversations</td><td>📖 Overview</td></tr>
+</tbody>
+</table>
+
+<div class="usecase-box">
+<div class="usecase-badge">🎧 Use Case Connection</div>
+<h4>Customer Support Agent — Component Map</h4>
+<table class="info-table">
+<thead><tr><th>Component</th><th>Our Implementation</th></tr></thead>
+<tbody>
+<tr><td>🧠 LLM</td><td>Qwen 2.5:3B via Ollama (local, free)</td></tr>
+<tr><td>🔧 Tools</td><td><code>lookup_order</code>, <code>get_refund_policy</code>, <code>search_faq</code>, <code>send_email</code>, <code>escalate_ticket</code></td></tr>
+<tr><td>💾 Memory</td><td>ConversationBufferMemory (short-term) + ChromaDB vector store (long-term)</td></tr>
+<tr><td>📋 Planning</td><td>ReAct pattern (Reason + Act) — decides step-by-step</td></tr>
+<tr><td>📝 Prompt</td><td>System prompt with persona, rules, guardrails, output format</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>Every agent has 5 components: LLM, Tools, Memory, Planning, Prompt</li>
+    <li>The LLM is the brain — it orchestrates everything else</li>
+    <li>Tools give the agent "hands" to interact with the real world</li>
+    <li>Memory provides context across turns and sessions</li>
+    <li>Frameworks (LangChain, Semantic Kernel) wire these components together</li>
+</ul>
+</div>
+
+<div class="quiz-box">
+<h4>❓ Quick Check</h4>
+<ol>
+    <li>Name the 5 building blocks of an AI agent.</li>
+    <li>What happens if an agent has no tools?</li>
+    <li>Why is memory important for customer support?</li>
+    <li>Which framework will we use for .NET integration?</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--          DAY 8: TOOLS — APIS, SEARCH, CODE EXECUTION          -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day8">
+<div class="session-header">
+    <div><span class="session-num">DAY 8</span></div>
+    <div>
+        <div class="session-title">Tools — APIs, Search, Code Execution</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>💻 Heavy Hands-On</span>
+            <span>🎯 Build agent tools</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Understand how LLMs decide when and which tool to call (Function Calling)</li>
+    <li>Build custom tools with proper schemas</li>
+    <li>Wire tools into an agent with LangChain</li>
+    <li>Handle tool errors and edge cases</li>
+</ul>
+
+<h3>📞 How Function Calling Works</h3>
+<p>When an LLM has tools available, it doesn't just generate text — it can output a structured <strong>function call</strong> instead. The framework then executes the function and feeds the result back to the LLM.</p>
+
+<div class="diagram-box">
+<div class="diagram-title">Function Calling Flow</div>
+<div class="flow-vertical" style="gap:6px;">
+    <div class="flow-node" style="min-width:520px;">🧠 LLM receives: User message + list of available tools (with descriptions)</div>
+    <div class="flow-arrow-down">↓ LLM decides</div>
+    <div class="flow-node highlight" style="min-width:520px;">🤔 "I need to look up order #7845" → Output: <code>{"tool": "lookup_order", "args": {"order_id": "7845"}}</code></div>
+    <div class="flow-arrow-down">↓ Framework intercepts</div>
+    <div class="flow-node green" style="min-width:520px;">⚡ Framework calls: <code>lookup_order(order_id="7845")</code> → Returns result</div>
+    <div class="flow-arrow-down">↓ Result fed back to LLM</div>
+    <div class="flow-node" style="min-width:520px;">🧠 LLM sees tool result → Decides: need another tool? or generate response?</div>
+</div>
+</div>
+
+<div class="callout callout-info">
+    <span class="callout-icon">💡</span>
+    <div><strong>Key insight:</strong> The LLM never executes code itself. It outputs a <strong>JSON instruction</strong> saying "call this function with these args." The framework (LangChain) does the actual execution. This is a critical safety boundary.</div>
+</div>
+
+<h3>🛠️ Building Tools with LangChain</h3>
+
+<h4>Method 1: @tool Decorator (Simple)</h4>
+<div class="code-block">
+<span class="code-label">Python</span>
+<pre>from langchain.tools import tool
+
+@tool
+def lookup_order(order_id: str) -> str:
+    """Look up an order by its ID. Returns order status, items, total, and ETA.
+    Use this when a customer asks about their order status or delivery."""
+    
+    # Simulate database lookup (production: query SQL Server)
+    import json
+    orders_db = {
+        "7845": {"order_id": "7845", "status": "shipped", "eta": "2026-04-29",
+                 "items": ["MacBook Air M3"], "total": 89999, "customer": "Rajesh Kumar"},
+        "7846": {"order_id": "7846", "status": "delivered", "eta": "2026-04-25",
+                 "items": ["iPhone 16", "AirPods Pro"], "total": 99998, "customer": "Priya Singh"},
+    }
+    order = orders_db.get(order_id)
+    if order:
+        return json.dumps(order, indent=2)
+    return f"Error: Order #{order_id} not found in the system."
+
+# Check the auto-generated schema
+print(lookup_order.name)        # "lookup_order"
+print(lookup_order.description) # "Look up an order by its ID..."
+print(lookup_order.args_schema.model_json_schema())
+# {'properties': {'order_id': {'type': 'string'}}, 'required': ['order_id']}</pre>
+</div>
+
+<div class="callout callout-warn">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>Tool docstrings are critical!</strong> The LLM reads the docstring to decide when to use the tool. Vague descriptions = wrong tool calls. Always include: what the tool does, when to use it, and what it returns.</div>
+</div>
+
+<h4>Method 2: StructuredTool (More Control)</h4>
+<div class="code-block">
+<span class="code-label">Python</span>
+<pre>from langchain.tools import StructuredTool
+from pydantic import BaseModel, Field
+
+class RefundPolicyInput(BaseModel):
+    """Input for refund policy lookup."""
+    issue_type: str = Field(
+        description="Type of issue: 'shipping_delay', 'wrong_item', 'damaged', 'defective', 'changed_mind'"
+    )
+    days_since_delivery: int = Field(
+        default=0,
+        description="Number of days since the item was delivered (0 if not delivered)"
+    )
+
+def get_refund_policy(issue_type: str, days_since_delivery: int = 0) -> str:
+    """Get the applicable refund/return policy based on issue type and delivery date."""
+    policies = {
+        "shipping_delay": {
+            "policy": "If delayed &gt;2 days: ₹200 store credit. If &gt;7 days: full refund.",
+            "auto_approve": True
+        },
+        "wrong_item": {
+            "policy": "Free return pickup scheduled within 24 hours. Full refund processed in 3-5 days.",
+            "auto_approve": True
+        },
+        "damaged": {
+            "policy": "Customer must upload photo of damage. Full refund + ₹500 inconvenience credit.",
+            "auto_approve": False,
+            "requires": "photo_upload"
+        },
+        "defective": {
+            "policy": "Eligible for replacement or refund within 15 days of delivery.",
+            "auto_approve": days_since_delivery <= 15
+        },
+        "changed_mind": {
+            "policy": "Return within 7 days if unused and in original packaging. Customer pays return shipping.",
+            "auto_approve": days_since_delivery <= 7
+        }
+    }
+    import json
+    result = policies.get(issue_type, {"policy": "Unknown issue. Escalate to supervisor.", "auto_approve": False})
+    return json.dumps(result, indent=2)
+
+refund_policy_tool = StructuredTool.from_function(
+    func=get_refund_policy,
+    name="get_refund_policy",
+    description="Get refund/return policy for a specific issue type. Use when customer requests refund or return.",
+    args_schema=RefundPolicyInput
+)</pre>
+</div>
+
+<h4>Method 3: API-Calling Tool</h4>
+<div class="code-block">
+<span class="code-label">Python</span>
+<pre>import requests
+from langchain.tools import tool
+
+@tool
+def check_shipping_status(tracking_id: str) -> str:
+    """Check real-time shipping status using tracking ID.
+    Use when customer asks about delivery status or tracking."""
+    
+    try:
+        # Example: call shipping partner API
+        # In production: use actual shipping API (Delhivery, BlueDart, etc.)
+        response = requests.get(
+            f"http://localhost:8000/api/tracking/{tracking_id}",
+            timeout=10
+        )
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.Timeout:
+        return "Error: Shipping service is temporarily slow. Please try again."
+    except requests.exceptions.RequestException as e:
+        return f"Error checking shipping status: Unable to reach shipping service."
+
+@tool
+def search_knowledge_base(query: str) -> str:
+    """Search the FAQ and policy knowledge base for relevant information.
+    Use when you need to find answers about company policies, product info, or procedures."""
+    
+    # In production: vector search with ChromaDB (Week 3)
+    # For now: simple keyword matching
+    kb = {
+        "return window": "Standard return window is 7 days. Electronics: 15 days.",
+        "payment methods": "We accept UPI, credit cards, debit cards, and net banking.",
+        "warranty": "All electronics come with 1-year manufacturer warranty.",
+        "cancel order": "Orders can be cancelled before shipping. Go to My Orders → Cancel."
+    }
+    results = []
+    for key, value in kb.items():
+        if any(word in query.lower() for word in key.split()):
+            results.append(f"- {value}")
+    return "\n".join(results) if results else "No relevant information found."</pre>
+</div>
+
+<h3>🔗 Wiring Tools into an Agent</h3>
+<div class="code-block">
+<span class="code-label">Python — Complete Agent Setup</span>
+<pre>from langchain_ollama import ChatOllama
+from langchain.agents import AgentExecutor, create_tool_calling_agent
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+
+# 1. LLM
+llm = ChatOllama(model="qwen2.5:3b", temperature=0.2)
+
+# 2. Tools
+tools = [lookup_order, refund_policy_tool, check_shipping_status, search_knowledge_base]
+
+# 3. Prompt
+prompt = ChatPromptTemplate.from_messages([
+    ("system", """You are a customer support agent for ShopEasy.
+    
+Available tools: lookup_order, get_refund_policy, check_shipping_status, search_knowledge_base
+
+Rules:
+- Always verify order details before making claims
+- Always check policy before offering refunds
+- Be empathetic and professional
+- If stuck, say: "Let me connect you to a specialist"
+"""),
+    MessagesPlaceholder("chat_history", optional=True),
+    ("human", "{input}"),
+    MessagesPlaceholder("agent_scratchpad"),
+])
+
+# 4. Create Agent
+agent = create_tool_calling_agent(llm, tools, prompt)
+
+# 5. Agent Executor (runs the loop)
+agent_executor = AgentExecutor(
+    agent=agent,
+    tools=tools,
+    verbose=True,     # See the reasoning!
+    max_iterations=5, # Safety: max 5 tool calls per turn
+    handle_parsing_errors=True
+)
+
+# 6. Run it!
+result = agent_executor.invoke({
+    "input": "Hi, my order #7845 hasn't arrived yet. Can you check?"
+})
+print(result["output"])</pre>
+</div>
+
+<h4>What <code>verbose=True</code> Shows You</h4>
+<div class="code-block">
+<span class="code-label">Agent Execution Trace</span>
+<pre>&gt; Entering new AgentExecutor chain...
+
+Thought: The customer wants to know about order #7845. I should look it up.
+Action: lookup_order
+Action Input: {"order_id": "7845"}
+Observation: {"order_id": "7845", "status": "shipped", "eta": "2026-04-29", 
+              "items": ["MacBook Air M3"], "total": 89999, "customer": "Rajesh Kumar"}
+
+Thought: The order is shipped with ETA April 29. Let me give the customer this info.
+Final Answer: Hi Rajesh! I checked your order #7845 — your MacBook Air M3 has been shipped 
+and is expected to arrive by April 29th. You can track it in the "My Orders" section. 
+Let me know if you need anything else! 😊
+
+&gt; Finished chain.</pre>
+</div>
+
+<h3>⚠️ Tool Error Handling</h3>
+<div class="code-block">
+<span class="code-label">Python — Robust Tool Design</span>
+<pre>@tool
+def lookup_order(order_id: str) -> str:
+    """Look up an order by ID. Returns order details or error message."""
+    
+    # Validate input
+    if not order_id or not order_id.strip():
+        return "Error: No order ID provided. Ask the customer for their order number."
+    
+    # Sanitize input (prevent injection)
+    order_id = order_id.strip().replace("'", "").replace(";", "")[:20]
+    
+    try:
+        # Database lookup (simulated)
+        order = db_lookup(order_id)  # Your actual DB call
+        if order:
+            return json.dumps(order)
+        return f"Order #{order_id} not found. Please verify the order number with the customer."
+    except Exception:
+        return "Error: Unable to access order system. Please try again or escalate to support team."</pre>
+</div>
+
+<div class="usecase-box">
+<div class="usecase-badge">🎧 Use Case Connection</div>
+<h4>Customer Support — Complete Tool Inventory</h4>
+<table class="info-table">
+<thead><tr><th>Tool</th><th>When Agent Uses It</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>lookup_order</code></td><td>Customer asks about order status</td><td>Order details JSON</td></tr>
+<tr><td><code>get_refund_policy</code></td><td>Customer wants refund/return</td><td>Policy + auto-approve flag</td></tr>
+<tr><td><code>check_shipping_status</code></td><td>Customer asks "where is my package?"</td><td>Live tracking info</td></tr>
+<tr><td><code>search_knowledge_base</code></td><td>General questions about policies</td><td>Relevant FAQ entries</td></tr>
+<tr><td><code>send_email</code></td><td>After resolving — confirmation email</td><td>Success/failure status</td></tr>
+<tr><td><code>escalate_ticket</code></td><td>Cannot resolve — hand off to human</td><td>Ticket ID + assigned agent</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>Tools are Python functions with clear docstrings — LLM decides when to call them</li>
+    <li>LLM outputs structured JSON (function call), framework executes it</li>
+    <li>Three ways to define tools: @tool decorator, StructuredTool, or custom classes</li>
+    <li>Tool docstrings are critical — the LLM reads them to choose the right tool</li>
+    <li>Always handle errors in tools — return helpful error messages, never crash</li>
+</ul>
+</div>
+
+<div class="hands-on">
+<h4>🔨 Hands-On Tasks</h4>
+<ol>
+    <li>Create a <code>cancel_order</code> tool that checks if order is cancellable (only before shipping)</li>
+    <li>Create a <code>calculate_refund</code> tool that computes refund amount based on policy</li>
+    <li>Wire 4+ tools into an agent and test with 5 different customer messages</li>
+    <li>Set <code>verbose=True</code> and trace the agent's reasoning for each scenario</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--       DAY 9: MEMORY — SHORT-TERM, LONG-TERM, VECTOR          -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day9">
+<div class="session-header">
+    <div><span class="session-num">DAY 9</span></div>
+    <div>
+        <div class="session-title">Memory — Short-term, Long-term, Vector Stores</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>💻 Theory + Code</span>
+            <span>🎯 Agent memory systems</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Understand why memory is essential for agents</li>
+    <li>Implement 4 types of memory with LangChain</li>
+    <li>Know when to use each memory type</li>
+    <li>Introduction to vector stores (ChromaDB)</li>
+</ul>
+
+<h3>🧠 Why Memory Matters</h3>
+<p>Without memory, every LLM call is <strong>stateless</strong> — the model doesn't remember anything from previous messages. This creates terrible user experiences:</p>
+
+<div class="compare-row">
+<div class="compare-col">
+    <h4 style="color:var(--red);">❌ Without Memory</h4>
+    <div class="code-block" style="margin:8px 0;"><pre>User: My name is Rajesh, order #7845
+Bot:  Let me check order #7845 for you.
+
+User: What's the status?
+Bot:  Could you provide your order number?
+      ← FORGOT everything!</pre></div>
+</div>
+<div class="compare-col">
+    <h4 style="color:var(--green);">✅ With Memory</h4>
+    <div class="code-block" style="margin:8px 0;"><pre>User: My name is Rajesh, order #7845
+Bot:  Let me check order #7845 for you.
+
+User: What's the status?
+Bot:  Hi Rajesh! Your order #7845 is 
+      shipped and arrives April 29th.
+      ← REMEMBERS context!</pre></div>
+</div>
+</div>
+
+<h3>📦 Memory Types</h3>
+
+<h4>1. ConversationBufferMemory (Full History)</h4>
+<p>Stores the <strong>entire conversation</strong> as-is. Simple but grows fast.</p>
+
+<div class="code-block">
+<span class="code-label">Python</span>
+<pre>from langchain.memory import ConversationBufferMemory
+
+memory = ConversationBufferMemory(
+    memory_key="chat_history",
+    return_messages=True
+)
+
+# Stores every message
+memory.save_context(
+    {"input": "My name is Rajesh, order #7845"},
+    {"output": "Hi Rajesh! Let me check order #7845 for you."}
+)
+memory.save_context(
+    {"input": "What's the status?"},
+    {"output": "Your order #7845 is shipped, arriving April 29th."}
+)
+
+# Load everything
+print(memory.load_memory_variables({}))
+# Returns ALL messages — both user and agent</pre>
+</div>
+
+<div class="callout callout-warn">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>Problem:</strong> After 50 messages, the buffer is huge and eats up the context window. A 3B model with 4K context can only hold ~20-30 messages before it starts losing earlier context.</div>
+</div>
+
+<h4>2. ConversationBufferWindowMemory (Sliding Window)</h4>
+<p>Keeps only the <strong>last K messages</strong>. Older messages are discarded.</p>
+
+<div class="code-block">
+<span class="code-label">Python</span>
+<pre>from langchain.memory import ConversationBufferWindowMemory
+
+memory = ConversationBufferWindowMemory(
+    memory_key="chat_history",
+    return_messages=True,
+    k=5  # Keep last 5 exchange pairs (10 messages)
+)
+
+# After 20 messages, only the last 10 are kept
+# Good for: real-time support where recent context matters most</pre>
+</div>
+
+<h4>3. ConversationSummaryMemory (Summarized)</h4>
+<p>Uses the LLM to <strong>summarize</strong> older messages. Keeps a running summary instead of raw messages.</p>
+
+<div class="code-block">
+<span class="code-label">Python</span>
+<pre>from langchain.memory import ConversationSummaryMemory
+from langchain_ollama import ChatOllama
+
+llm = ChatOllama(model="qwen2.5:3b")
+
+memory = ConversationSummaryMemory(
+    llm=llm,
+    memory_key="chat_history",
+    return_messages=True
+)
+
+# After many messages, the summary might be:
+# "Customer Rajesh Kumar contacted about order #7845 (MacBook Air). 
+#  Order is shipped, ETA April 29. Customer expressed frustration about 
+#  the delay. Agent offered ₹200 credit for the delay. Customer accepted."
+
+# ✅ Compact — captures key facts
+# ✅ Fits in small context windows
+# ⚠️ Uses extra LLM calls to summarize</pre>
+</div>
+
+<h4>4. Vector Store Memory (Semantic Search)</h4>
+<p>Stores conversation chunks as <strong>embeddings</strong> and retrieves the most relevant ones based on the current query. Perfect for long conversations or knowledge bases.</p>
+
+<div class="code-block">
+<span class="code-label">Python</span>
+<pre># pip install chromadb langchain-chroma
+from langchain.memory import VectorStoreRetrieverMemory
+from langchain_chroma import Chroma
+from langchain_ollama import OllamaEmbeddings
+
+# Setup vector store
+embeddings = OllamaEmbeddings(model="nomic-embed-text")
+vectorstore = Chroma(
+    collection_name="support_memory",
+    embedding_function=embeddings,
+    persist_directory="./memory_db"
+)
+
+# Create memory with retriever
+retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+memory = VectorStoreRetrieverMemory(retriever=retriever)
+
+# Save conversations as embeddings
+memory.save_context(
+    {"input": "I need to return my laptop, order #7845"},
+    {"output": "I'll help with the return. Your MacBook Air is within the 15-day window."}
+)
+
+# Later, when customer asks about returns:
+# The memory searches by MEANING and retrieves the relevant conversation
+# Even if the customer says "send it back" instead of "return"</pre>
+</div>
+
+<h3>📊 Memory Type Comparison</h3>
+<table class="info-table">
+<thead><tr><th>Type</th><th>How it Works</th><th>Context Usage</th><th>Best For</th></tr></thead>
+<tbody>
+<tr><td><strong>Buffer</strong></td><td>Stores everything</td><td>🔴 High — grows linearly</td><td>Short conversations (&lt;10 turns)</td></tr>
+<tr><td><strong>Window</strong></td><td>Last K messages only</td><td>🟢 Fixed — always same size</td><td>Real-time support chats</td></tr>
+<tr><td><strong>Summary</strong></td><td>LLM summarizes older messages</td><td>🟡 Medium — compact summaries</td><td>Long conversations, complex issues</td></tr>
+<tr><td><strong>Vector Store</strong></td><td>Embed & search by meaning</td><td>🟢 Fixed — retrieves top-K</td><td>Knowledge base, cross-session memory</td></tr>
+</tbody>
+</table>
+
+<h3>🧠 Combining Memory Types</h3>
+<p>Production agents often use <strong>multiple memory types</strong> together:</p>
+
+<div class="diagram-box">
+<div class="diagram-title">Hybrid Memory Architecture</div>
+<div class="diagram-grid" style="grid-template-columns:1fr 1fr 1fr;">
+    <div class="diagram-card" style="border-color:rgba(6,182,212,0.3);">
+        <div class="icon">💬</div>
+        <div class="label" style="color:var(--accent);">Short-term</div>
+        <div class="desc">Window Memory (last 5 turns)<br>Current conversation context</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(16,185,129,0.3);">
+        <div class="icon">📝</div>
+        <div class="label" style="color:var(--green);">Medium-term</div>
+        <div class="desc">Summary Memory<br>Compressed earlier conversation</div>
+    </div>
+    <div class="diagram-card" style="border-color:rgba(236,72,153,0.3);">
+        <div class="icon">🗄️</div>
+        <div class="label" style="color:var(--pink);">Long-term</div>
+        <div class="desc">Vector Store (ChromaDB)<br>Past sessions, knowledge base</div>
+    </div>
+</div>
+</div>
+
+<div class="code-block">
+<span class="code-label">Python — Combined Memory</span>
+<pre>from langchain.memory import CombinedMemory
+
+# Short-term: last 3 exchanges
+window_memory = ConversationBufferWindowMemory(
+    memory_key="recent_chat",
+    return_messages=True,
+    k=3
+)
+
+# Long-term: vector search
+vector_memory = VectorStoreRetrieverMemory(
+    retriever=vectorstore.as_retriever(search_kwargs={"k": 2}),
+    memory_key="relevant_history"
+)
+
+# Combine them
+memory = CombinedMemory(memories=[window_memory, vector_memory])
+
+# The agent now gets:
+# 1. Last 3 messages (immediate context)
+# 2. Most relevant past conversations (semantic search)
+# → Best of both worlds!</pre>
+</div>
+
+<div class="usecase-box">
+<div class="usecase-badge">🎧 Use Case Connection</div>
+<h4>Customer Support — Memory in Action</h4>
+<div class="diagram-box" style="margin-bottom:0;">
+    <div class="flow-vertical" style="gap:6px;">
+        <div class="flow-node pink" style="min-width:500px;">📨 <strong>Session 1 (Jan 15):</strong> Rajesh complained about damaged laptop. Refund processed.</div>
+        <div class="flow-arrow-down">↓ Stored in Vector Memory</div>
+        <div class="flow-node pink" style="min-width:500px;">📨 <strong>Session 2 (Apr 27 — today):</strong> Rajesh calls again: "I want to buy another laptop"</div>
+        <div class="flow-arrow-down">↓ Agent retrieves from memory</div>
+        <div class="flow-node orange" style="min-width:500px;">💾 <strong>Retrieved:</strong> "Customer Rajesh had damaged laptop experience in Jan. Received full refund + ₹500 credit."</div>
+        <div class="flow-arrow-down">↓ Agent uses context</div>
+        <div class="flow-node highlight" style="min-width:500px;">💬 "Welcome back Rajesh! I see you had an issue with a laptop earlier — I'm sorry about that. Great news: you still have a ₹500 credit on your account. Would you like to apply it to your new purchase?"</div>
+    </div>
+</div>
+<p style="margin-top:12px;font-size:13px;color:var(--text-muted);">This is the difference between a forgettable chatbot and a <strong>personalized agent</strong>.</p>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>Without memory, every LLM call is stateless — terrible UX</li>
+    <li>Buffer = full history; Window = last K; Summary = compressed; Vector = semantic search</li>
+    <li>Production agents combine multiple memory types for best results</li>
+    <li>Vector stores (ChromaDB) enable cross-session and knowledge-base memory</li>
+    <li>Memory is what makes agents feel "intelligent" and personalized</li>
+</ul>
+</div>
+
+<div class="hands-on">
+<h4>🔨 Hands-On Tasks</h4>
+<ol>
+    <li>Implement ConversationBufferWindowMemory with k=3 and test with a 10-message conversation</li>
+    <li>Implement ConversationSummaryMemory and observe what gets summarized</li>
+    <li>Set up ChromaDB locally and store 5 FAQ entries as embeddings</li>
+    <li>Query the vector store with variations of the same question and check results</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--     DAY 10: PLANNING & REASONING — ReAct, CoT, ReWOO         -->
+<!-- ============================================================ -->
+<section class="session page-break" id="day10">
+<div class="session-header">
+    <div><span class="session-num">DAY 10</span></div>
+    <div>
+        <div class="session-title">Planning & Reasoning — ReAct, CoT, ReWOO</div>
+        <div class="session-meta">
+            <span>⏱️ 45 min</span>
+            <span>📖 Deep Theory + Code</span>
+            <span>🎯 How agents think</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Learning Objectives</h3>
+<ul>
+    <li>Understand the 3 major reasoning patterns: ReAct, Chain-of-Thought, ReWOO</li>
+    <li>Know when to use each pattern</li>
+    <li>Build a ReAct agent with LangChain</li>
+    <li>Understand planning limitations and failure modes</li>
+</ul>
+
+<h3>🧠 How Do Agents "Think"?</h3>
+<p>The reasoning pattern determines <strong>how the agent decides what to do</strong>. Different patterns have different strengths:</p>
+
+<!-- ReAct -->
+<h3>1️⃣ ReAct (Reason + Act) — The Most Common Pattern</h3>
+<p><strong>ReAct</strong> interleaves <strong>reasoning</strong> (thinking out loud) with <strong>acting</strong> (calling tools). The agent thinks about what to do, does it, observes the result, then thinks again.</p>
+
+<div class="diagram-box">
+<div class="diagram-title">ReAct Pattern — Interleaved Reasoning & Action</div>
+<div class="flow-vertical" style="gap:4px;">
+    <div class="flow-node pink" style="min-width:530px;text-align:left;padding:10px 16px;">
+        <strong>User:</strong> "I received the wrong item in order #7845. I ordered AirPods but got a phone case."
+    </div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node" style="min-width:530px;text-align:left;padding:10px 16px;">
+        💭 <strong>Thought 1:</strong> Customer received wrong item. I need to verify order #7845 to confirm what they ordered.
+    </div>
+    <div class="flow-node green" style="min-width:530px;text-align:left;padding:10px 16px;">
+        ⚡ <strong>Action 1:</strong> <code>lookup_order(order_id="7845")</code>
+    </div>
+    <div class="flow-node orange" style="min-width:530px;text-align:left;padding:10px 16px;">
+        👀 <strong>Observation 1:</strong> {items: ["AirPods Pro"], status: "delivered", total: 24999}
+    </div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node" style="min-width:530px;text-align:left;padding:10px 16px;">
+        💭 <strong>Thought 2:</strong> Confirmed — they ordered AirPods Pro but received a phone case. This is a "wrong_item" issue. Let me check the refund policy.
+    </div>
+    <div class="flow-node green" style="min-width:530px;text-align:left;padding:10px 16px;">
+        ⚡ <strong>Action 2:</strong> <code>get_refund_policy(issue_type="wrong_item")</code>
+    </div>
+    <div class="flow-node orange" style="min-width:530px;text-align:left;padding:10px 16px;">
+        👀 <strong>Observation 2:</strong> {policy: "Free return pickup within 24hr. Full refund in 3-5 days.", auto_approve: true}
+    </div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-node" style="min-width:530px;text-align:left;padding:10px 16px;">
+        💭 <strong>Thought 3:</strong> Policy allows auto-approve. I can resolve this fully. I should offer the return pickup and refund.
+    </div>
+    <div class="flow-node highlight" style="min-width:530px;text-align:left;padding:10px 16px;">
+        💬 <strong>Final Answer:</strong> "I'm really sorry about this mix-up! I've confirmed your order #7845 was for AirPods Pro (₹24,999). We'll schedule a free pickup for the wrong item within 24 hours, and your full refund will be processed in 3-5 business days. We'll also ensure the correct AirPods Pro are shipped to you right away!"
+    </div>
+</div>
+</div>
+
+<div class="code-block">
+<span class="code-label">Python — ReAct Agent with LangChain</span>
+<pre>from langchain_ollama import ChatOllama
+from langchain.agents import AgentExecutor, create_react_agent
+from langchain_core.prompts import PromptTemplate
+
+llm = ChatOllama(model="qwen2.5:3b", temperature=0.2)
+
+# ReAct-specific prompt template
+react_prompt = PromptTemplate.from_template("""
+You are a customer support agent. Answer the customer's question using the available tools.
+
+You have access to these tools:
+{tools}
+
+Tool names: {tool_names}
+
+Use this EXACT format:
+
+Question: the customer's message
+Thought: think about what to do
+Action: the tool to use (must be one of [{tool_names}])
+Action Input: the input to the tool
+Observation: the result from the tool
+... (repeat Thought/Action/Observation as needed)
+Thought: I now have enough information to answer
+Final Answer: your response to the customer
+
+Begin!
+
+Question: {input}
+{agent_scratchpad}
+""")
+
+# Create ReAct agent
+agent = create_react_agent(llm, tools, react_prompt)
+agent_executor = AgentExecutor(
+    agent=agent,
+    tools=tools,
+    verbose=True,
+    max_iterations=5,
+    handle_parsing_errors=True
+)</pre>
+</div>
+
+<!-- Chain-of-Thought -->
+<h3>2️⃣ Chain-of-Thought (CoT) — Think Before Acting</h3>
+<p><strong>CoT</strong> forces the agent to reason through the entire problem <strong>before</strong> taking any action. Best for complex, multi-step reasoning.</p>
+
+<div class="compare-row">
+<div class="compare-col">
+    <h4>🔄 ReAct (Interleaved)</h4>
+    <div class="code-block" style="margin:8px 0;font-size:12px;"><pre>Think → Act → Observe →
+Think → Act → Observe →
+Think → Final Answer</pre></div>
+    <p style="font-size:13px;">Good for: dynamic situations where each step depends on the previous result.</p>
+</div>
+<div class="compare-col">
+    <h4>🧠 Chain-of-Thought (Plan First)</h4>
+    <div class="code-block" style="margin:8px 0;font-size:12px;"><pre>Think → Think → Think → 
+(Full plan ready) →
+Act → Act → Act →
+Final Answer</pre></div>
+    <p style="font-size:13px;">Good for: problems where you can plan upfront and execute sequentially.</p>
+</div>
+</div>
+
+<div class="code-block">
+<span class="code-label">Python — CoT Prompting for Planning</span>
+<pre>cot_planning_prompt = """
+You are a customer support agent. Before taking any action, think through 
+your complete plan step by step.
+
+Customer message: "{message}"
+
+Think step by step:
+1. What is the customer's intent?
+2. What information do I need?
+3. Which tools should I call, in what order?
+4. What are the possible outcomes?
+5. What's my response plan for each outcome?
+
+Plan:
+"""
+
+# After planning, execute the plan
+execution_prompt = """
+Based on this plan:
+{plan}
+
+And these tool results:
+{tool_results}
+
+Generate the final response to the customer.
+"""</pre>
+</div>
+
+<!-- ReWOO -->
+<h3>3️⃣ ReWOO (Reasoning Without Observation) — Plan All, Execute All</h3>
+<p><strong>ReWOO</strong> creates the entire plan upfront, executes <strong>all tool calls in parallel</strong>, then reasons about the combined results. Much faster than ReAct for independent tool calls.</p>
+
+<div class="diagram-box">
+<div class="diagram-title">ReWOO — Plan → Execute All → Reason</div>
+<div class="flow" style="gap:12px;">
+    <div class="flow-node" style="min-width:140px;">
+        📋 <strong>Planner</strong><br><small style="font-weight:400;">Create full plan<br>with all tool calls</small>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node green" style="min-width:140px;">
+        ⚡ <strong>Worker</strong><br><small style="font-weight:400;">Execute ALL<br>tools in parallel</small>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight" style="min-width:140px;">
+        🧠 <strong>Solver</strong><br><small style="font-weight:400;">Reason about<br>all results together</small>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node orange" style="min-width:140px;">
+        💬 <strong>Response</strong><br><small style="font-weight:400;">Final answer<br>to customer</small>
+    </div>
+</div>
+</div>
+
+<div class="code-block">
+<span class="code-label">ReWOO — Conceptual Example</span>
+<pre># Step 1: Planner (1 LLM call)
+Plan:
+  #E1 = lookup_order("7845")           ← get order details
+  #E2 = get_refund_policy("wrong_item") ← get policy
+  #E3 = search_knowledge_base("return process")  ← get FAQ
+
+# Step 2: Worker (all 3 tool calls run IN PARALLEL)
+  #E1 result = {status: "delivered", items: ["AirPods Pro"]}
+  #E2 result = {policy: "Free return pickup..."}
+  #E3 result = "Return process: schedule pickup → refund in 3-5 days"
+
+# Step 3: Solver (1 LLM call with ALL results)
+  Given: #E1, #E2, #E3 → Generate final response
+
+# Total LLM calls: 2 (plan + solve) instead of ReAct's 4-6
+# Total time: much faster because tools run in parallel!</pre>
+</div>
+
+<h3>📊 Reasoning Pattern Comparison</h3>
+<table class="info-table">
+<thead><tr><th>Pattern</th><th>LLM Calls</th><th>Tool Execution</th><th>Speed</th><th>Best For</th></tr></thead>
+<tbody>
+<tr><td><strong>ReAct</strong></td><td>Many (per step)</td><td>Sequential</td><td>🐢 Slowest</td><td>Dynamic, dependent steps</td></tr>
+<tr><td><strong>CoT + Act</strong></td><td>2-3 (plan + act)</td><td>Sequential</td><td>🐇 Medium</td><td>Complex reasoning needed</td></tr>
+<tr><td><strong>ReWOO</strong></td><td>2 (plan + solve)</td><td>Parallel</td><td>🚀 Fastest</td><td>Independent tool calls</td></tr>
+</tbody>
+</table>
+
+<h3>⚠️ Planning Failure Modes</h3>
+<p>Agents don't always reason correctly. Common failures:</p>
+
+<table class="info-table">
+<thead><tr><th>Failure</th><th>Description</th><th>Mitigation</th></tr></thead>
+<tbody>
+<tr><td><strong>Infinite Loop</strong></td><td>Agent keeps calling the same tool</td><td>Set <code>max_iterations=5</code></td></tr>
+<tr><td><strong>Wrong Tool</strong></td><td>Agent picks the wrong tool</td><td>Better tool descriptions / fewer tools</td></tr>
+<tr><td><strong>Hallucinated Tool</strong></td><td>Agent tries to call a tool that doesn't exist</td><td><code>handle_parsing_errors=True</code></td></tr>
+<tr><td><strong>Missing Info</strong></td><td>Agent responds without checking data</td><td>Prompt: "ALWAYS use tools before answering"</td></tr>
+<tr><td><strong>Over-Planning</strong></td><td>Agent plans 10 steps for a 2-step problem</td><td>Prompt: "Use minimum necessary steps"</td></tr>
+</tbody>
+</table>
+
+<div class="code-block">
+<span class="code-label">Python — Safety Guards</span>
+<pre>agent_executor = AgentExecutor(
+    agent=agent,
+    tools=tools,
+    verbose=True,
+    max_iterations=5,           # Stop after 5 tool calls
+    max_execution_time=30,      # Timeout after 30 seconds
+    handle_parsing_errors=True, # Recover from malformed output
+    early_stopping_method="generate",  # Generate answer if stuck
+)</pre>
+</div>
+
+<div class="usecase-box">
+<div class="usecase-badge">🎧 Use Case Connection</div>
+<h4>Customer Support — Choosing the Right Pattern</h4>
+<table class="info-table">
+<thead><tr><th>Scenario</th><th>Best Pattern</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td>"Where is my order?"</td><td><strong>ReAct</strong></td><td>Simple: 1 tool call, 1 answer</td></tr>
+<tr><td>"Wrong item, want refund + replacement"</td><td><strong>ReAct</strong></td><td>Each step depends on previous (verify order → check policy → decide)</td></tr>
+<tr><td>"Compare return vs refund options"</td><td><strong>ReWOO</strong></td><td>Fetch both policies in parallel, then compare</td></tr>
+<tr><td>"Complex complaint — multiple issues"</td><td><strong>CoT + Act</strong></td><td>Need full plan upfront to handle all issues systematically</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="takeaways">
+<h4>✅ Key Takeaways</h4>
+<ul>
+    <li>ReAct = think-act-observe loop (most common, good for dependent steps)</li>
+    <li>CoT = plan everything first, then execute (good for complex reasoning)</li>
+    <li>ReWOO = plan once, execute in parallel, solve once (fastest for independent calls)</li>
+    <li>Always set safety guards: max_iterations, timeout, error handling</li>
+    <li>The right pattern depends on whether tool calls are dependent or independent</li>
+</ul>
+</div>
+
+<div class="hands-on">
+<h4>🔨 Hands-On Tasks</h4>
+<ol>
+    <li>Build a ReAct agent with 3 tools and trace the Thought/Action/Observation loop</li>
+    <li>Implement the same scenario with a CoT-then-Act approach — compare the reasoning</li>
+    <li>Create a scenario with 3 independent tool calls and implement ReWOO (plan → parallel execute → solve)</li>
+    <li>Trigger a failure (wrong tool, infinite loop) and verify your safety guards catch it</li>
+</ol>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--                  WEEKEND ASSIGNMENT 2                          -->
+<!-- ============================================================ -->
+<section class="session page-break" id="weekend2">
+<div class="session-header">
+    <div><span class="session-num" style="background:linear-gradient(135deg,var(--green),var(--accent));">WEEKEND</span></div>
+    <div>
+        <div class="session-title">Weekend: Build Your First Agent</div>
+        <div class="session-meta">
+            <span>⏱️ 3-4 hours</span>
+            <span>💻 100% Hands-On</span>
+            <span>🎯 End-to-end agent</span>
+        </div>
+    </div>
+</div>
+
+<h3>🎯 Assignment: Customer Support Agent v1</h3>
+<p>Build a complete, working Customer Support Agent using everything from Week 2. This will be the foundation we enhance in Weeks 3-4.</p>
+
+<h4>Requirements</h4>
+<table class="info-table">
+<thead><tr><th>Component</th><th>Implementation</th></tr></thead>
+<tbody>
+<tr><td>🧠 LLM</td><td>Qwen 2.5:3B via Ollama</td></tr>
+<tr><td>🔧 Tools (min 4)</td><td><code>lookup_order</code>, <code>get_refund_policy</code>, <code>search_knowledge_base</code>, <code>send_email</code></td></tr>
+<tr><td>💾 Memory</td><td>ConversationBufferWindowMemory (k=5)</td></tr>
+<tr><td>📋 Planning</td><td>ReAct pattern</td></tr>
+<tr><td>📝 Prompt</td><td>System prompt with persona + rules + guardrails</td></tr>
+<tr><td>🖥️ Interface</td><td>CLI (input loop) or Streamlit chat</td></tr>
+</tbody>
+</table>
+
+<h4>Test Scenarios</h4>
+<div class="code-block">
+<span class="code-label">Test these conversations</span>
+<pre># Scenario 1: Order Status
+User: "Where is my order #7845?"
+→ Agent should call lookup_order and give status
+
+# Scenario 2: Refund Request  
+User: "My laptop arrived damaged. Order #7845. I want a refund."
+→ Agent should: lookup_order → get_refund_policy("damaged") → offer refund
+
+# Scenario 3: Multi-turn with Memory
+User: "My name is Rajesh"
+User: "Check order #7845"
+User: "What's the refund policy for damaged items?"
+User: "Ok process the refund"
+→ Agent should remember Rajesh's name throughout
+
+# Scenario 4: Unknown Issue (Escalation)
+User: "I want to sue your company for negligence"
+→ Agent should NOT attempt to handle legal issues; should escalate
+
+# Scenario 5: General Knowledge
+User: "What payment methods do you accept?"
+→ Agent should search knowledge base</pre>
+</div>
+
+<h4>Bonus Challenges</h4>
+<ol>
+    <li>Add a <code>cancel_order</code> tool that checks if the order is cancellable</li>
+    <li>Add an <code>escalate_ticket</code> tool that creates a ticket for human review</li>
+    <li>Implement both CLI and Streamlit interfaces</li>
+    <li>Add <code>verbose=True</code> logging to a file for debugging</li>
+</ol>
+
+<div class="callout callout-tip">
+    <span class="callout-icon">🎯</span>
+    <div><strong>Success criteria:</strong> Your agent should handle all 5 scenarios correctly, use tools appropriately, maintain context across turns, and never hallucinate information it didn't get from tools.</div>
+</div>
+</section>
+
+
+<!-- ============================================================ -->
+<!--                       WEEK END                                -->
+<!-- ============================================================ -->
+<div class="week-end">
+    <div class="week-end-badge">✅ Week 2 Complete — Agent Fundamentals Mastered!</div>
+    <p style="color:var(--text-muted);margin-top:15px;font-size:14px;">
+        Next week: <strong>Week 3 — Building Real Agents</strong> → RAG, LangGraph Workflows, Semantic Kernel, Multi-Agent Systems
+    </p>
+</div>
+
+<!-- ============================================================ -->
+<!--                       FOOTER                                  -->
+<!-- ============================================================ -->
+<div class="doc-footer">
+    <div class="brand">Agentic AI — 4 Week Course</div>
+    <p>Week 2: Agent Fundamentals &nbsp;•&nbsp; Day 6–10</p>
+    <p style="margin-top:8px;">
+        <span style="color:var(--text-muted);">Organized by</span>
+        <span style="font-weight:700;letter-spacing:1px;background:linear-gradient(135deg,#6366f1,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">PRABHAKARA CHANGALA</span>
+    </p>
+    <p style="margin-top:10px;font-size:12px;opacity:0.4;">✨ Learn → Build → Integrate → Deliver ✨</p>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
