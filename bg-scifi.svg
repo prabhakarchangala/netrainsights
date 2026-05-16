@@ -1,0 +1,147 @@
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+    <style>
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(20px); } }
+        @keyframes pulse { 0%, 100% { r: 3px; opacity: 0.4; } 50% { r: 6px; opacity: 0.8; } }
+        @keyframes glow { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.35; } }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes blink { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.1; } }
+        .particle { animation: pulse 3s infinite; }
+        .glow-elem { animation: glow 4s ease-in-out infinite; }
+        .rotate-elem { animation: rotate 20s linear infinite; }
+        .blink-elem { animation: blink 2s ease-in-out infinite; }
+    </style>
+    
+    <radialGradient id="grad1" cx="30%" cy="30%">
+        <stop offset="0%" style="stop-color:#e0e7ff;stop-opacity:0.6" />
+        <stop offset="100%" style="stop-color:#c7d2fe;stop-opacity:0.2" />
+    </radialGradient>
+    
+    <radialGradient id="grad2" cx="50%" cy="50%">
+        <stop offset="0%" style="stop-color:#f3e8ff;stop-opacity:0.5" />
+        <stop offset="100%" style="stop-color:#e9d5ff;stop-opacity:0.1" />
+    </radialGradient>
+    
+    <filter id="glow">
+        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+        <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+    </filter>
+</defs>
+
+<!-- Pure White Background -->
+<rect width="1920" height="1080" fill="#ffffff"/>
+
+<!-- Subtle Grid Pattern -->
+<g opacity="0.05" stroke="#6366f1" stroke-width="1">
+    <line x1="0" y1="0" x2="1920" y2="0"/>
+    <line x1="0" y1="135" x2="1920" y2="135"/>
+    <line x1="0" y1="270" x2="1920" y2="270"/>
+    <line x1="0" y1="405" x2="1920" y2="405"/>
+    <line x1="0" y1="540" x2="1920" y2="540"/>
+    <line x1="0" y1="675" x2="1920" y2="675"/>
+    <line x1="0" y1="810" x2="1920" y2="810"/>
+    <line x1="0" y1="945" x2="1920" y2="945"/>
+    
+    <line x1="0" y1="0" x2="0" y2="1080"/>
+    <line x1="240" y1="0" x2="240" y2="1080"/>
+    <line x1="480" y1="0" x2="480" y2="1080"/>
+    <line x1="720" y1="0" x2="720" y2="1080"/>
+    <line x1="960" y1="0" x2="960" y2="1080"/>
+    <line x1="1200" y1="0" x2="1200" y2="1080"/>
+    <line x1="1440" y1="0" x2="1440" y2="1080"/>
+    <line x1="1680" y1="0" x2="1680" y2="1080"/>
+    <line x1="1920" y1="0" x2="1920" y2="1080"/>
+</g>
+
+<!-- Large Eye - Left Side -->
+<g class="glow-elem" filter="url(#glow)">
+    <circle cx="300" cy="300" r="120" fill="url(#grad1)" opacity="0.5"/>
+    <circle cx="300" cy="300" r="100" fill="#f0f4ff" opacity="0.8"/>
+    <circle cx="300" cy="300" r="60" fill="#e0e7ff" opacity="0.7"/>
+    <circle cx="300" cy="300" r="35" fill="#c7d2fe"/>
+    <circle cx="310" cy="290" r="15" fill="#f3f4f6" opacity="0.8"/>
+    <circle cx="315" cy="285" r="8" fill="#4f46e5"/>
+</g>
+
+<!-- Large Eye - Right Side -->
+<g class="glow-elem" filter="url(#glow)" style="animation-delay: 1s;">
+    <circle cx="1620" cy="250" r="120" fill="url(#grad1)" opacity="0.5"/>
+    <circle cx="1620" cy="250" r="100" fill="#f0f4ff" opacity="0.8"/>
+    <circle cx="1620" cy="250" r="60" fill="#e0e7ff" opacity="0.7"/>
+    <circle cx="1620" cy="250" r="35" fill="#c7d2fe"/>
+    <circle cx="1630" cy="240" r="15" fill="#f3f4f6" opacity="0.8"/>
+    <circle cx="1635" cy="235" r="8" fill="#4f46e5"/>
+</g>
+
+<!-- Eye - Bottom Center -->
+<g class="glow-elem" filter="url(#glow)" style="animation-delay: 0.5s;">
+    <circle cx="960" cy="850" r="100" fill="url(#grad2)" opacity="0.4"/>
+    <circle cx="960" cy="850" r="80" fill="#faf5ff" opacity="0.8"/>
+    <circle cx="960" cy="850" r="50" fill="#f3e8ff" opacity="0.6"/>
+    <circle cx="960" cy="850" r="30" fill="#e9d5ff"/>
+    <circle cx="968" cy="842" r="12" fill="#f3f4f6" opacity="0.7"/>
+    <circle cx="972" cy="838" r="6" fill="#7c3aed"/>
+</g>
+
+<!-- Particles Network - Indigo -->
+<g class="particle" style="animation-delay: 0s;">
+    <circle cx="450" cy="400" r="3" fill="#6366f1"/>
+    <circle cx="550" cy="500" r="3" fill="#6366f1"/>
+    <circle cx="400" cy="600" r="3" fill="#6366f1"/>
+    <line x1="450" y1="400" x2="550" y2="500" stroke="#6366f1" stroke-width="1" opacity="0.2"/>
+    <line x1="550" y1="500" x2="400" y2="600" stroke="#6366f1" stroke-width="1" opacity="0.2"/>
+</g>
+
+<!-- Particles Network - Purple -->
+<g class="particle" style="animation-delay: 1s;">
+    <circle cx="1400" cy="600" r="3" fill="#a855f7"/>
+    <circle cx="1500" cy="500" r="3" fill="#a855f7"/>
+    <circle cx="1300" cy="700" r="3" fill="#a855f7"/>
+    <line x1="1400" y1="600" x2="1500" y2="500" stroke="#a855f7" stroke-width="1" opacity="0.2"/>
+    <line x1="1500" y1="500" x2="1300" y2="700" stroke="#a855f7" stroke-width="1" opacity="0.2"/>
+</g>
+
+<!-- Particles Network - Blue -->
+<g class="particle" style="animation-delay: 0.5s;">
+    <circle cx="750" cy="700" r="3" fill="#3b82f6"/>
+    <circle cx="850" cy="750" r="3" fill="#3b82f6"/>
+    <circle cx="950" cy="680" r="3" fill="#3b82f6"/>
+    <line x1="750" y1="700" x2="850" y2="750" stroke="#3b82f6" stroke-width="1" opacity="0.2"/>
+    <line x1="850" y1="750" x2="950" y2="680" stroke="#3b82f6" stroke-width="1" opacity="0.2"/>
+</g>
+
+<!-- Floating Particles -->
+<g class="particle">
+    <circle cx="200" cy="150" r="3" fill="#6366f1" opacity="0.5"/>
+    <circle cx="500" cy="200" r="2" fill="#a855f7" opacity="0.4"/>
+    <circle cx="800" cy="100" r="3" fill="#3b82f6" opacity="0.5"/>
+    <circle cx="1200" cy="180" r="2" fill="#6366f1" opacity="0.4"/>
+    <circle cx="1600" cy="120" r="3" fill="#a855f7" opacity="0.5"/>
+    <circle cx="1800" cy="300" r="2" fill="#3b82f6" opacity="0.4"/>
+</g>
+
+<!-- Glowing Circles (Nebulas) -->
+<circle cx="400" cy="200" r="150" fill="url(#grad1)" opacity="0.1" class="glow-elem"/>
+<circle cx="1500" cy="800" r="200" fill="url(#grad2)" opacity="0.08" class="glow-elem"/>
+<circle cx="960" cy="400" r="180" fill="url(#grad1)" opacity="0.08" class="glow-elem" style="animation-delay: 1s;"/>
+
+<!-- Rotating Neural Ring -->
+<g class="rotate-elem" transform="translate(960, 540)">
+    <circle cx="0" cy="0" r="100" fill="none" stroke="#6366f1" stroke-width="1" opacity="0.2"/>
+    <circle cx="0" cy="0" r="150" fill="none" stroke="#a855f7" stroke-width="1" opacity="0.15"/>
+    <circle cx="100" cy="0" r="6" fill="#6366f1" opacity="0.6"/>
+    <circle cx="0" cy="150" r="6" fill="#3b82f6" opacity="0.6"/>
+    <circle cx="-100" cy="0" r="6" fill="#6366f1" opacity="0.6"/>
+    <circle cx="0" cy="-150" r="6" fill="#3b82f6" opacity="0.6"/>
+</g>
+
+<!-- Blinking Accent Points -->
+<g class="blink-elem">
+    <circle cx="100" cy="900" r="4" fill="#ec4899" opacity="0.4"/>
+    <circle cx="1850" cy="950" r="4" fill="#ec4899" opacity="0.4"/>
+</g>
+
+</svg>
