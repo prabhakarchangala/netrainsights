@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NetrAInsights — Agentic AI Course</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -88,16 +89,14 @@ body {
 .nav-logo {
     width: 38px;
     height: 38px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-    box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+}
+.nav-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .nav-brand-text {
@@ -936,14 +935,14 @@ section {
 .footer-logo {
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 12px;
-    font-weight: 900;
+}
+.footer-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .footer-brand-text {
@@ -1040,7 +1039,7 @@ section {
 <nav class="navbar" id="navbar">
     <div class="nav-container">
         <a href="#home" class="nav-brand">
-            <div class="nav-logo">AI</div>
+            <div class="nav-logo"><img src="logo.png" alt="NetrAInsights"></div>
             <span class="nav-brand-text">NetrAInsights</span>
         </a>
         <ul class="nav-links" id="navLinks">
@@ -1412,7 +1411,7 @@ section {
         <div class="footer-grid">
             <div>
                 <div class="footer-brand">
-                    <div class="footer-logo">AI</div>
+                    <div class="footer-logo"><img src="logo.png" alt="NetrAInsights"></div>
                     <span class="footer-brand-text">NetrAInsights</span>
                 </div>
                 <p class="footer-desc">Empowering the next generation of AI builders with hands-on, production-ready Agentic AI education.</p>
@@ -1446,7 +1445,7 @@ section {
             </div>
         </div>
         <div class="footer-bottom">
-            &copy; 2025 NetrAInsights. All rights reserved by Prabhakara Changala. | Built with 🤖 & ❤️
+            &copy; 2025 NetrAInsights. All rights reserved. | Built with 🤖 & ❤️
         </div>
     </div>
 </footer>
