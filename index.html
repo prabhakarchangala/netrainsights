@@ -1172,6 +1172,108 @@ section {
 
 .week-link:hover { gap: 10px; }
 
+/* ============ STATS SECTION ============ */
+.stats-section {
+    padding: 80px 40px;
+    background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 50%, #f8fafc 100%);
+    margin: 60px 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.stat-card {
+    background: white;
+    border: 2px solid rgba(37,99,235,0.12);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.07);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(37,99,235,0.15);
+    border-color: rgba(37,99,235,0.25);
+}
+
+.stat-number {
+    font-size: 48px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.stat-detail {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* ============ WHY SECTION ============ */
+.why-section {
+    padding: 80px 40px;
+    background: var(--bg);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-box {
+    background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(8,145,178,0.03));
+    border: 2px solid rgba(37,99,235,0.12);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-10px);
+    border-color: rgba(37,99,235,0.25);
+    box-shadow: 0 16px 40px rgba(37,99,235,0.12);
+}
+
+.feature-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: inline-block;
+}
+
+.feature-box h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.feature-box p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
 /* ============ COURSES GRID ============ */
 .courses-grid {
     display: grid;
@@ -1189,6 +1291,37 @@ section {
     text-decoration: none;
     color: inherit;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.course-card.visible {
+    animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.course-card:nth-child(1).visible { animation-delay: 0.1s; }
+.course-card:nth-child(2).visible { animation-delay: 0.15s; }
+.course-card:nth-child(3).visible { animation-delay: 0.2s; }
+.course-card:nth-child(4).visible { animation-delay: 0.25s; }
+.course-card:nth-child(5).visible { animation-delay: 0.3s; }
+.course-card:nth-child(6).visible { animation-delay: 0.35s; }
+.course-card:nth-child(7).visible { animation-delay: 0.4s; }
+.course-card:nth-child(8).visible { animation-delay: 0.45s; }
+.course-card:nth-child(9).visible { animation-delay: 0.5s; }
+.course-card:nth-child(10).visible { animation-delay: 0.55s; }
+.course-card:nth-child(11).visible { animation-delay: 0.6s; }
+.course-card:nth-child(12).visible { animation-delay: 0.65s; }
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
     box-shadow: 0 4px 16px rgba(37,99,235,0.07);
     position: relative;
 }
@@ -1206,8 +1339,8 @@ section {
 .course-card:hover::before { opacity: 1; }
 
 .course-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(37,99,235,0.18);
+    transform: translateY(-10px) scale(1.08);
+    box-shadow: 0 20px 50px rgba(37,99,235,0.2), 0 0 40px rgba(37,99,235,0.15);
     border-color: rgba(37,99,235,0.3);
 }
 
@@ -1877,6 +2010,78 @@ section {
                     <li>Framework selection</li>
                     <li>Production readiness audit</li>
                 </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== STATS SECTION (HIDDEN) ========== -->
+<!--
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card reveal">
+                <div class="stat-number">5000+</div>
+                <div class="stat-label">Students Trained</div>
+                <div class="stat-detail">Learning from across the globe</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Satisfaction Rate</div>
+                <div class="stat-detail">Student feedback & ratings</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Hours of Content</div>
+                <div class="stat-detail">Expert-curated curriculum</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Specializations</div>
+                <div class="stat-detail">From basics to advanced topics</div>
+            </div>
+        </div>
+    </div>
+</section>
+-->
+
+<!-- ========== WHY NETRAINSIGHTS ========== -->
+<section class="why-section">
+    <div class="container">
+        <div class="section-header reveal">
+            <h2>Why NetrAInsights?</h2>
+            <div class="accent-line"></div>
+        </div>
+        <div class="features-grid">
+            <div class="feature-box reveal">
+                <div class="feature-icon">🎯</div>
+                <h3>Industry-Relevant</h3>
+                <p>Curriculum designed with real-world AI challenges in mind. Learn what companies actually use.</p>
+            </div>
+            <div class="feature-box reveal">
+                <div class="feature-icon">👨‍🏫</div>
+                <h3>Expert Instructors</h3>
+                <p>Learn from AI practitioners with 10+ years of experience in production systems.</p>
+            </div>
+            <div class="feature-box reveal">
+                <div class="feature-icon">🚀</div>
+                <h3>Hands-On Labs</h3>
+                <p>400+ coding exercises with real datasets and production-grade frameworks.</p>
+            </div>
+            <div class="feature-box reveal">
+                <div class="feature-icon">📜</div>
+                <h3>Recognized Certificates</h3>
+                <p>Earn credentials that employers recognize and validate your skills.</p>
+            </div>
+            <div class="feature-box reveal">
+                <div class="feature-icon">♾️</div>
+                <h3>Lifetime Access</h3>
+                <p>Access all course materials forever — updates and new content included.</p>
+            </div>
+            <div class="feature-box reveal">
+                <div class="feature-icon">🤝</div>
+                <h3>Community Support</h3>
+                <p>Join 5000+ learners in our Slack community, Discord, and forums.</p>
             </div>
         </div>
     </div>
