@@ -1,570 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Machine Learning Fundamentals | NetrAI Academy</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Fundamentals | NetrAInsights</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --accent: #06b6d4;
-    --green: #10b981;
-    --red: #ef4444;
-    --bg: #ffffff;
-    --bg-alt: #f8fafc;
-    --text: #1e293b;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-}
-
-/* NAVBAR */
-.navbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    background: rgba(255,255,255,0.95);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 0;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-brand {
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 16px;
-    color: var(--primary);
-}
-
-.nav-links { display: flex; gap: 20px; list-style: none; }
-.nav-links a { text-decoration: none; color: var(--text); font-size: 14px; }
-.nav-links a:hover { color: var(--primary); }
-
-/* HEADER */
-.course-header {
-    margin-top: 56px;
-    padding: 40px 30px;
-    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-    color: white;
-    text-align: center;
-}
-
-.course-header h1 {
-    font-size: 40px;
-    margin-bottom: 10px;
-}
-
-.course-header p {
-    font-size: 18px;
-    opacity: 0.95;
-}
-
-/* MAIN CONTENT */
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 50px 30px;
-}
-
-.course-meta {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-bottom: 40px;
-    background: var(--bg-alt);
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.meta-item h4 {
-    font-size: 12px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 5px;
-}
-
-.meta-item p {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-/* SECTION */
-.section {
-    margin-bottom: 40px;
-}
-
-.section h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: var(--text);
-    border-bottom: 3px solid var(--primary);
-    padding-bottom: 10px;
-}
-
-.section h3 {
-    font-size: 20px;
-    margin-top: 20px;
-    margin-bottom: 12px;
-    color: var(--text);
-}
-
-.section p {
-    margin-bottom: 12px;
-    line-height: 1.8;
-    color: var(--text-muted);
-}
-
-.section ul {
-    margin-left: 20px;
-    margin-bottom: 12px;
-}
-
-.section ul li {
-    margin-bottom: 8px;
-    color: var(--text-muted);
-}
-
-.section ul li::marker {
-    color: var(--primary);
-}
-
-/* MODULES */
-.module {
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.module-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-.module-content {
-    display: none;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border);
-}
-
-.module-content.open { display: block; }
-
-.module-topics {
-    list-style: none;
-}
-
-.module-topics li {
-    padding: 8px 0;
-    padding-left: 20px;
-    position: relative;
-    color: var(--text-muted);
-}
-
-.module-topics li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-weight: bold;
-}
-
-.module-resources {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px dashed var(--border);
-}
-
-.module-resources h5 {
-    font-size: 12px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-}
-
-.resource-links {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.resource-link {
-    display: inline-block;
-    padding: 6px 12px;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 12px;
-    color: var(--primary);
-    transition: all 0.3s;
-}
-
-.resource-link:hover {
-    background: var(--primary);
-    color: white;
-}
-
-/* BUTTON */
-.btn-primary {
-    display: inline-block;
-    background: var(--primary);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s;
-}
-
-.btn-primary:hover {
-    background: var(--primary-dark);
-}
-
-/* FOOTER */
-.footer {
-    background: var(--bg-alt);
-    border-top: 1px solid var(--border);
-    padding: 30px;
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-@media (max-width: 768px) {
-    .course-meta { grid-template-columns: 1fr 1fr; }
-    .course-header h1 { font-size: 28px; }
-}
-</style>
-</head>
-<body>
-
-<nav class="navbar">
-    <div class="nav-container">
-        <a href="/" class="nav-brand">🤖 NetrAInsights</a>
-        <ul class="nav-links">
-            <li><a href="/">← Back to Courses</a></li>
-        </ul>
-    </div>
-</nav>
-
-<div class="course-header">
-    <h1>📊 Machine Learning Fundamentals</h1>
-    <p>Master supervised learning, unsupervised learning, and practical ML implementation</p>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#2563eb;--primary-dark:#1d4ed8;--accent:#0891b2;--bg:#ffffff;--bg-alt:#f8fafc;--text:#1a1a2e;--text-muted:#4b5563;--border:#e5e7eb;--shadow-lg:0 25px 50px rgba(37,99,235,0.2)}
+html{scroll-behavior:smooth}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 0}
+.nav-container{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center}
+.nav-brand{text-decoration:none;font-weight:800;font-size:16px;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;gap:24px;list-style:none}.nav-links a{text-decoration:none;color:var(--text-muted);font-size:14px;font-weight:500;transition:all 0.3s}.nav-links a:hover{color:var(--primary)}
+.course-header{margin-top:56px;padding:60px 40px;background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(8,145,178,0.06));border-bottom:2px solid rgba(37,99,235,0.15);text-align:center}
+.course-header h1{font-size:42px;font-weight:800;margin-bottom:12px;color:var(--text)}.course-header p{font-size:18px;color:var(--text-muted);max-width:600px;margin:0 auto}
+.course-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:40px auto;max-width:1200px;padding:0 40px}
+.meta-item{background:linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,250,252,0.95));border:2px solid rgba(37,99,235,0.12);border-radius:16px;padding:20px;text-align:center}
+.meta-item h4{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:700}.meta-item p{font-size:18px;font-weight:700;color:var(--primary)}
+.container{max-width:1000px;margin:0 auto;padding:50px 40px}.section{margin-bottom:50px}
+.section h2{font-size:28px;margin-bottom:20px;color:var(--text);border-bottom:3px solid var(--primary);padding-bottom:10px;font-weight:700}
+.section p{margin-bottom:14px;line-height:1.8;color:var(--text-muted)}.section ul{margin-left:20px;margin-bottom:14px}
+.section ul li{margin-bottom:8px;color:var(--text-muted);line-height:1.7}.section ul li::marker{color:var(--primary);font-weight:700}
+.module{background:linear-gradient(135deg,rgba(255,255,255,0.98),rgba(248,250,252,0.95));border:2px solid rgba(37,99,235,0.12);border-radius:16px;padding:24px;margin-bottom:20px;transition:all 0.3s}
+.module:hover{box-shadow:0 12px 24px rgba(37,99,235,0.12);border-color:rgba(37,99,235,0.25)}
+.module-title{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:700;color:var(--primary);user-select:none}
+.module-toggle{width:24px;height:24px;display:flex;align-items:center;justify-content:center;transition:transform 0.3s;font-size:16px}
+.module.open .module-toggle{transform:rotate(180deg)}.module-content{display:none;margin-top:16px;padding-top:16px;border-top:1px solid rgba(37,99,235,0.12)}
+.module.open .module-content{display:block}.module-topics{list-style:none;margin-bottom:12px}
+.module-topics li{padding:8px 0;padding-left:20px;position:relative;color:var(--text-muted)}
+.module-topics li::before{content:"▸";position:absolute;left:0;color:var(--accent);font-weight:bold}
+.btn-primary{display:inline-block;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;padding:14px 32px;border-radius:12px;text-decoration:none;font-weight:700;transition:all 0.3s;box-shadow:0 8px 24px rgba(37,99,235,0.45);margin-top:20px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.footer{background:var(--bg-alt);border-top:1px solid var(--border);padding:40px;text-align:center;color:var(--text-muted);font-size:14px}
+.footer a{color:var(--primary);text-decoration:none}.footer a:hover{text-decoration:underline}
+@media(max-width:968px){.course-meta{grid-template-columns:repeat(2,1fr)}.course-header{padding:40px 30px}.course-header h1{font-size:32px}.container{padding:40px 30px}}
+@media(max-width:480px){.course-meta{grid-template-columns:1fr}.course-header h1{font-size:24px}.section h2{font-size:22px}}
+</style></head><body>
+<nav class="navbar"><div class="nav-container"><a href="/" class="nav-brand">📊 NetrAInsights</a><ul class="nav-links"><li><a href="/">← Back to Courses</a></li></ul></div></nav>
+<div class="course-header"><h1>📊 ML Fundamentals</h1><p>Master the core algorithms, math, and intuition behind modern machine learning</p></div>
+<div class="course-meta">
+  <div class="meta-item"><h4>Level</h4><p>Beginner</p></div>
+  <div class="meta-item"><h4>Duration</h4><p>3 Weeks</p></div>
+  <div class="meta-item"><h4>Hands-On Labs</h4><p>12</p></div>
+  <div class="meta-item"><h4>Format</h4><p>Self-paced</p></div>
 </div>
-
 <div class="container">
-    <div class="course-meta">
-        <div class="meta-item">
-            <h4>Level</h4>
-            <p>Beginner</p>
-        </div>
-        <div class="meta-item">
-            <h4>Duration</h4>
-            <p>35 Hours</p>
-        </div>
-        <div class="meta-item">
-            <h4>Format</h4>
-            <p>Self-paced</p>
-        </div>
-        <div class="meta-item">
-            <h4>Cost</h4>
-            <p>FREE</p>
-        </div>
+  <div class="section"><h2>What You'll Learn</h2>
+    <p>Build a rock-solid foundation in machine learning. This course covers the essential algorithms, math, and practical skills that every ML practitioner needs — from data preprocessing to model deployment.</p>
+    <ul>
+      <li><strong>Math Foundations:</strong> Linear algebra, probability, statistics, calculus</li>
+      <li><strong>Supervised Learning:</strong> Regression, classification, decision trees, SVMs</li>
+      <li><strong>Unsupervised Learning:</strong> Clustering, PCA, anomaly detection</li>
+      <li><strong>Model Evaluation:</strong> Cross-validation, metrics, bias-variance tradeoff</li>
+      <li><strong>Feature Engineering:</strong> Encoding, scaling, selection, imputation</li>
+      <li><strong>Ensemble Methods:</strong> Random forests, gradient boosting, XGBoost</li>
+    </ul>
+  </div>
+  <div class="section"><h2>Course Modules</h2>
+    <div class="module"><div class="module-title"><span>📐 Week 1: Math, Data & Supervised Learning</span><span class="module-toggle">▼</span></div>
+      <div class="module-content"><ul class="module-topics">
+        <li>Linear algebra refresher: vectors, matrices, operations</li><li>Probability and Bayes' theorem</li>
+        <li>Statistics: mean, variance, distributions</li><li>Gradient descent from scratch</li>
+        <li>Linear and logistic regression</li>
+        <li><strong>Lab 1:</strong> Exploratory data analysis with pandas</li>
+        <li><strong>Lab 2:</strong> Linear regression from scratch</li>
+        <li><strong>Lab 3:</strong> Logistic regression for classification</li>
+        <li><strong>Lab 4:</strong> Data preprocessing pipeline</li>
+      </ul></div>
     </div>
-
-    <!-- OVERVIEW -->
-    <div class="section">
-        <h2>Course Overview</h2>
-        <p>This comprehensive course covers the fundamentals of machine learning, from theoretical concepts to practical implementation. You'll learn how to build predictive models, evaluate their performance, and deploy them in real-world applications.</p>
-        <p>By the end of this course, you'll be able to:</p>
-        <ul>
-            <li>Understand core ML concepts: supervised vs. unsupervised learning</li>
-            <li>Build and train classification and regression models</li>
-            <li>Perform data preprocessing and feature engineering</li>
-            <li>Evaluate model performance using appropriate metrics</li>
-            <li>Handle common ML challenges like overfitting and class imbalance</li>
-            <li>Deploy ML models in production environments</li>
-        </ul>
+    <div class="module"><div class="module-title"><span>🌳 Week 2: Tree Models & Feature Engineering</span><span class="module-toggle">▼</span></div>
+      <div class="module-content"><ul class="module-topics">
+        <li>Decision trees — splitting criteria, depth, pruning</li><li>Random forests and bagging</li>
+        <li>Gradient boosting, XGBoost, LightGBM</li><li>Feature engineering (encoding, scaling)</li>
+        <li>Handling missing data and imbalanced datasets</li>
+        <li><strong>Lab 5:</strong> Train decision tree and visualize splits</li>
+        <li><strong>Lab 6:</strong> Random forest feature importance</li>
+        <li><strong>Lab 7:</strong> XGBoost on tabular dataset</li>
+        <li><strong>Lab 8:</strong> Feature engineering pipeline</li>
+      </ul></div>
     </div>
-
-    <!-- SYLLABUS -->
-    <div class="section">
-        <h2>Course Syllabus</h2>
-
-        <div class="module">
-            <div class="module-title" onclick="this.nextElementSibling.classList.toggle('open')">
-                <span>Module 1: ML Foundations & Concepts</span>
-                <span>▼</span>
-            </div>
-            <div class="module-content">
-                <ul class="module-topics">
-                    <li>What is Machine Learning? Historical Context & Modern Applications</li>
-                    <li>Types of Learning: Supervised, Unsupervised, Reinforcement, Semi-supervised</li>
-                    <li>ML Workflow: Problem Definition → Data → Model → Evaluation → Deployment</li>
-                    <li>Bias-Variance Tradeoff</li>
-                    <li>Underfitting vs. Overfitting</li>
-                    <li>Cross-validation techniques</li>
-                </ul>
-                <div class="module-resources">
-                    <h5>Resources & Links</h5>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link">📚 Reading Material</a>
-                        <a href="#" class="resource-link">🎥 Video Lectures</a>
-                        <a href="#" class="resource-link">💻 Jupyter Notebook</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="module">
-            <div class="module-title" onclick="this.nextElementSibling.classList.toggle('open')">
-                <span>Module 2: Data Preprocessing & Feature Engineering</span>
-                <span>▼</span>
-            </div>
-            <div class="module-content">
-                <ul class="module-topics">
-                    <li>Exploratory Data Analysis (EDA)</li>
-                    <li>Handling Missing Values: Imputation Strategies</li>
-                    <li>Outlier Detection & Treatment</li>
-                    <li>Data Scaling: Normalization, Standardization</li>
-                    <li>Categorical Encoding: One-hot, Label Encoding, Ordinal Encoding</li>
-                    <li>Feature Selection: Filter, Wrapper, Embedded Methods</li>
-                    <li>Feature Creation & Polynomial Features</li>
-                </ul>
-                <div class="module-resources">
-                    <h5>Resources & Links</h5>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link">📊 Dataset</a>
-                        <a href="#" class="resource-link">🔧 Code Examples</a>
-                        <a href="#" class="resource-link">📋 Checklist</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="module">
-            <div class="module-title" onclick="this.nextElementSibling.classList.toggle('open')">
-                <span>Module 3: Supervised Learning - Regression</span>
-                <span>▼</span>
-            </div>
-            <div class="module-content">
-                <ul class="module-topics">
-                    <li>Linear Regression: Theory & Implementation</li>
-                    <li>Multiple Linear Regression</li>
-                    <li>Polynomial Regression</li>
-                    <li>Regularization: Ridge, Lasso, Elastic Net</li>
-                    <li>Regression Metrics: MSE, RMSE, MAE, R²</li>
-                    <li>Hyperparameter Tuning</li>
-                    <li>Real-world Regression Projects</li>
-                </ul>
-                <div class="module-resources">
-                    <h5>Resources & Links</h5>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link">🎯 Project 1</a>
-                        <a href="#" class="resource-link">📝 Lab Exercise</a>
-                        <a href="#" class="resource-link">💾 Code</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="module">
-            <div class="module-title" onclick="this.nextElementSibling.classList.toggle('open')">
-                <span>Module 4: Supervised Learning - Classification</span>
-                <span>▼</span>
-            </div>
-            <div class="module-content">
-                <ul class="module-topics">
-                    <li>Logistic Regression</li>
-                    <li>Decision Trees</li>
-                    <li>Random Forests & Ensemble Methods</li>
-                    <li>Support Vector Machines (SVM)</li>
-                    <li>K-Nearest Neighbors (KNN)</li>
-                    <li>Naive Bayes Classifier</li>
-                    <li>Classification Metrics: Accuracy, Precision, Recall, F1, ROC-AUC</li>
-                    <li>Handling Class Imbalance</li>
-                </ul>
-                <div class="module-resources">
-                    <h5>Resources & Links</h5>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link">🎯 Project 2</a>
-                        <a href="#" class="resource-link">📝 Lab Exercise</a>
-                        <a href="#" class="resource-link">💾 Code</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="module">
-            <div class="module-title" onclick="this.nextElementSibling.classList.toggle('open')">
-                <span>Module 5: Unsupervised Learning</span>
-                <span>▼</span>
-            </div>
-            <div class="module-content">
-                <ul class="module-topics">
-                    <li>K-Means Clustering</li>
-                    <li>Hierarchical Clustering</li>
-                    <li>DBSCAN & Density-based Methods</li>
-                    <li>Gaussian Mixture Models</li>
-                    <li>Dimensionality Reduction: PCA, t-SNE, UMAP</li>
-                    <li>Clustering Evaluation Metrics</li>
-                    <li>Anomaly Detection Techniques</li>
-                </ul>
-                <div class="module-resources">
-                    <h5>Resources & Links</h5>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link">🎯 Project 3</a>
-                        <a href="#" class="resource-link">📝 Lab Exercise</a>
-                        <a href="#" class="resource-link">💾 Code</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="module">
-            <div class="module-title" onclick="this.nextElementSibling.classList.toggle('open')">
-                <span>Module 6: Model Evaluation & Validation</span>
-                <span>▼</span>
-            </div>
-            <div class="module-content">
-                <ul class="module-topics">
-                    <li>Train-Test Split</li>
-                    <li>Cross-Validation Strategies</li>
-                    <li>Hyperparameter Tuning: GridSearch, RandomSearch, Bayesian Optimization</li>
-                    <li>Model Comparison & Selection</li>
-                    <li>Learning Curves & Bias-Variance Analysis</li>
-                    <li>Confusion Matrix & ROC Curves</li>
-                    <li>Feature Importance & Model Interpretability</li>
-                </ul>
-                <div class="module-resources">
-                    <h5>Resources & Links</h5>
-                    <div class="resource-link-links">
-                        <a href="#" class="resource-link">📚 Guide</a>
-                        <a href="#" class="resource-link">🔧 Tools</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="module">
-            <div class="module-title" onclick="this.nextElementSibling.classList.toggle('open')">
-                <span>Module 7: Practical ML Projects & Deployment</span>
-                <span>▼</span>
-            </div>
-            <div class="module-content">
-                <ul class="module-topics">
-                    <li>End-to-End ML Project Workflow</li>
-                    <li>Capstone Project 1: Iris Classification</li>
-                    <li>Capstone Project 2: Housing Price Prediction</li>
-                    <li>Capstone Project 3: Customer Segmentation</li>
-                    <li>Model Persistence: Pickle, Joblib</li>
-                    <li>Creating REST APIs with Flask</li>
-                    <li>Docker Containerization</li>
-                    <li>Cloud Deployment (AWS/GCP/Azure)</li>
-                </ul>
-                <div class="module-resources">
-                    <h5>Resources & Links</h5>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link">🚀 Deployment Guide</a>
-                        <a href="#" class="resource-link">🐳 Docker Setup</a>
-                        <a href="#" class="resource-link">☁️ Cloud Options</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="module"><div class="module-title"><span>🔍 Week 3: Evaluation, Unsupervised & Deployment</span><span class="module-toggle">▼</span></div>
+      <div class="module-content"><ul class="module-topics">
+        <li>Cross-validation and model selection</li><li>Metrics: accuracy, precision, recall, AUC-ROC</li>
+        <li>K-Means, DBSCAN clustering</li><li>PCA and dimensionality reduction</li>
+        <li>Model serialization and deployment basics</li>
+        <li><strong>Lab 9:</strong> K-fold cross-validation</li>
+        <li><strong>Lab 10:</strong> K-Means clustering on customer data</li>
+        <li><strong>Lab 11:</strong> PCA for visualization</li>
+        <li><strong>Lab 12 (Capstone):</strong> End-to-end ML pipeline from EDA to deployment</li>
+      </ul></div>
     </div>
-
-    <!-- LEARNING OUTCOMES -->
-    <div class="section">
-        <h2>Learning Outcomes</h2>
-        <p>Upon completion, you will be able to:</p>
-        <ul>
-            <li>✅ Understand fundamental ML concepts and algorithms</li>
-            <li>✅ Preprocess and engineer features from raw data</li>
-            <li>✅ Build and train both regression and classification models</li>
-            <li>✅ Evaluate models using appropriate metrics</li>
-            <li>✅ Perform hyperparameter tuning and model optimization</li>
-            <li>✅ Implement clustering and dimensionality reduction</li>
-            <li>✅ Deploy ML models to production</li>
-            <li>✅ Handle common ML challenges and best practices</li>
-        </ul>
-    </div>
-
-    <!-- PREREQUISITES -->
-    <div class="section">
-        <h2>Prerequisites</h2>
-        <ul>
-            <li>Basic Python programming knowledge</li>
-            <li>Understanding of basic statistics and probability</li>
-            <li>Familiarity with NumPy and Pandas (or willingness to learn)</li>
-            <li>No previous ML experience required</li>
-        </ul>
-    </div>
-
-    <!-- TOOLS & LIBRARIES -->
-    <div class="section">
-        <h2>Tools & Libraries</h2>
-        <ul>
-            <li><strong>Python 3.8+</strong> - Programming language</li>
-            <li><strong>Scikit-learn</strong> - ML library</li>
-            <li><strong>Pandas</strong> - Data manipulation</li>
-            <li><strong>NumPy</strong> - Numerical computing</li>
-            <li><strong>Matplotlib & Seaborn</strong> - Data visualization</li>
-            <li><strong>Jupyter Notebook</strong> - Interactive coding</li>
-            <li><strong>TensorFlow/PyTorch</strong> - Deep learning (optional)</li>
-        </ul>
-    </div>
-
-    <!-- CTA -->
-    <div class="section" style="text-align: center; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); padding: 40px; border-radius: 8px; color: white;">
-        <h2 style="color: white; border: none; padding: 0; margin-bottom: 20px;">Ready to Start?</h2>
-        <p>Join thousands of learners mastering Machine Learning today!</p>
-        <a href="/" class="btn-primary" style="background: white; color: var(--primary);">← Back to Courses</a>
-    </div>
+  </div>
+  <div class="section"><h2>Prerequisites</h2>
+    <ul><li>Python basics (variables, loops, functions)</li><li>High school math (algebra, basic statistics)</li><li>No ML experience required</li></ul>
+  </div>
+  <div class="section"><h2>Who Should Take This?</h2>
+    <ul><li><strong>Beginners</strong> entering the AI/ML field</li><li><strong>Software Developers</strong> pivoting to ML</li><li><strong>Data Analysts</strong> leveling up to ML</li><li><strong>Students</strong> in CS, math, or science programs</li></ul>
+  </div>
+  <div class="section"><h2>Tools & Tech Stack</h2>
+    <ul><li>Python, NumPy, pandas, Matplotlib, Seaborn</li><li>Scikit-learn, XGBoost, LightGBM</li><li>Jupyter Notebooks, Google Colab</li><li>Pickle, joblib for model persistence</li></ul>
+  </div>
+  <div class="section"><h2>Ready to Start?</h2>
+    <p>Start your machine learning journey with a course designed for clarity, depth, and hands-on practice.</p>
+    <a href="mailto:ai@netrainsights.com?subject=ML%20Fundamentals%20Course" class="btn-primary">📧 Enroll Now</a>
+  </div>
 </div>
-
-<div class="footer">
-    <p>&copy; 2026 NetrAI Academy | All courses are free and open for everyone</p>
-</div>
-
-<script>
-// Toggle modules
-document.querySelectorAll('.module-title').forEach(el => {
-    el.addEventListener('click', function() {
-        const content = this.nextElementSibling;
-        content.classList.toggle('open');
-        const arrow = this.querySelector('span:last-child');
-        arrow.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-    });
-});
-</script>
-</body>
-</html>
+<div class="footer"><p>&copy; 2026 NetrAInsights. All rights reserved. | <a href="/">Back to Home</a></p></div>
+<script>document.querySelectorAll('.module-title').forEach(t=>{t.addEventListener('click',()=>{t.closest('.module').classList.toggle('open')})});</script>
+</body></html>
