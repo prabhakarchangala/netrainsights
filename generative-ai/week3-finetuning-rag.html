@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generative AI Course - Week 3: Fine-Tuning and RAG</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#10b981;--primary-light:#6ee7b7;--accent:#06b6d4;--orange:#f59e0b;--pink:#ec4899;--bg:#030712;--bg-card:rgba(30,41,59,0.6);--bg-code:#0f172a;--text:#e2e8f0;--text-muted:#94a3b8;--border:rgba(255,255,255,0.06)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.container{max-width:1100px;margin:0 auto;padding:0 30px}
+.hero-section{background:linear-gradient(135deg,#064e3b,#0f172a);border-bottom:1px solid rgba(16,185,129,0.25);padding:60px 0;text-align:center}
+.hero-badge{display:inline-block;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);padding:6px 18px;border-radius:50px;font-size:12px;font-weight:600;color:var(--primary-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.hero-title{font-size:42px;font-weight:900;margin-bottom:8px}
+.gradient-text{background:linear-gradient(135deg,#10b981,#06b6d4,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:18px;color:var(--text-muted);margin-bottom:25px}
+.hero-meta{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}.meta-item{font-size:13px;color:var(--text-muted)}.meta-item strong{color:var(--text)}
+.session{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:40px;margin:40px 0;backdrop-filter:blur(10px)}
+.session-header{display:flex;align-items:center;gap:16px;margin-bottom:25px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.session-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;background:linear-gradient(135deg,var(--primary),var(--accent));padding:8px 16px;border-radius:10px;letter-spacing:1px;white-space:nowrap}
+.session-title{font-size:26px;font-weight:800}
+h3{font-size:20px;margin:22px 0 10px}
+ul{margin:8px 0 16px 20px;color:var(--text-muted)}
+li{margin-bottom:6px}
+.code-block{background:var(--bg-code);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px 24px;margin:16px 0;overflow-x:auto;position:relative}
+.code-label{position:absolute;top:8px;right:12px;font-size:10px;font-weight:600;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
+.code-block pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;color:#e2e8f0;white-space:pre;margin:0}
+.info-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.info-table th{background:rgba(16,185,129,0.1);padding:10px 14px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--primary-light);border-bottom:1px solid var(--border)}
+.info-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-muted)}
+.takeaways{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px 24px;margin:25px 0}
+.takeaways ul{list-style:none;margin-left:0}.takeaways li{padding:4px 0;display:flex;gap:8px}.takeaways li::before{content:'✓';color:var(--primary);font-weight:700}
+.nav-actions{display:flex;justify-content:space-between;gap:12px;margin:40px 0 60px}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px solid var(--border);color:var(--text);text-decoration:none;background:rgba(255,255,255,0.03);transition:all .2s}
+.nav-btn:hover{background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3)}
+@media(max-width:900px){.session{padding:28px}.session-header{flex-direction:column;align-items:flex-start}.hero-title{font-size:34px}.nav-actions{flex-direction:column}}
+</style>
+</head>
+<body>
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-badge">Generative AI Course</div>
+    <h1 class="hero-title">Week 3: <span class="gradient-text">Fine-Tuning and RAG</span></h1>
+    <p class="hero-subtitle">Learn how to adapt models to domain data and ground outputs with retrieval for factual, high-precision generation.</p>
+    <div class="hero-meta">
+      <div class="meta-item">Duration: <strong>5 Sessions</strong></div>
+      <div class="meta-item">Labs: <strong>5</strong></div>
+      <div class="meta-item">Project: <strong>Knowledge Copilot</strong></div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 1</div><h2 class="session-title">Data Curation for Fine-Tuning</h2></div>
+    <ul>
+      <li>Designing instruction-response datasets</li>
+      <li>Cleaning noisy examples and removing leakage</li>
+      <li>Balancing diversity and style consistency</li>
+    </ul>
+  </section>
+
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 2</div><h2 class="session-title">LoRA and QLoRA Workflows</h2></div>
+    <ul>
+      <li>Parameter-efficient fine-tuning with minimal GPU cost</li>
+      <li>Choosing rank, alpha, and target modules</li>
+      <li>Checkpoint management and rollback strategy</li>
+    </ul>
+    <div class="code-block"><span class="code-label">python</span><pre># Pseudo setup for PEFT config
+lora_r = 16
+lora_alpha = 32
+dropout = 0.05
+batch_size = 4
+grad_accum = 8</pre></div>
+  </section>
+
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 3</div><h2 class="session-title">RAG Architecture and Retrieval Quality</h2></div>
+    <ul>
+      <li>Chunking, embeddings, and vector search strategies</li>
+      <li>Hybrid retrieval: keyword + semantic reranking</li>
+      <li>Citation-first generation and confidence scoring</li>
+    </ul>
+    <table class="info-table">
+      <tr><th>Component</th><th>Decision</th><th>Impact</th></tr>
+      <tr><td>Chunk Size</td><td>500-900 tokens</td><td>Precision versus context coverage</td></tr>
+      <tr><td>Retriever Top-K</td><td>4-8 docs</td><td>Cost and hallucination balance</td></tr>
+      <tr><td>Reranker</td><td>Cross-encoder</td><td>Higher relevance, extra latency</td></tr>
+    </table>
+  </section>
+
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 4</div><h2 class="session-title">Evaluation and Error Analysis</h2></div>
+    <ul>
+      <li>Task-specific eval sets and golden responses</li>
+      <li>Faithfulness, groundedness, and answer completeness</li>
+      <li>Regression testing before deployment</li>
+    </ul>
+  </section>
+
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 5</div><h2 class="session-title">Build: Domain Knowledge Copilot</h2></div>
+    <ul>
+      <li>Lab 10: Prepare and validate domain dataset</li>
+      <li>Lab 11: Fine-tune with LoRA</li>
+      <li>Lab 12: Create embedding pipeline and retriever</li>
+      <li>Lab 13: Build RAG QA API with citations</li>
+      <li>Lab 14: Evaluate and iterate with error-driven fixes</li>
+    </ul>
+    <div class="takeaways">
+      <h3>Week 3 Outcomes</h3>
+      <ul>
+        <li>Run fine-tuning experiments with PEFT methods</li>
+        <li>Build grounded RAG systems with source citations</li>
+        <li>Use evaluation loops to improve response quality</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="session" id="week3-deep-dive">
+    <div class="session-header">
+      <div class="session-num">GUIDED PATH</div>
+      <div>
+        <h2 class="session-title">Beginner Walkthrough: Make Answers More Accurate</h2>
+      </div>
+    </div>
+
+    <h3>When to use Fine-Tuning vs RAG (simple rule)</h3>
+    <ul>
+      <li><strong>Use Fine-Tuning</strong> when you want a model to follow your style, tone, or task format consistently.</li>
+      <li><strong>Use RAG</strong> when answers must use latest documents, policies, manuals, or private company knowledge.</li>
+      <li><strong>Use both</strong> when you need domain style + factual grounding from fresh documents.</li>
+    </ul>
+
+    <h3>Daily action plan (2 to 3 hours/day)</h3>
+    <ol>
+      <li><strong>Day 1:</strong> Build a small, clean dataset of 100 to 300 high-quality instruction-answer pairs.</li>
+      <li><strong>Day 2:</strong> Run a basic LoRA fine-tune. Compare base model and tuned model on the same 20 test prompts.</li>
+      <li><strong>Day 3:</strong> Build a retrieval pipeline: chunk docs, create embeddings, and query top relevant chunks.</li>
+      <li><strong>Day 4:</strong> Add citation output and confidence checks. Reject answers when evidence is weak.</li>
+      <li><strong>Day 5:</strong> Integrate tuned style + RAG grounding into one knowledge copilot.</li>
+    </ol>
+
+    <h3>Quality checklist before moving to Week 4</h3>
+    <ul>
+      <li>Fine-tuned model response style is visibly more aligned with your target format</li>
+      <li>RAG answers include source citation for each key claim</li>
+      <li>At least 20-question evaluation set with measured scores</li>
+      <li>Failure cases are documented with planned fixes</li>
+    </ul>
+
+    <h3>Assignment to complete Week 3</h3>
+    <p>Build a <strong>Knowledge Copilot</strong> for one domain (for example: HR policy, product docs, SOP manuals, or legal templates). The assistant must answer with citations and decline when confidence is low.</p>
+
+    <h3>Scoring rubric</h3>
+    <table class="info-table">
+      <tr><th>Category</th><th>Expectation</th><th>Weight</th></tr>
+      <tr><td>Groundedness</td><td>Answers map to source content without made-up facts</td><td>35%</td></tr>
+      <tr><td>Style consistency</td><td>Response format stays stable across prompts</td><td>20%</td></tr>
+      <tr><td>Evaluation rigor</td><td>You track metrics and failure patterns clearly</td><td>25%</td></tr>
+      <tr><td>Product readiness</td><td>Usable UI/API with basic error handling</td><td>20%</td></tr>
+    </table>
+  </section>
+
+  <div class="nav-actions">
+    <a class="nav-btn" href="week2-multimodal-generation.html">← Previous Week</a>
+    <a class="nav-btn" href="week4-production-deployment.html">Next Week: Production Systems →</a>
+  </div>
+</div>
+</body>
+</html>

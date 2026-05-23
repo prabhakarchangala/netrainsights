@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generative AI Course - Week 4: Production and Deployment</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#f59e0b;--primary-light:#fcd34d;--accent:#ec4899;--green:#10b981;--bg:#030712;--bg-card:rgba(30,41,59,0.6);--bg-code:#0f172a;--text:#e2e8f0;--text-muted:#94a3b8;--border:rgba(255,255,255,0.06)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+.container{max-width:1100px;margin:0 auto;padding:0 30px}
+.hero-section{background:linear-gradient(135deg,#451a03,#0f172a);border-bottom:1px solid rgba(245,158,11,0.25);padding:60px 0;text-align:center}
+.hero-badge{display:inline-block;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);padding:6px 18px;border-radius:50px;font-size:12px;font-weight:600;color:var(--primary-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.hero-title{font-size:42px;font-weight:900;margin-bottom:8px}
+.gradient-text{background:linear-gradient(135deg,#f59e0b,#ec4899,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:18px;color:var(--text-muted);margin-bottom:25px}
+.hero-meta{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}.meta-item{font-size:13px;color:var(--text-muted)}.meta-item strong{color:var(--text)}
+.session{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:40px;margin:40px 0;backdrop-filter:blur(10px)}
+.session-header{display:flex;align-items:center;gap:16px;margin-bottom:25px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.session-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;background:linear-gradient(135deg,var(--primary),var(--accent));padding:8px 16px;border-radius:10px;letter-spacing:1px;white-space:nowrap}
+.session-title{font-size:26px;font-weight:800}
+h3{font-size:20px;margin:22px 0 10px}
+ul{margin:8px 0 16px 20px;color:var(--text-muted)}
+li{margin-bottom:6px}
+.code-block{background:var(--bg-code);border:1px solid rgba(245,158,11,0.2);border-radius:12px;padding:20px 24px;margin:16px 0;overflow-x:auto;position:relative}
+.code-label{position:absolute;top:8px;right:12px;font-size:10px;font-weight:600;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
+.code-block pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;color:#e2e8f0;white-space:pre;margin:0}
+.checklist{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px 24px;margin:20px 0}
+.checklist ul{list-style:none;margin:0}.checklist li{padding:4px 0;display:flex;gap:8px}.checklist li::before{content:'✓';color:var(--green);font-weight:700}
+.nav-actions{display:flex;justify-content:space-between;gap:12px;margin:40px 0 60px}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px solid var(--border);color:var(--text);text-decoration:none;background:rgba(255,255,255,0.03);transition:all .2s}
+.nav-btn:hover{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3)}
+@media(max-width:900px){.session{padding:28px}.session-header{flex-direction:column;align-items:flex-start}.hero-title{font-size:34px}.nav-actions{flex-direction:column}}
+</style>
+</head>
+<body>
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-badge">Generative AI Course</div>
+    <h1 class="hero-title">Week 4: <span class="gradient-text">Production and Deployment</span></h1>
+    <p class="hero-subtitle">Deploy robust GenAI systems with safety, observability, caching, and cost controls.</p>
+    <div class="hero-meta">
+      <div class="meta-item">Duration: <strong>5 Sessions</strong></div>
+      <div class="meta-item">Labs: <strong>6</strong></div>
+      <div class="meta-item">Capstone: <strong>Enterprise GenAI App</strong></div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 1</div><h2 class="session-title">Serving Architecture and APIs</h2></div>
+    <ul>
+      <li>FastAPI serving patterns and async inference</li>
+      <li>Request batching, streaming responses, and retries</li>
+      <li>Provider fallback and multi-model routing</li>
+    </ul>
+  </section>
+
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 2</div><h2 class="session-title">Safety and Governance</h2></div>
+    <ul>
+      <li>Input moderation and output policy filters</li>
+      <li>Prompt injection defense and secrets handling</li>
+      <li>Human review queues for high-risk outputs</li>
+    </ul>
+  </section>
+
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 3</div><h2 class="session-title">Observability and Evaluation in Production</h2></div>
+    <ul>
+      <li>Structured logging for prompts, context, and outputs</li>
+      <li>Quality dashboards and drift detection</li>
+      <li>Canary releases with automatic rollback triggers</li>
+    </ul>
+    <div class="code-block"><span class="code-label">json</span><pre>{
+  "trace_id": "req_10293",
+  "model": "gpt-4.1-mini",
+  "latency_ms": 1320,
+  "token_in": 2100,
+  "token_out": 420,
+  "policy_flags": []
+}</pre></div>
+  </section>
+
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 4</div><h2 class="session-title">Cost, Performance, and Reliability</h2></div>
+    <ul>
+      <li>Caching and semantic reuse strategies</li>
+      <li>Prompt compression and response truncation policies</li>
+      <li>Timeout budgets and graceful degradation</li>
+    </ul>
+    <div class="checklist">
+      <ul>
+        <li>Define per-endpoint token ceilings</li>
+        <li>Implement fallback model routing</li>
+        <li>Add cache for repetitive requests</li>
+        <li>Track cost per customer workflow</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="session">
+    <div class="session-header"><div class="session-num">DAY 5</div><h2 class="session-title">Capstone Demo Day</h2></div>
+    <ul>
+      <li>Lab 15: Deploy GenAI API with monitoring</li>
+      <li>Lab 16: Add moderation and safety middleware</li>
+      <li>Lab 17: Integrate RAG + vision + generation flow</li>
+      <li>Lab 18: Implement eval gates in CI</li>
+      <li>Lab 19: Add caching and fallback strategy</li>
+      <li>Lab 20: Present final production architecture</li>
+    </ul>
+    <div class="checklist">
+      <ul>
+        <li>You can design and ship production-grade GenAI systems</li>
+        <li>You can evaluate quality, cost, and safety continuously</li>
+        <li>You have a capstone architecture ready for portfolio use</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="session" id="week4-deep-dive">
+    <div class="session-header">
+      <div class="session-num">GUIDED PATH</div>
+      <div>
+        <h2 class="session-title">Beginner Walkthrough: Ship a Real GenAI Product</h2>
+      </div>
+    </div>
+
+    <h3>What production really means (plain language)</h3>
+    <ul>
+      <li>Your app should not fail silently; it must return useful errors and fallback behavior.</li>
+      <li>Your app should be measurable; you must know response time, quality, and cost.</li>
+      <li>Your app should be safe; harmful prompts and risky outputs should be filtered.</li>
+      <li>Your app should be maintainable; another developer should understand and run it.</li>
+    </ul>
+
+    <h3>Daily launch plan (2 to 3 hours/day)</h3>
+    <ol>
+      <li><strong>Day 1:</strong> Wrap your Week 3 assistant in a stable API with clear input/output contracts.</li>
+      <li><strong>Day 2:</strong> Add safety middleware: prompt validation, output moderation, and secure secrets handling.</li>
+      <li><strong>Day 3:</strong> Add tracing and logs: request id, latency, token usage, and model selection details.</li>
+      <li><strong>Day 4:</strong> Add cost and reliability controls: cache repeated prompts and fallback to cheaper models when appropriate.</li>
+      <li><strong>Day 5:</strong> Run final end-to-end tests, prepare demo, and publish your architecture summary.</li>
+    </ol>
+
+    <h3>Capstone requirements (must-have)</h3>
+    <ul>
+      <li>One API endpoint that accepts user question and optional context</li>
+      <li>At least one guarded path for unsafe or policy-violating inputs</li>
+      <li>Structured logs with trace id and token usage</li>
+      <li>At least one fallback model strategy</li>
+      <li>Automated test script for at least 15 prompts</li>
+      <li>Short runbook that explains how to deploy and monitor the app</li>
+    </ul>
+
+    <h3>Final acceptance checklist</h3>
+    <div class="checklist">
+      <ul>
+        <li>Functionality: 15/15 core test prompts return usable responses</li>
+        <li>Safety: blocked prompts are handled with clear error messages</li>
+        <li>Latency: average response time remains within your target budget</li>
+        <li>Cost: token usage report included for at least 3 test scenarios</li>
+        <li>Operations: README + runbook allow another person to run the project</li>
+      </ul>
+    </div>
+
+    <h3>After this course: 30-day growth plan</h3>
+    <ul>
+      <li>Week 1: Improve UX and feedback loop with real users</li>
+      <li>Week 2: Add stronger retrieval and evaluation datasets</li>
+      <li>Week 3: Add role-based permissions and enterprise auth</li>
+      <li>Week 4: Package your project into portfolio case study with metrics</li>
+    </ul>
+  </section>
+
+  <div class="nav-actions">
+    <a class="nav-btn" href="week3-finetuning-rag.html">← Previous Week</a>
+    <a class="nav-btn" href="../courses/generative-ai.html">Back to Generative AI Course →</a>
+  </div>
+</div>
+</body>
+</html>

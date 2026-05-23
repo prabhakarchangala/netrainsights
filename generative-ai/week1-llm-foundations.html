@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generative AI Course - Week 1: LLM Foundations</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--primary:#6366f1;--primary-light:#818cf8;--accent:#06b6d4;--green:#10b981;--orange:#f59e0b;--pink:#ec4899;--red:#ef4444;--bg:#030712;--bg-card:rgba(30,41,59,0.6);--bg-code:#0f172a;--text:#e2e8f0;--text-muted:#94a3b8;--border:rgba(255,255,255,0.06)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+@media print{body{background:#fff;color:#1e293b;font-size:11pt;line-height:1.5}.no-print{display:none!important}.session{border:1px solid #e2e8f0;box-shadow:none;break-inside:avoid-page}.code-block{background:#f1f5f9;color:#1e293b;border:1px solid #e2e8f0}.diagram-box{background:#f8fafc;border:1px solid #e2e8f0}.hero-section{background:#4f46e5!important}}
+.container{max-width:1100px;margin:0 auto;padding:0 30px}
+.hero-section{background:linear-gradient(135deg,#1e1b4b,#0f172a);border-bottom:1px solid rgba(99,102,241,0.2);padding:60px 0;text-align:center;position:relative;overflow:hidden}
+.hero-section::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(99,102,241,0.08) 0%,transparent 50%),radial-gradient(circle at 70% 50%,rgba(6,182,212,0.06) 0%,transparent 50%);pointer-events:none}
+.hero-badge{display:inline-block;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);padding:6px 18px;border-radius:50px;font-size:12px;font-weight:600;color:var(--primary-light);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.hero-title{font-size:42px;font-weight:900;margin-bottom:8px}
+.gradient-text{background:linear-gradient(135deg,#6366f1,#06b6d4,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:18px;color:var(--text-muted);margin-bottom:25px}
+.hero-meta{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
+.meta-item{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+.meta-item strong{color:var(--text)}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:30px 35px;margin:40px 0}
+.toc-title{font-size:18px;font-weight:700;margin-bottom:15px;display:flex;align-items:center;gap:8px}
+.toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toc-list li a{color:var(--text-muted);text-decoration:none;font-size:14px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:10px;transition:all .2s}
+.toc-list li a:hover{background:rgba(99,102,241,0.1);color:var(--primary-light)}
+.toc-day{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;background:rgba(99,102,241,0.15);padding:2px 8px;border-radius:4px;color:var(--primary-light);min-width:52px;text-align:center}
+.session{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:40px;margin:50px 0;backdrop-filter:blur(10px)}
+.session-header{display:flex;align-items:center;gap:16px;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.session-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;background:linear-gradient(135deg,var(--primary),var(--accent));padding:8px 16px;border-radius:10px;letter-spacing:1px;white-space:nowrap}
+.session-title{font-size:26px;font-weight:800}
+.session-meta{display:flex;gap:20px;margin-top:6px;font-size:12px;color:var(--text-muted)}
+h3{font-size:20px;font-weight:700;margin:30px 0 12px;color:var(--text);display:flex;align-items:center;gap:8px}
+h4{font-size:16px;font-weight:700;margin:22px 0 8px;color:var(--primary-light)}
+p{margin-bottom:12px;color:var(--text-muted)}
+strong{color:var(--text)}
+ul,ol{margin:10px 0 16px 20px;color:var(--text-muted)}
+li{margin-bottom:6px}
+.code-block{background:var(--bg-code);border:1px solid rgba(99,102,241,0.15);border-radius:12px;padding:20px 24px;margin:16px 0;overflow-x:auto;position:relative}
+.code-block pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;color:#e2e8f0;white-space:pre;margin:0}
+.code-label{position:absolute;top:8px;right:12px;font-size:10px;font-weight:600;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
+code{font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(99,102,241,0.1);padding:2px 6px;border-radius:4px;color:var(--primary-light)}
+.diagram-box{background:rgba(15,23,42,0.8);border:1px solid rgba(99,102,241,0.15);border-radius:16px;padding:30px;margin:20px 0;overflow-x:auto}
+.diagram-title{font-size:13px;font-weight:600;color:var(--primary-light);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:20px;text-align:center}
+.flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.flow-node{background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(6,182,212,0.15));border:1px solid rgba(99,102,241,0.3);padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;text-align:center;min-width:100px}
+.flow-node.highlight{background:linear-gradient(135deg,var(--primary),var(--accent));border-color:transparent;color:#fff}
+.flow-node.green{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);color:var(--green)}
+.flow-node.orange{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:var(--orange)}
+.flow-arrow{color:var(--text-muted);font-size:18px;flex-shrink:0}
+.info-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.info-table th{background:rgba(99,102,241,0.1);padding:10px 14px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--primary-light);border-bottom:1px solid var(--border)}
+.info-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-muted)}
+.callout{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+.callout-info{background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2)}
+.takeaways{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px 24px;margin:25px 0}
+.takeaways h4{color:var(--green);margin-top:0}
+.takeaways ul{list-style:none;margin-left:0}
+.takeaways li{padding:4px 0;display:flex;align-items:flex-start;gap:8px}
+.takeaways li::before{content:'✓';color:var(--green);font-weight:700}
+.nav-actions{display:flex;justify-content:space-between;gap:12px;margin:40px 0 60px}
+.nav-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px solid var(--border);color:var(--text);text-decoration:none;background:rgba(255,255,255,0.03);transition:all .2s}
+.nav-btn:hover{background:rgba(99,102,241,0.12);border-color:rgba(99,102,241,0.3)}
+@media(max-width:900px){.toc-list{grid-template-columns:1fr}.session{padding:28px}.session-header{flex-direction:column;align-items:flex-start}.hero-title{font-size:34px}.nav-actions{flex-direction:column}}
+</style>
+</head>
+<body>
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-badge">Generative AI Course</div>
+    <h1 class="hero-title">Week 1: <span class="gradient-text">LLM Foundations</span></h1>
+    <p class="hero-subtitle">Master tokens, transformers, prompting, and structured outputs so you can build reliable text generation systems.</p>
+    <div class="hero-meta">
+      <div class="meta-item">Duration: <strong>5 Sessions</strong></div>
+      <div class="meta-item">Labs: <strong>5</strong></div>
+      <div class="meta-item">Project: <strong>PromptOps Assistant</strong></div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="toc">
+    <div class="toc-title">Week Plan</div>
+    <ul class="toc-list">
+      <li><a href="#s1"><span class="toc-day">Day 1</span>LLM Concepts and Model Families</a></li>
+      <li><a href="#s2"><span class="toc-day">Day 2</span>Tokenization and Context Windows</a></li>
+      <li><a href="#s3"><span class="toc-day">Day 3</span>Prompt Engineering Patterns</a></li>
+      <li><a href="#s4"><span class="toc-day">Day 4</span>Output Control and Guardrails</a></li>
+      <li><a href="#s5"><span class="toc-day">Day 5</span>Lab Sprint and Review</a></li>
+    </ul>
+  </div>
+
+  <section class="session" id="s1">
+    <div class="session-header">
+      <div class="session-num">DAY 1</div>
+      <div>
+        <h2 class="session-title">LLM Concepts and Model Families</h2>
+        <div class="session-meta"><span>90 mins lecture</span><span>30 mins quiz</span></div>
+      </div>
+    </div>
+    <h3>Core Ideas</h3>
+    <ul>
+      <li>Evolution from n-gram models to transformers</li>
+      <li>Foundation models versus task-specific fine-tuned models</li>
+      <li>Decoder-only, encoder-decoder, and multimodal architectures</li>
+      <li>Latency, cost, and quality tradeoffs in model selection</li>
+    </ul>
+    <div class="diagram-box">
+      <div class="diagram-title">Model Selection Flow</div>
+      <div class="flow">
+        <div class="flow-node">Task Type</div><div class="flow-arrow">→</div>
+        <div class="flow-node">Quality Target</div><div class="flow-arrow">→</div>
+        <div class="flow-node">Budget Limit</div><div class="flow-arrow">→</div>
+        <div class="flow-node highlight">Pick Model</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="session" id="s2">
+    <div class="session-header"><div class="session-num">DAY 2</div><div><h2 class="session-title">Tokenization and Context Windows</h2><div class="session-meta"><span>75 mins lecture</span><span>45 mins hands-on</span></div></div></div>
+    <h3>What You Learn</h3>
+    <ul>
+      <li>Subword tokenization and BPE intuition</li>
+      <li>Context window constraints and chunking strategy</li>
+      <li>Prompt compression and retrieval-first prompting</li>
+    </ul>
+    <div class="code-block"><span class="code-label">python</span><pre># Simple token budget planner
+SYSTEM = 400
+USER = 1200
+RETRIEVAL = 2200
+RESPONSE_BUDGET = 1000
+TOTAL = SYSTEM + USER + RETRIEVAL + RESPONSE_BUDGET
+print(f"Token budget: {TOTAL}")</pre></div>
+  </section>
+
+  <section class="session" id="s3">
+    <div class="session-header"><div class="session-num">DAY 3</div><div><h2 class="session-title">Prompt Engineering Patterns</h2><div class="session-meta"><span>60 mins lecture</span><span>60 mins workshop</span></div></div></div>
+    <h3>Patterns</h3>
+    <ul>
+      <li>Instruction-template separation</li>
+      <li>Few-shot prompting with compact examples</li>
+      <li>Role prompting for domain behavior</li>
+      <li>Self-critique and refinement loops</li>
+    </ul>
+    <table class="info-table">
+      <tr><th>Pattern</th><th>Best For</th><th>Watch Out</th></tr>
+      <tr><td>Few-shot</td><td>Format consistency</td><td>Token overhead</td></tr>
+      <tr><td>Chain of thought style</td><td>Complex reasoning tasks</td><td>Latency increase</td></tr>
+      <tr><td>XML/JSON template</td><td>Structured output</td><td>Strict parser failures</td></tr>
+    </table>
+  </section>
+
+  <section class="session" id="s4">
+    <div class="session-header"><div class="session-num">DAY 4</div><div><h2 class="session-title">Output Control and Guardrails</h2><div class="session-meta"><span>80 mins lecture</span><span>40 mins lab</span></div></div></div>
+    <h3>Safety and Reliability</h3>
+    <ul>
+      <li>Schema-constrained generation and validation retries</li>
+      <li>Prompt injection and policy checks</li>
+      <li>Toxicity and data-leak prevention patterns</li>
+    </ul>
+    <div class="callout callout-info">Use deterministic settings for business-critical tasks and rely on post-generation validators for contract enforcement.</div>
+  </section>
+
+  <section class="session" id="s5">
+    <div class="session-header"><div class="session-num">DAY 5</div><div><h2 class="session-title">Lab Sprint and Review</h2><div class="session-meta"><span>120 mins lab</span><span>30 mins review</span></div></div></div>
+    <h3>Hands-On Labs</h3>
+    <ul>
+      <li>Lab 1: Compare two LLMs for summarization quality</li>
+      <li>Lab 2: Build reusable prompt templates</li>
+      <li>Lab 3: Add JSON schema output and parser</li>
+      <li>Lab 4: Implement token budget checks</li>
+      <li>Lab 5: Build a PromptOps assistant</li>
+    </ul>
+    <div class="takeaways">
+      <h4>Week 1 Outcomes</h4>
+      <ul>
+        <li>Understand the LLM landscape and model tradeoffs</li>
+        <li>Design prompt pipelines with consistent output shape</li>
+        <li>Ship a robust first generative AI utility</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="session" id="week1-deep-dive">
+    <div class="session-header">
+      <div class="session-num">GUIDED PATH</div>
+      <div>
+        <h2 class="session-title">Beginner Walkthrough: Learn by Doing</h2>
+        <div class="session-meta"><span>Layman friendly</span><span>No prior GenAI required</span></div>
+      </div>
+    </div>
+
+    <h3>What each concept means in simple language</h3>
+    <ul>
+      <li><strong>Token:</strong> A small piece of text the model reads. Think of tokens as tiny text blocks, not full words.</li>
+      <li><strong>Context window:</strong> The model's short-term memory. If your input is longer than this limit, some details get dropped.</li>
+      <li><strong>Prompt:</strong> Your instruction to the model. Better instructions give better output.</li>
+      <li><strong>Temperature:</strong> Controls creativity. Lower means safer and consistent, higher means more creative and variable.</li>
+      <li><strong>Guardrails:</strong> Rules and checks that keep model answers safe, structured, and reliable.</li>
+    </ul>
+
+    <h3>Exact daily execution plan (2 to 3 hours/day)</h3>
+    <ol>
+      <li><strong>Day 1:</strong> Read the model family overview, then create one-page notes comparing 3 models on cost, speed, and quality.</li>
+      <li><strong>Day 2:</strong> Run token counting on 10 prompts. Rewrite long prompts into concise prompts while preserving meaning.</li>
+      <li><strong>Day 3:</strong> Write 5 prompt templates: summarization, extraction, rewrite, classification, and QA.</li>
+      <li><strong>Day 4:</strong> Add schema validation. Force model output into JSON and retry when output is invalid.</li>
+      <li><strong>Day 5:</strong> Build and demo PromptOps assistant that takes raw text and returns summary + key points + action items.</li>
+    </ol>
+
+    <h3>Assignment to complete Week 1</h3>
+    <p>Build a small web or CLI app called <strong>PromptOps Assistant</strong>. Input: long meeting notes. Output: structured JSON with fields <code>summary</code>, <code>decisions</code>, <code>risks</code>, <code>next_steps</code>. Add one validation rule: if JSON is invalid, auto-retry with correction prompt.</p>
+
+    <h3>Submission checklist</h3>
+    <ul>
+      <li>One readme that explains your model choice and token strategy</li>
+      <li>At least 10 tested prompts with before/after improvements</li>
+      <li>JSON validator with retry logic</li>
+      <li>Three real test inputs with clean outputs</li>
+      <li>Short demo recording (3 to 5 minutes)</li>
+    </ul>
+
+    <h3>How you know you passed Week 1</h3>
+    <table class="info-table">
+      <tr><th>Area</th><th>Pass Criteria</th><th>Weight</th></tr>
+      <tr><td>Concept clarity</td><td>You can explain tokens, context, and temperature without notes</td><td>20%</td></tr>
+      <tr><td>Prompt quality</td><td>Your templates produce consistent results on repeated runs</td><td>25%</td></tr>
+      <tr><td>Reliability</td><td>JSON output is valid in at least 9/10 tests</td><td>30%</td></tr>
+      <tr><td>Delivery</td><td>Readable code, README, and test evidence included</td><td>25%</td></tr>
+    </table>
+
+    <div class="callout callout-info">
+      If you are new to coding, start with a simple CLI script first. You can always convert it to a web app in Week 4.
+    </div>
+  </section>
+
+  <div class="nav-actions no-print">
+    <a class="nav-btn" href="../courses/generative-ai.html">← Back to Generative AI Course</a>
+    <a class="nav-btn" href="week2-multimodal-generation.html">Next Week: Multimodal Generation →</a>
+  </div>
+</div>
+</body>
+</html>
